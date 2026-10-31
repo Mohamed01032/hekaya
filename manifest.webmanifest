@@ -1,0 +1,12 @@
+{
+  "name": "Hekaya — حكاية | GEM AI Guide",
+  "short_name": "Hekaya",
+  "description": "Point your phone at any Grand Egyptian Museum artifact and let it tell you its story.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08112B",
+  "theme_color": "#0E1D46",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+}

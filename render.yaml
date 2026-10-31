@@ -1,0 +1,14 @@
+# One-click deploy on Render: New > Blueprint > pick this repo.
+services:
+  - type: web
+    name: hekaya
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false        # Render asks you to paste it; it never goes into GitHub
+      - key: GEMINI_MODEL
+        value: gemini-flash-latest
+      - key: GEMINI_FAST_MODEL
+        value: gemini-flash-latest
