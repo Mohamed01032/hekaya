@@ -93,7 +93,7 @@ class GeminiProvider:
 
     def _config(self, system: str, max_tokens: int):
         return self.types.GenerateContentConfig(
-            system_instruction=system or None, max_output_tokens=max_tokens)
+            system_instruction=system or None, max_output_tokens=max(max_tokens * 6, 4096))
 
     def complete(self, system, messages, *, images=None, fast=False, max_tokens=700) -> str:
         resp = self.client.models.generate_content(
