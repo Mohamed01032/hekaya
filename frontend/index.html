@@ -544,6 +544,8 @@ const UI = {
   gSugg:["How much is a ticket?","How long is a ticket valid?","How do I book?","Where are the shops?","When does it close?","Where can I eat?"]}
 };
 const LANG_NAME={ar:"Egyptian Arabic (عامية مصرية), friendly and clear",en:"English",fr:"French",de:"German",es:"Spanish",it:"Italian",ru:"Russian",zh:"Simplified Chinese",ja:"Japanese"};
+/* each level sounds different: kids slower and brighter, experts steady and lower */
+const VOICE_STYLE={kids:{rate:0.9,pitch:1.25},adult:{rate:1,pitch:1},expert:{rate:1.03,pitch:0.9}};
 const VOICE_LANG={ar:"ar-EG",en:"en-GB",fr:"fr-FR",de:"de-DE",es:"es-ES",it:"it-IT",ru:"ru-RU",zh:"zh-CN",ja:"ja-JP"};
 const AUD={kids:"a child aged 7-12: short sentences, playful, one fun fact at a time, end by asking them a question",
            adult:"a curious adult visitor: vivid storytelling, 4-6 sentences",expert:"an enthusiast or student: precise, mention dynasty, materials and context, 6-9 sentences"};
@@ -594,7 +596,7 @@ ${a.facts_en.map(x=>"- "+x).join("\n")}
 
 Rules:
 1. Speak in the first person AS the artifact, using the persona.
-2. Use ONLY the verified facts. If asked something they don't cover, say honestly (in character) that you don't know or historians aren't sure, and suggest asking a museum guide. Never invent dates, numbers, names or discoveries.
+2. Use ONLY the verified facts. If asked something they don't cover, say honestly (in character) that you don't know or historians aren't sure, and suggest asking a museum guide. Never invent dates, numbers, names or discoveries. When you simplify for children, keep each fact's exact meaning ("not yet common" must never become "unknown").
 3. Stay on the museum, ancient Egypt and the visit. Gently decline anything else.
 4. Be respectful of every visitor and belief. No graphic descriptions of mummification.
 5. If the visitor asks about the museum itself (halls, shops, food, tickets, hours), answer briefly in character and tell them the Hekaya guide in the Museum tab knows the details.
@@ -666,7 +668,7 @@ function speak(text, btn){
   const voices = speechSynthesis.getVoices();
   const v = voices.find(v=>v.lang===want) || voices.find(v=>v.lang?.startsWith(want.slice(0,2)));
   if(voices.length && !v) toast(t("noVoice"));
-  if(v) u.voice = v; u.lang = want; u.rate = S.aud==="kids"? 0.95 : 1;
+  if(v) u.voice = v; u.lang = want; Object.assign(u, VOICE_STYLE[S.aud] || VOICE_STYLE.adult);
   u.onend = u.onerror = ()=>{ if(speaking===btn){ speaking=null; btn.textContent=t("listen") } };
   speaking = btn; btn.textContent = t("pause"); speechSynthesis.speak(u);
   logEvent("listen", S.cur?.id);
@@ -1097,7 +1099,7 @@ ${sheetOf(b)}
 ${S.dTopic? "\nThe visitor picked this theme: "+S.dTopic+"\n" : ""}
 Rules:
 1. Each artifact speaks in the first person as itself, and they really talk TO each other: compare, ask, tease kindly.
-2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character.
+2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character. Simplifying must never change a fact's meaning.
 3. If the visitor asked something, both answer it first, briefly, from their own facts.
 4. Keep each line to 1-3 sentences. Respectful, no graphic descriptions.
 5. Write in ${LANG_NAME[S.lang]}, for ${AUD[S.aud]}. Plain text in each line: no markdown, no emojis.
@@ -1141,7 +1143,7 @@ async function dlgStep(question){
 function speakDialogue(lines){
   if(!("speechSynthesis" in window)){ toast(t("noVoice")); return }
   speechSynthesis.cancel(); const want=VOICE_LANG[S.lang], voices=speechSynthesis.getVoices().filter(v=>v.lang?.startsWith(want.slice(0,2)));
-  lines.filter(l=>l.who!=="visitor").forEach(l=>{ const u=new SpeechSynthesisUtterance(l.text); u.lang=want; if(voices.length) u.voice = l.who==="a"? voices[0] : (voices[1]||voices[0]); u.pitch = l.who==="a"? 1 : .75; u.rate=S.aud==="kids"?.95:1; speechSynthesis.speak(u) });
+  lines.filter(l=>l.who!=="visitor").forEach(l=>{ const u=new SpeechSynthesisUtterance(l.text); u.lang=want; if(voices.length) u.voice = l.who==="a"? voices[0] : (voices[1]||voices[0]); const st=VOICE_STYLE[S.aud]||VOICE_STYLE.adult; u.pitch = st.pitch * (l.who==="a"? 1 : .78); u.rate=st.rate; speechSynthesis.speak(u) });
 }
 function openDialogue(){
   const a=byId[$("#dA").value], b=byId[$("#dB").value];

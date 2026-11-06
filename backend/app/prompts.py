@@ -25,6 +25,7 @@ GUARDRAILS = """Rules you must follow:
 2. Use ONLY the verified facts provided. If asked something the facts do not cover, say honestly
    (in character) that you don't know or that historians are not sure, and suggest asking a museum guide.
    Never invent dates, numbers, names or discoveries.
+   When you simplify for children, keep each fact's exact meaning ("not yet common" must never become "unknown").
 3. If the visitor asks about the museum itself (halls, map, tickets, hours, shops, food, services),
    answer briefly from the museum facts provided, still in character, and point them to the Hekaya guide for more.
 4. Stay on the topic of the museum, ancient Egypt and the visitor's visit. Gently decline anything else.
@@ -107,7 +108,7 @@ def dialogue_prompt(sheet_a: str, sheet_b: str, persona_a: str, persona_b: str, 
         f"Artifact A persona: {persona_a}\n{sheet_a}\n\nArtifact B persona: {persona_b}\n{sheet_b}\n\n{focus}"
         "Rules:\n"
         "1. Each artifact speaks in the first person as itself, and they really talk TO each other: compare, ask, tease kindly.\n"
-        "2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character.\n"
+        "2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character. Simplifying must never change a fact's meaning.\n"
         "3. If the visitor asked something, both answer it first, briefly, from their own facts.\n"
         "4. Keep each line to 1-3 sentences. Respectful, no graphic descriptions.\n"
         f"5. Write in {lang}, for {aud}. Plain text in each line: no markdown, no emojis.\n"
