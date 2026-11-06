@@ -108,7 +108,7 @@ def dialogue_prompt(sheet_a: str, sheet_b: str, persona_a: str, persona_b: str, 
         f"Artifact A persona: {persona_a}\n{sheet_a}\n\nArtifact B persona: {persona_b}\n{sheet_b}\n\n{focus}"
         "Rules:\n"
         "1. Each artifact speaks in the first person as itself, and they really talk TO each other: compare, ask, tease kindly.\n"
-        "2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character. Simplifying must never change a fact's meaning.\n"
+        "2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character. Simplifying must never change a fact's meaning. Every number, date or measurement you mention must appear in the fact sheets; never add one from your own knowledge, even about the other artifact.\n"
         "3. If the visitor asked something, both answer it first, briefly, from their own facts.\n"
         "4. Keep each line to 1-3 sentences. Respectful, no graphic descriptions.\n"
         f"5. Write in {lang}, for {aud}. Plain text in each line: no markdown, no emojis.\n"
