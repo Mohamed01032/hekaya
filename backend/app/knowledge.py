@@ -134,8 +134,10 @@ class KnowledgeBase:
         for a in self.artifacts:
             header = f"{a['name_en']} {a['name_ar']} {a['era_en']} {a['material_en']} {a['material_ar']}"
             rows.append((a["id"], header))
-            for fact in a["facts_en"] + a["facts_ar"]:
+            for fact in a["facts_en"]:
                 rows.append((a["id"], f"{a['name_en']} — {fact}"))
+            for fact in a["facts_ar"]:  # label Arabic facts with the Arabic name so Arabic questions find them
+                rows.append((a["id"], f"{a['name_ar']} — {fact}"))
         rows += [(src, text) for src, _, text in self.museum_facts()]
         return rows
 
