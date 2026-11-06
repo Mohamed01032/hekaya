@@ -46,6 +46,7 @@ select.mini{background:var(--surface);border:1px solid var(--line);border-radius
 .langpick svg{width:16px;height:16px;color:var(--gold);flex:none}
 .langpick b{font-weight:600;color:var(--ink)}
 .langpick select.mini{border:0;background:var(--sunk);padding:4px 8px;color:var(--ink);font-weight:500}
+#voiceSel{max-width:150px;text-overflow:ellipsis}
 .seg{display:flex;background:var(--sunk);border-radius:999px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0/.12)}
@@ -546,20 +547,60 @@ const UI = {
   gSugg:["How much is a ticket?","How long is a ticket valid?","How do I book?","Where are the shops?","When does it close?","Where can I eat?"]}
 };
 const LANG_NAME={ar:"Egyptian Arabic (عامية مصرية), friendly and clear","ar-msa":"Modern Standard Arabic (العربية الفصحى) only: no Egyptian or other dialect words, even where the persona or facts are written in dialect",en:"English",fr:"French",de:"German",es:"Spanish",it:"Italian",ru:"Russian",zh:"Simplified Chinese",ja:"Japanese"};
-/* voice picker: child / man / woman / by level. Browsers only ship adult voices, so a child voice is an adult voice raised in pitch,
-   and a man's voice uses a male system voice when the device has one for that language, otherwise a lowered pitch. */
-const MALE_RE=/\b(male|david|mark|guy|george|ryan|thomas|daniel|paul|stefan|pablo|jorge|diego|luca|cosimo|dmitry|pavel|yuri|kangkang|yunxi|yunyang|ichiro|keita|hamed|shakir|naayf|tarik|hamdan|andrew|brian|christopher|eric|roger|steffan)\b/i;
-const FEMALE_RE=/\b(female|zira|hoda|salma|zariyah|susan|hazel|libby|sonia|amelie|julie|hortense|hedda|katja|helena|laura|elsa|isabella|irina|svetlana|huihui|xiaoxiao|yaoyao|haruka|ayumi|nanami|aria|jenny|michelle|google)\b/i;
+/* voice picker: child / man / woman / by level, plus any single voice installed on the device.
+   Browsers only ship adult voices, so a child voice is a woman's voice raised in pitch. Voices are sorted into man and woman
+   by their names on Windows, Edge, Chrome, macOS, iPhone and Android. A voice whose name we don't know is never used as
+   "woman" if a known woman's voice exists, and "man" never reuses the woman's voice: if the device has no man's voice for
+   that language, a different voice is lowered in pitch and we say so once. */
+const MALE_RE=/\b(male|david|mark|markus|guy|george|ryan|thomas|daniel|paul|stefan|pablo|raul|alvaro|jorge|juan|diego|carlos|luca|cosimo|dmitry|pavel|yuri|kangkang|yunxi|yunyang|yunjian|li-?mu|ichiro|keita|otoya|hattori|hamed|shakir|naayf|tarik|maged|majed|hamdan|andrew|brian|christopher|eric|roger|steffan|aaron|arthur|fred|gordon|lee|rishi|oliver|jamie|tom|alex|evan|nathan|jacques|nicolas|henri|yannick|martin|conrad|killian|eddy|grandpa|reed|rocko|ralph|junior|albert)\b/i;
+const FEMALE_RE=/\b(female|zira|hoda|salma|zariyah|laila|mariam|amira|mona|susan|hazel|libby|sonia|maisie|samantha|karen|moira|tessa|veena|fiona|serena|kate|martha|catherine|nicky|stephanie|allison|ava|zoe|joelle|noelle|amelie|amélie|audrey|aurelie|aurélie|marie|chantal|julie|hortense|denise|eloise|hedda|katja|amala|anna|petra|helena|laura|elvira|monica|mónica|paulina|marisol|angelica|angélica|francisca|soledad|alice|federica|paola|emma|elsa|isabella|milena|katya|irina|svetlana|dariya|tingting|ting-ting|sin-?ji|mei-?jia|yu-?shu|lili|lilian|shasha|yue|huihui|xiaoxiao|xiaoyi|yaoyao|kyoko|o-?ren|haruka|ayumi|nanami|aria|jenny|michelle|flo|grandma|sandy|shelley|kathy|princess|google)\b/i;
+const NOVELTY_RE=/\b(bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|deranged|hysterical)\b/i;
+const LOW_RE=/\b(eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley|albert|junior|ralph|kathy|princess|fred)\b/i;  /* robotic voices: last resort */
+const vLang = v => (v.lang||"").replace("_","-");
+const voiceGender = v => !v? "" : /\bfemale\b/i.test(v.name)? "f" : /\bmale\b/i.test(v.name)? "m" : MALE_RE.test(v.name)? "m" : FEMALE_RE.test(v.name)? "f" : "";
 S.voice = store.get("voice","auto");
-function voiceFor(langCode, kind){
-  const all=speechSynthesis.getVoices(), two=langCode.slice(0,2);
-  const pool=[...all.filter(v=>v.lang===langCode), ...all.filter(v=>v.lang!==langCode && v.lang?.startsWith(two))];
-  const isMan=v=>MALE_RE.test(v.name) && !/female/i.test(v.name), isWoman=v=>FEMALE_RE.test(v.name) && !/\bmale\b/i.test(v.name);
-  if(kind==="man"){ const m=pool.find(isMan); return {voice:m||pool[0], pitch:m?0.95:0.62, rate:0.95} }
-  if(kind==="woman") return {voice:pool.find(isWoman)||pool[0], pitch:1.05, rate:1};
-  if(kind==="child") return {voice:pool.find(isWoman)||pool[0], pitch:1.7, rate:1.07};
-  const st=VOICE_STYLE[S.aud]||VOICE_STYLE.adult; return {voice:pool[0], pitch:st.pitch, rate:st.rate};
+function voicePool(langCode){
+  if(!("speechSynthesis" in window)) return [];
+  const two=langCode.slice(0,2).toLowerCase(), want=langCode.toLowerCase();
+  const ok = v => { const l=vLang(v).toLowerCase(); return l.startsWith(two) && !NOVELTY_RE.test(v.name) && !(two==="zh" && /hk|yue|mo$/.test(l)) };
+  const score = v => (vLang(v).toLowerCase()===want?4:0) + (/enhanced|premium|natural|neural/i.test(v.name)?2:0) - (LOW_RE.test(v.name)?6:0);
+  return speechSynthesis.getVoices().filter(ok).sort((a,b)=>score(b)-score(a));
 }
+function voiceFor(langCode, kind){
+  const pool=voicePool(langCode);
+  if(!pool.length) return {voice:null, pitch:kind==="man"?0.6:kind==="child"?1.7:1, rate:1, real:false};
+  if(String(kind).startsWith("v:")){ const v=pool.find(x=>x.voiceURI===kind.slice(2)); if(v) return {voice:v, pitch:1, rate:1, real:true}; kind="auto" }
+  const woman = pool.find(v=>voiceGender(v)==="f") || pool.find(v=>voiceGender(v)!=="m") || pool[0];
+  if(kind==="man"){
+    const m=pool.find(v=>voiceGender(v)==="m");
+    if(m) return {voice:m, pitch:0.95, rate:0.95, real:true};
+    const other=pool.find(v=>v!==woman && voiceGender(v)!=="f") || woman;
+    return {voice:other, pitch:0.55, rate:0.92, real:false};
+  }
+  const wm = voiceGender(woman)==="m";  /* only men's voices on this device: lift the pitch */
+  if(kind==="woman") return {voice:woman, pitch:wm?1.5:1.05, rate:1, real:!wm};
+  if(kind==="child") return {voice:woman, pitch:wm?1.95:1.7, rate:1.07, real:!wm};
+  const st=VOICE_STYLE[S.aud]||VOICE_STYLE.adult; return {voice:pool[0], pitch:st.pitch, rate:st.rate, real:true};
+}
+/* list this language's device voices under the picker, so anyone can choose one exact voice */
+function fillDeviceVoices(){
+  const sel=$("#voiceSel"); if(!sel) return;
+  sel.querySelector("optgroup")?.remove();
+  const pool=voicePool(VOICE_LANG[S.lang]);
+  if(pool.length){
+    const g=document.createElement("optgroup"); g.label=t("vDevice");
+    const seen=new Set();
+    pool.forEach(v=>{ if(seen.has(v.voiceURI)) return; seen.add(v.voiceURI);
+      const o=document.createElement("option"), sx=voiceGender(v);
+      o.value="v:"+v.voiceURI; o.textContent=`${v.name}${sx? (sx==="m"?" · "+t("vMan"):" · "+t("vWoman")) : ""}`; g.append(o) });
+    sel.append(g);
+    if(String(S.voice).startsWith("v:") && !pool.some(v=>"v:"+v.voiceURI===S.voice)){ S.voice="auto"; store.set("voice","auto") }
+  }
+  sel.value = [...sel.options].some(o=>o.value===S.voice)? S.voice : "auto";
+}
+if("speechSynthesis" in window){ speechSynthesis.addEventListener?.("voiceschanged", ()=>fillDeviceVoices()) }
+const noManWarned=new Set();
+function warnNoMan(pv){ const k=S.lang; if(S.voice==="man" && !pv.real && pv.voice && !noManWarned.has(k)){ noManWarned.add(k); toast(t("vNoMan")) } }
 /* each level sounds different: kids slower and brighter, experts steady and lower */
 const VOICE_STYLE={kids:{rate:0.9,pitch:1.25},adult:{rate:1,pitch:1},expert:{rate:1.03,pitch:0.9}};
 const VOICE_LANG={ar:"ar-EG","ar-msa":"ar-SA",en:"en-GB",fr:"fr-FR",de:"de-DE",es:"es-ES",it:"it-IT",ru:"ru-RU",zh:"zh-CN",ja:"ja-JP"};
@@ -815,15 +856,15 @@ ja:{brand:"Hekaya",kids:"こども",adult:"一般",expert:"専門家",eyebrow:"�
 });
 /* the voice picker, in every language */
 const VOICE_UI = {
- ar:{voiceLbl:"الصوت",vAuto:"حسب المستوى",vChild:"صوت طفل",vMan:"صوت راجل",vWoman:"صوت ست",vNote:"صوت الطفل والراجل بيتعملوا من أصوات الجهاز."},
- en:{voiceLbl:"Voice",vAuto:"Match the level",vChild:"Child",vMan:"Man",vWoman:"Woman",vNote:"Child and man voices are made from your device's voices."},
- fr:{voiceLbl:"Voix",vAuto:"Selon le niveau",vChild:"Enfant",vMan:"Homme",vWoman:"Femme"},
- de:{voiceLbl:"Stimme",vAuto:"Passend zur Stufe",vChild:"Kind",vMan:"Mann",vWoman:"Frau"},
- es:{voiceLbl:"Voz",vAuto:"Según el nivel",vChild:"Niño",vMan:"Hombre",vWoman:"Mujer"},
- it:{voiceLbl:"Voce",vAuto:"In base al livello",vChild:"Bambino",vMan:"Uomo",vWoman:"Donna"},
- ru:{voiceLbl:"Голос",vAuto:"По уровню",vChild:"Детский",vMan:"Мужской",vWoman:"Женский"},
- zh:{voiceLbl:"声音",vAuto:"按级别",vChild:"儿童",vMan:"男声",vWoman:"女声"},
- ja:{voiceLbl:"声",vAuto:"レベルに合わせる",vChild:"子ども",vMan:"男性",vWoman:"女性"}
+ ar:{voiceLbl:"الصوت",vAuto:"حسب المستوى",vChild:"صوت طفل",vMan:"صوت راجل",vWoman:"صوت ست",vNote:"صوت الطفل والراجل بيتعملوا من أصوات الجهاز.",vDevice:"أصوات الجهاز",vNoMan:"مفيش صوت راجل للغة دي على جهازك، فخفّضنا صوت تاني. تقدر تنزّل صوت راجل من إعدادات الجهاز."},
+ en:{voiceLbl:"Voice",vAuto:"Match the level",vChild:"Child",vMan:"Man",vWoman:"Woman",vNote:"Child and man voices are made from your device's voices.",vDevice:"Device voices",vNoMan:"Your device has no man's voice for this language, so another voice is lowered. You can download one in your device settings."},
+ fr:{voiceLbl:"Voix",vAuto:"Selon le niveau",vChild:"Enfant",vMan:"Homme",vWoman:"Femme",vDevice:"Voix de l’appareil",vNoMan:"Pas de voix d’homme pour cette langue sur votre appareil : une autre voix est abaissée. Vous pouvez en télécharger une dans les réglages."},
+ de:{voiceLbl:"Stimme",vAuto:"Passend zur Stufe",vChild:"Kind",vMan:"Mann",vWoman:"Frau",vDevice:"Gerätestimmen",vNoMan:"Keine Männerstimme für diese Sprache auf dem Gerät, deshalb wird eine andere Stimme tiefer gestellt. Sie können eine in den Einstellungen laden."},
+ es:{voiceLbl:"Voz",vAuto:"Según el nivel",vChild:"Niño",vMan:"Hombre",vWoman:"Mujer",vDevice:"Voces del dispositivo",vNoMan:"Tu dispositivo no tiene voz de hombre para este idioma, así que se baja otra voz. Puedes descargar una en los ajustes."},
+ it:{voiceLbl:"Voce",vAuto:"In base al livello",vChild:"Bambino",vMan:"Uomo",vWoman:"Donna",vDevice:"Voci del dispositivo",vNoMan:"Il dispositivo non ha una voce maschile per questa lingua, quindi un’altra voce viene abbassata. Puoi scaricarne una nelle impostazioni."},
+ ru:{voiceLbl:"Голос",vAuto:"По уровню",vChild:"Детский",vMan:"Мужской",vWoman:"Женский",vDevice:"Голоса устройства",vNoMan:"На устройстве нет мужского голоса для этого языка, поэтому другой голос понижен. Его можно скачать в настройках."},
+ zh:{voiceLbl:"声音",vAuto:"按级别",vChild:"儿童",vMan:"男声",vWoman:"女声",vDevice:"设备语音",vNoMan:"您的设备没有该语言的男声，已将另一个声音调低。可以在设备设置中下载男声。"},
+ ja:{voiceLbl:"声",vAuto:"レベルに合わせる",vChild:"子ども",vMan:"男性",vWoman:"女性",vDevice:"端末の音声",vNoMan:"この言語の男性の声が端末にないため、別の声を低くしています。端末の設定でダウンロードできます。"}
 };
 Object.entries(VOICE_UI).forEach(([l,v])=>Object.assign(UI[l],v));
 
@@ -944,7 +985,7 @@ function speak(text, btn){
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text), want = VOICE_LANG[S.lang];
   const pv = voiceFor(want, S.voice);
-  if(speechSynthesis.getVoices().length && !pv.voice) toast(t("noVoice"));
+  if(speechSynthesis.getVoices().length && !pv.voice) toast(t("noVoice")); else warnNoMan(pv);
   if(pv.voice) u.voice = pv.voice; u.lang = want; u.pitch = pv.pitch; u.rate = pv.rate;
   u.onend = u.onerror = ()=>{ if(speaking===btn){ speaking=null; btn.textContent=t("listen") } };
   speaking = btn; btn.textContent = t("pause"); speechSynthesis.speak(u);
@@ -1420,7 +1461,8 @@ async function dlgStep(question){
 function speakDialogue(lines){
   if(!("speechSynthesis" in window)){ toast(t("noVoice")); return }
   speechSynthesis.cancel(); const want=VOICE_LANG[S.lang];
-  const va=voiceFor(want, S.voice==="auto"? "woman" : S.voice), vb=voiceFor(want, S.voice==="man"? "woman" : "man");
+  const aKind=S.voice==="auto"? "woman" : S.voice, va=voiceFor(want, aKind);
+  const vb=voiceFor(want, (aKind==="man" || (String(aKind).startsWith("v:") && voiceGender(va.voice)==="m"))? "woman" : "man");
   lines.filter(l=>l.who!=="visitor").forEach(l=>{ const u=new SpeechSynthesisUtterance(l.text), pv=l.who==="a"? va : vb; u.lang=want; if(pv.voice) u.voice=pv.voice; u.pitch=pv.pitch; u.rate=pv.rate; speechSynthesis.speak(u) });
 }
 function openDialogue(){
@@ -1652,7 +1694,7 @@ function renderPassport(){
 function applyLang(){
   document.documentElement.lang = S.lang==="ar-msa"? "ar" : S.lang; document.documentElement.dir = isAr()? "rtl":"ltr";
   $$("[data-i]").forEach(el=>{ const v=t(el.dataset.i); if(typeof v==="string") el.textContent=v });
-  $("#lang").value = S.lang; $("#voiceSel").value = S.voice; $("#minsOut").textContent = $("#mins").value+" "+t("min");
+  $("#lang").value = S.lang; fillDeviceVoices(); $("#minsOut").textContent = $("#mins").value+" "+t("min");
   $$("#aud button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.a===S.aud));
   renderMode(); renderTags(); renderTry(); renderAll(); renderPassport(); renderMuseum(); renderV2();
 }
@@ -1663,7 +1705,7 @@ function logEvent(kind, artifact_id, topic){ localLog(kind, artifact_id, topic);
 $$("nav.tabs button").forEach(b=>b.onclick=()=>{ $$("nav.tabs button").forEach(x=>x.removeAttribute("aria-current")); b.setAttribute("aria-current","page");
   $$("section.view").forEach(s=>s.hidden = s.id!=="v-"+b.dataset.v); window.scrollTo(0,0) });
 $("#voiceSel").onchange = e=>{ S.voice=e.target.value; store.set("voice",S.voice);
-  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t("heroT")), want=VOICE_LANG[S.lang], pv=voiceFor(want,S.voice); u.lang=want; if(pv.voice) u.voice=pv.voice; u.pitch=pv.pitch; u.rate=pv.rate; speechSynthesis.speak(u) }catch{} };
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t("heroT")), want=VOICE_LANG[S.lang], pv=voiceFor(want,S.voice); u.lang=want; if(pv.voice) u.voice=pv.voice; u.pitch=pv.pitch; u.rate=pv.rate; speechSynthesis.speak(u); warnNoMan(pv) }catch{} };
 $("#lang").onchange = e=>{ S.lang=e.target.value; store.set("lang",S.lang); applyLang() };
 $$("#aud button").forEach(b=>b.onclick=()=>{ S.aud=b.dataset.a; store.set("aud",S.aud); applyLang() });
 $("#close").onclick = closeSheet;
