@@ -1,432 +1,580 @@
 {
-  "meta": {
-    "museum": "Grand Egyptian Museum (GEM), Giza",
-    "version": "0.1.0-demo",
-    "note": "Demo seed of 14 highlights written for the hackathon prototype. Before production, replace or verify every entry against GEM's official collection catalogue and curators."
+ "meta": {
+  "museum": "Grand Egyptian Museum (GEM), Giza",
+  "version": "0.1.0-demo",
+  "note": "Demo seed of 14 highlights written for the hackathon prototype. Before production, replace or verify every entry against GEM's official collection catalogue and curators."
+ },
+ "zones": [
+  {
+   "id": "plaza",
+   "name_en": "Entrance Plaza",
+   "name_ar": "ساحة المدخل",
+   "order": 1
   },
-  "zones": [
-    {"id": "plaza", "name_en": "Entrance Plaza", "name_ar": "ساحة المدخل", "order": 1},
-    {"id": "grand-hall", "name_en": "Grand Hall", "name_ar": "البهو العظيم", "order": 2},
-    {"id": "grand-staircase", "name_en": "Grand Staircase", "name_ar": "الدرج العظيم", "order": 3},
-    {"id": "tutankhamun", "name_en": "Tutankhamun Galleries", "name_ar": "قاعات توت عنخ آمون", "order": 4},
-    {"id": "khufu-boats", "name_en": "Khufu's Boats Museum", "name_ar": "متحف مراكب خوفو", "order": 5}
-  ],
-  "artifacts": [
-    {
-      "id": "hanging-obelisk",
-      "code": "GEM-01",
-      "zone": "plaza",
-      "minutes": 8,
-      "tags": ["kings", "architecture", "ramesses"],
-      "name_en": "The Hanging Obelisk of Ramesses II",
-      "name_ar": "المسلة المعلقة لرمسيس الثاني",
-      "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)",
-      "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)",
-      "material_en": "Red granite, about 16 m tall",
-      "material_ar": "جرانيت أحمر، بارتفاع حوالي 16 مترًا",
-      "persona_en": "A proud, towering voice; speaks slowly like stone that has watched three thousand years pass.",
-      "persona_ar": "صوت شامخ وفخور، يتكلم ببطء زي حجر شاف تلات آلاف سنة.",
-      "facts_en": [
-        "Carved for King Ramesses II and brought to the museum from San el-Hagar (ancient Tanis) in Sharqia.",
-        "It is raised above the ground so visitors can walk beneath it and see the king's cartouche carved on the underside of its base — a part of an obelisk normally hidden forever.",
-        "Obelisks were linked to the sun god; their pointed tip (the pyramidion) caught the first light of the morning."
-      ],
-      "facts_ar": [
-        "اتنحتت للملك رمسيس الثاني واتنقلت للمتحف من صان الحجر (تانيس القديمة) في الشرقية.",
-        "مرفوعة فوق الأرض عشان الزوار يمشوا تحتها ويشوفوا خرطوش الملك المنقوش تحت قاعدتها — جزء عادةً بيفضل مستخبي للأبد.",
-        "المسلات كانت مرتبطة بإله الشمس، وقمتها المدببة كانت أول حاجة يلمسها نور الصبح."
-      ],
-      "visual_cues": "Tall four-sided red granite pillar with pointed top, suspended on supports above a plaza; hieroglyph columns on its faces.",
-      "kid_hook_en": "I'm a giant stone needle floating in the air — look up under my feet to find my king's secret name!",
-      "kid_hook_ar": "أنا إبرة حجر عملاقة طايرة في الهوا — بص تحت رجلي هتلاقي اسم الملك السري!"
-    },
-    {
-      "id": "ramesses-colossus",
-      "code": "GEM-02",
-      "zone": "grand-hall",
-      "minutes": 10,
-      "tags": ["kings", "statues", "ramesses"],
-      "name_en": "Colossal Statue of Ramesses II",
-      "name_ar": "تمثال رمسيس الثاني العملاق",
-      "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)",
-      "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)",
-      "material_en": "Granite, about 11 m tall and roughly 83 tonnes",
-      "material_ar": "جرانيت، بارتفاع حوالي 11 مترًا ووزن حوالي 83 طنًا",
-      "persona_en": "A confident pharaoh who loves telling the story of his own long reign; warm but grand.",
-      "persona_ar": "فرعون واثق من نفسه وبيحب يحكي عن حكمه الطويل؛ دافي بس فيه هيبة.",
-      "facts_en": [
-        "Ramesses II ruled for about 66 years and is one of the most famous kings of ancient Egypt.",
-        "The statue was found in 1820 near Mit Rahina, the site of ancient Memphis, broken into pieces.",
-        "From 1955 it stood in Ramses Square in central Cairo; it was moved to the GEM site in 2006 and placed in the Grand Hall in 2018.",
-        "It is the first great figure visitors meet when they enter the museum."
-      ],
-      "facts_ar": [
-        "رمسيس الثاني حكم حوالي 66 سنة وهو من أشهر ملوك مصر القديمة.",
-        "التمثال اتلقى سنة 1820 جنب ميت رهينة، مكان منف القديمة، وكان مكسور لأجزاء.",
-        "من 1955 كان واقف في ميدان رمسيس في وسط القاهرة، واتنقل لموقع المتحف سنة 2006 واتحط في البهو العظيم سنة 2018.",
-        "هو أول وجه عظيم بيقابل الزوار أول ما يدخلوا المتحف."
-      ],
-      "visual_cues": "Huge standing pharaoh statue in a vast atrium, striding pose, nemes headdress, double crown absent, kilt; glass roof and staircase behind.",
-      "kid_hook_en": "I used to stand in the middle of Cairo traffic — now I guard the biggest museum door in the world!",
-      "kid_hook_ar": "أنا كنت واقف وسط زحمة ميدان رمسيس — دلوقتي بحرس باب أكبر متحف في العالم!"
-    },
-    {
-      "id": "grand-staircase",
-      "code": "GEM-03",
-      "zone": "grand-staircase",
-      "minutes": 25,
-      "tags": ["statues", "kings", "gods", "architecture"],
-      "name_en": "The Grand Staircase",
-      "name_ar": "الدرج العظيم",
-      "era_en": "Spans the Old Kingdom to the Greco-Roman period",
-      "era_ar": "من الدولة القديمة حتى العصر اليوناني الروماني",
-      "material_en": "A six-storey stair-gallery lined with royal and divine statues",
-      "material_ar": "درج بارتفاع ست طوابق مليان تماثيل ملوك وآلهة",
-      "persona_en": "A wise narrator, like a grandparent walking you up through time one step at a time.",
-      "persona_ar": "راوي حكيم، زي جدك وهو طالع بيك على سلم الزمن خطوة خطوة.",
-      "facts_en": [
-        "The staircase is itself an exhibition: statues of kings and gods are arranged along it, roughly in time order, as you climb.",
-        "At the top, large windows look out toward the Giza pyramids.",
-        "It connects the Grand Hall with the main galleries and the Tutankhamun Galleries above."
-      ],
-      "facts_ar": [
-        "الدرج نفسه معرض: تماثيل ملوك وآلهة مترتبة عليه تقريبًا حسب الزمن وانت طالع.",
-        "في آخره شبابيك كبيرة بتطل على أهرامات الجيزة.",
-        "بيوصل البهو العظيم بالقاعات الرئيسية وقاعات توت عنخ آمون فوق."
-      ],
-      "visual_cues": "Wide multi-level staircase with many large stone statues on terraces, huge window at top showing pyramids.",
-      "kid_hook_en": "Every step you climb, you jump hundreds of years forward in time!",
-      "kid_hook_ar": "كل درجة بتطلعها بتنط مئات السنين قدام في الزمن!"
-    },
-    {
-      "id": "tut-mask",
-      "code": "GEM-10",
-      "zone": "tutankhamun",
-      "minutes": 12,
-      "tags": ["tutankhamun", "gold", "afterlife"],
-      "name_en": "The Golden Mask of Tutankhamun",
-      "name_ar": "القناع الذهبي لتوت عنخ آمون",
-      "era_en": "New Kingdom, 18th Dynasty (reign c. 1332–1323 BC)",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة (حكم حوالي 1332–1323 ق.م)",
-      "material_en": "Solid gold (about 10 kg) inlaid with lapis lazuli, carnelian, quartz, obsidian and coloured glass; 54 cm tall",
-      "material_ar": "ذهب خالص (حوالي 10 كيلو) مطعم باللازورد والعقيق والكوارتز والأوبسيديان والزجاج الملون؛ ارتفاعه 54 سم",
-      "persona_en": "A young king — curious, gentle and a little mischievous; he became king as a child and loves talking to young visitors.",
-      "persona_ar": "ملك صغير السن — فضولي ولطيف وشقي شوية؛ بقى ملك وهو طفل وبيحب يكلم الزوار الصغيرين.",
-      "facts_en": [
-        "Tutankhamun's tomb (KV62) in the Valley of the Kings was discovered by Howard Carter in November 1922.",
-        "The mask was placed directly over the face of the king's mummy and was found in 1925.",
-        "The back and shoulders carry a protective spell from the Book of the Dead.",
-        "Tutankhamun became king as a boy and died at about 19 years old."
-      ],
-      "facts_ar": [
-        "مقبرة توت عنخ آمون (KV62) في وادي الملوك اكتشفها هوارد كارتر في نوفمبر 1922.",
-        "القناع كان موضوع مباشرة على وش مومياء الملك، واتلقى سنة 1925.",
-        "على ضهره وكتافه تعويذة حماية من كتاب الموتى.",
-        "توت عنخ آمون بقى ملك وهو ولد صغير ومات وعمره حوالي 19 سنة."
-      ],
-      "visual_cues": "Gold funerary mask with blue-striped nemes headdress, cobra and vulture on brow, braided false beard, wide inlaid collar.",
-      "kid_hook_en": "I became king when I was about your age! Want to know what was hidden under my golden face?",
-      "kid_hook_ar": "أنا بقيت ملك وأنا في سنك تقريبًا! عايز تعرف إيه اللي كان مستخبي تحت وشي الدهب؟"
-    },
-    {
-      "id": "tut-throne",
-      "code": "GEM-11",
-      "zone": "tutankhamun",
-      "minutes": 8,
-      "tags": ["tutankhamun", "gold", "daily-life", "love"],
-      "name_en": "The Golden Throne of Tutankhamun",
-      "name_ar": "العرش الذهبي لتوت عنخ آمون",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Wood covered in sheet gold and silver, inlaid with glass, faience and semi-precious stones",
-      "material_ar": "خشب مغطى بالدهب والفضة ومطعم بالزجاج والفيانس والأحجار شبه الكريمة",
-      "persona_en": "A romantic storyteller who remembers a quiet, tender moment between a young king and queen.",
-      "persona_ar": "حكّاء رومانسي فاكر لحظة هادية وحنينة بين ملك وملكة صغيرين.",
-      "facts_en": [
-        "The backrest shows Queen Ankhesenamun gently touching the king's shoulder under the rays of the sun disc (the Aten), each ray ending in a hand.",
-        "The throne carries both the earlier and later forms of the king's name, a trace of the religious changes of his time.",
-        "Its legs end in lion's paws and the arms are formed by winged cobras."
-      ],
-      "facts_ar": [
-        "ضهر العرش بيورّي الملكة عنخ إسن آمون وهي بتلمس كتف الملك بحنية تحت أشعة قرص الشمس (آتون)، وكل شعاع آخره إيد.",
-        "العرش عليه الشكل القديم والجديد لاسم الملك، أثر للتغييرات الدينية في عصره.",
-        "رجليه على شكل كفوف أسد ودراعاته على شكل كوبرا مجنحة."
-      ],
-      "visual_cues": "Gilded chair with lion legs, back panel showing seated king and standing queen under a sun disc with ray-hands, blue and gold inlays.",
-      "kid_hook_en": "Look at my back — there's a 3,300-year-old picture of a king and queen being kind to each other!",
-      "kid_hook_ar": "بص على ضهري — فيه صورة عمرها 3300 سنة لملك وملكة بيعاملوا بعض بحنية!"
-    },
-    {
-      "id": "tut-dagger",
-      "code": "GEM-12",
-      "zone": "tutankhamun",
-      "minutes": 6,
-      "tags": ["tutankhamun", "science", "space"],
-      "name_en": "Tutankhamun's Meteoritic Iron Dagger",
-      "name_ar": "خنجر توت عنخ آمون من حديد النيزك",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Iron blade from a meteorite, gold handle and gold sheath, rock-crystal pommel",
-      "material_ar": "نصل حديد من نيزك، مقبض وجراب دهب، ومقبض كريستال صخري",
-      "persona_en": "An excited space traveller who fell from the sky and can't stop talking about science.",
-      "persona_ar": "مسافر من الفضاء متحمس، وقع من السما ومش بيبطل كلام عن العلم.",
-      "facts_en": [
-        "It was found wrapped within the bandages of the king's mummy.",
-        "A 2016 scientific study measured high nickel and cobalt in the blade, showing the iron came from a meteorite.",
-        "Iron smelting was not yet common in Egypt then, so iron from the sky was rare and precious."
-      ],
-      "facts_ar": [
-        "اتلقى ملفوف جوه لفايف مومياء الملك.",
-        "دراسة علمية سنة 2016 قاست نسبة عالية من النيكل والكوبالت في النصل، وده أثبت إن الحديد جاي من نيزك.",
-        "صهر الحديد ماكانش منتشر في مصر وقتها، فالحديد اللي نازل من السما كان نادر وغالي."
-      ],
-      "visual_cues": "Slim dagger with silvery unrusted iron blade, gold granulated handle, ornate gold sheath with jackal or plant motifs.",
-      "kid_hook_en": "My blade fell from outer space! Can you guess how scientists proved it?",
-      "kid_hook_ar": "نصلي نازل من الفضاء! تفتكر العلماء عرفوا إزاي؟"
-    },
-    {
-      "id": "tut-chariots",
-      "code": "GEM-13",
-      "zone": "tutankhamun",
-      "minutes": 8,
-      "tags": ["tutankhamun", "daily-life", "engineering"],
-      "name_en": "Tutankhamun's Chariots",
-      "name_ar": "عربات توت عنخ آمون الحربية",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Bent wood, leather and gold leaf",
-      "material_ar": "خشب محني وجلد ورقائق دهب",
-      "persona_en": "An energetic charioteer who loves speed, hunting trips and clever engineering.",
-      "persona_ar": "سايق عربية حربية نشيط بيحب السرعة ورحلات الصيد والهندسة الذكية.",
-      "facts_en": [
-        "Six chariots were found in the tomb, taken apart so they would fit through the passages.",
-        "They were light enough for two horses to pull at speed, thanks to steam-bent wood and leather.",
-        "Some were richly decorated for ceremonies, while others look built for hunting or everyday driving."
-      ],
-      "facts_ar": [
-        "اتلقى في المقبرة ست عربيات، متفككة عشان تعدي من الممرات.",
-        "كانت خفيفة كفاية إن حصانين يجروها بسرعة بفضل الخشب المحني بالبخار والجلد.",
-        "بعضها متزين جدًا للاحتفالات، وبعضها شكله معمول للصيد أو الاستعمال اليومي."
-      ],
-      "visual_cues": "Two-wheeled gilded wooden chariot with six-spoke wheels, open car, long pole.",
-      "kid_hook_en": "I was the Ferrari of ancient Egypt — six of us were packed into the tomb!",
-      "kid_hook_ar": "أنا كنت الفيراري بتاعة مصر القديمة — كنا ست عربيات متشالين في المقبرة!"
-    },
-    {
-      "id": "tut-shrines",
-      "code": "GEM-14",
-      "zone": "tutankhamun",
-      "minutes": 8,
-      "tags": ["tutankhamun", "gold", "afterlife"],
-      "name_en": "The Gilded Shrines of Tutankhamun",
-      "name_ar": "المقاصير المذهبة لتوت عنخ آمون",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Gilded wood with carved scenes and religious texts",
-      "material_ar": "خشب مذهب عليه مناظر منحوتة ونصوص دينية",
-      "persona_en": "A calm, protective guardian, like the outer layer of a set of nesting boxes keeping a secret safe.",
-      "persona_ar": "حارس هادي وحامي، زي أول علبة من علب جوه بعض بتحافظ على سر.",
-      "facts_en": [
-        "Four gilded shrines fitted inside one another, filling almost the whole burial chamber.",
-        "Inside the smallest shrine lay the stone sarcophagus, and inside that the nested coffins and the mummy.",
-        "Their surfaces are covered with texts and scenes meant to guide and protect the king in the afterlife."
-      ],
-      "facts_ar": [
-        "أربع مقاصير مذهبة متركبة جوه بعض، كانت مالية أوضة الدفن تقريبًا كلها.",
-        "جوه أصغر مقصورة كان التابوت الحجري، وجواه التوابيت المتداخلة والمومياء.",
-        "سطحها مليان نصوص ومناظر الهدف منها إرشاد الملك وحمايته في العالم الآخر."
-      ],
-      "visual_cues": "Large gold-covered wooden box-like shrine with doors, blue-inlaid hieroglyphs and figures of deities.",
-      "kid_hook_en": "I'm like a giant golden Russian doll — four boxes, one inside the other!",
-      "kid_hook_ar": "أنا زي العروسة الروسية بس دهب وعملاقة — أربع صناديق جوه بعض!"
-    },
-    {
-      "id": "anubis-shrine",
-      "code": "GEM-15",
-      "zone": "tutankhamun",
-      "minutes": 6,
-      "tags": ["tutankhamun", "gods", "afterlife", "animals"],
-      "name_en": "The Anubis Shrine",
-      "name_ar": "مقصورة أنوبيس",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Wood coated in black resin, gilded details, eyes of calcite and obsidian, silver claws",
-      "material_ar": "خشب متغطي براتنج أسود، تفاصيل مذهبة، عيون من الكالسيت والأوبسيديان، ومخالب فضة",
-      "persona_en": "A loyal, watchful jackal guardian — few words, very serious, secretly kind.",
-      "persona_ar": "حارس على شكل ابن آوى، وفي وصاحي — كلامه قليل وجد جدًا، بس طيب من جوه.",
-      "facts_en": [
-        "Anubis was the jackal god of embalming who protected the dead.",
-        "This statue lay on top of a gilded chest at the entrance of the room Carter called the Treasury, as if guarding it.",
-        "The shrine has carrying poles, so it could be carried in a procession."
-      ],
-      "facts_ar": [
-        "أنوبيس كان إله التحنيط على شكل ابن آوى وكان بيحمي الموتى.",
-        "التمثال ده كان نايم فوق صندوق مذهب عند مدخل الأوضة اللي كارتر سماها الخزانة، كأنه بيحرسها.",
-        "المقصورة ليها عصيان شيل، يعني كان ممكن تتشال في موكب."
-      ],
-      "visual_cues": "Black recumbent jackal statue with gold-lined ears and collar lying on a gilded chest with carrying poles.",
-      "kid_hook_en": "Shhh… I've been on guard duty for over 3,000 years. Want to know what I'm guarding?",
-      "kid_hook_ar": "هششش… أنا في نوبة حراسة بقالي أكتر من 3000 سنة. عايز تعرف بحرس إيه؟"
-    },
-    {
-      "id": "canopic-chest",
-      "code": "GEM-16",
-      "zone": "tutankhamun",
-      "minutes": 6,
-      "tags": ["tutankhamun", "afterlife", "science"],
-      "name_en": "Tutankhamun's Canopic Chest",
-      "name_ar": "صندوق الأواني الكانوبية لتوت عنخ آمون",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Calcite (Egyptian alabaster) with four lids carved in the king's likeness",
-      "material_ar": "كالسيت (ألباستر مصري) بأربع أغطية منحوتة على شكل وش الملك",
-      "persona_en": "A careful, gentle explainer — like a museum doctor describing ancient medicine without being scary.",
-      "persona_ar": "شارح هادي ودقيق — زي دكتور في المتحف بيحكي عن الطب القديم من غير ما يخوّف حد.",
-      "facts_en": [
-        "During mummification some internal organs were removed and preserved separately.",
-        "The chest has four compartments; inside were four miniature gold coffins holding the king's preserved organs.",
-        "The chest stood inside a gilded shrine protected by four goddesses: Isis, Nephthys, Neith and Serqet."
-      ],
-      "facts_ar": [
-        "وقت التحنيط كانوا بيشيلوا بعض الأعضاء الداخلية ويحفظوها لوحدها.",
-        "الصندوق فيه أربع خانات، وجواها أربع توابيت دهب صغيرة فيها أعضاء الملك المحفوظة.",
-        "الصندوق كان جوه مقصورة مذهبة بتحرسها أربع إلهات: إيزيس ونفتيس ونيت وسرقت."
-      ],
-      "visual_cues": "Translucent white-cream stone chest on a sledge base, four human-headed stoppers, goddess figures carved on corners.",
-      "kid_hook_en": "I'm a stone box with four secret rooms — and four tiny golden coffins used to live inside me!",
-      "kid_hook_ar": "أنا صندوق حجر فيه أربع أوض سرية — وكان عايش جوايا أربع توابيت دهب صغيرين!"
-    },
-    {
-      "id": "funerary-beds",
-      "code": "GEM-17",
-      "zone": "tutankhamun",
-      "minutes": 6,
-      "tags": ["tutankhamun", "animals", "gods", "afterlife"],
-      "name_en": "The Ritual Animal Beds",
-      "name_ar": "الأسرّة الطقسية على شكل حيوانات",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Gilded wood with glass and painted inlays",
-      "material_ar": "خشب مذهب بتطعيم زجاج ورسومات",
-      "persona_en": "Three playful animal friends who finish each other's sentences.",
-      "persona_ar": "تلات حيوانات أصحاب بيهزروا وبيكمّلوا كلام بعض.",
-      "facts_en": [
-        "Three long gilded beds were found in the tomb's antechamber, each with sides shaped like animals.",
-        "One is shaped like a cow, one like a lion and one like a composite creature with features of a hippopotamus and a crocodile.",
-        "They are thought to have played a role in rituals helping the king's rebirth in the afterlife."
-      ],
-      "facts_ar": [
-        "اتلقى تلات سراير طويلة مذهبة في الأوضة الأمامية للمقبرة، وكل واحد جوانبه على شكل حيوان.",
-        "واحد على شكل بقرة، وواحد على شكل أسد، وواحد على شكل كائن مركب فيه ملامح فرس النهر والتمساح.",
-        "بيتقال إنهم كان ليهم دور في طقوس بتساعد الملك يتولد من جديد في العالم الآخر."
-      ],
-      "visual_cues": "Long gilded couch whose side frames are elongated animal bodies with heads at one end — cow with sun disc horns, lion, or hippo with teeth.",
-      "kid_hook_en": "Which of us would you sleep on — the cow, the lion, or the hippo-crocodile?",
-      "kid_hook_ar": "تحب تنام على مين فينا — البقرة ولا الأسد ولا فرس النهر التمساح؟"
-    },
-    {
-      "id": "shabtis",
-      "code": "GEM-18",
-      "zone": "tutankhamun",
-      "minutes": 5,
-      "tags": ["tutankhamun", "afterlife", "daily-life"],
-      "name_en": "Tutankhamun's Shabti Figures",
-      "name_ar": "تماثيل الأوشابتي لتوت عنخ آمون",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "Wood, stone and faience figurines",
-      "material_ar": "تماثيل صغيرة من خشب وحجر وفيانس",
-      "persona_en": "A cheerful little worker who speaks for a whole team; proud of being helpful.",
-      "persona_ar": "عامل صغير مبسوط بيتكلم باسم فريق كامل؛ فخور إنه بيساعد.",
-      "facts_en": [
-        "Shabtis were small figures meant to do work on behalf of the dead in the afterlife.",
-        "More than 400 shabtis were found in Tutankhamun's tomb — roughly one worker for every day of the year, plus overseers to manage them.",
-        "Many are inscribed with a spell telling them to answer 'Here I am!' when called to work."
-      ],
-      "facts_ar": [
-        "الأوشابتي تماثيل صغيرة كانت المفروض تشتغل مكان الميت في العالم الآخر.",
-        "اتلقى أكتر من 400 أوشابتي في مقبرة توت عنخ آمون — تقريبًا عامل لكل يوم في السنة، وكمان مشرفين يديروهم.",
-        "كتير منهم مكتوب عليه تعويذة بتقولهم يردوا ويقولوا «أنا هنا!» لما يتنادوا للشغل."
-      ],
-      "visual_cues": "Many small mummy-shaped figurines in rows, holding hoes or crook and flail, some with gilded headdresses.",
-      "kid_hook_en": "There are hundreds of us — the king's helpers! When he calls, we shout 'Here I am!'",
-      "kid_hook_ar": "إحنا مئات — مساعدين الملك! لما ينادي بنقول «أنا هنا!»"
-    },
-    {
-      "id": "tut-trumpets",
-      "code": "GEM-19",
-      "zone": "tutankhamun",
-      "minutes": 5,
-      "tags": ["tutankhamun", "music", "daily-life"],
-      "name_en": "Tutankhamun's Trumpets",
-      "name_ar": "أبواق توت عنخ آمون",
-      "era_en": "New Kingdom, 18th Dynasty",
-      "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
-      "material_en": "One trumpet of silver, one of copper alloy (bronze), each with a wooden core",
-      "material_ar": "بوق من الفضة وبوق من سبيكة نحاس (برونز)، وكل واحد له قلب خشب",
-      "persona_en": "A loud, theatrical musician who loves an audience and tells his story like a performance.",
-      "persona_ar": "موسيقار صوته عالي ومسرحي، بيحب الجمهور وبيحكي حكايته كأنها عرض.",
-      "facts_en": [
-        "Two trumpets were found in the tomb and are among the oldest playable trumpets in the world.",
-        "In 1939 they were played live on a BBC radio broadcast, letting the world hear a sound from Tutankhamun's time.",
-        "They were likely used in military or religious ceremonies."
-      ],
-      "facts_ar": [
-        "اتلقى بوقين في المقبرة، ومن أقدم الأبواق اللي لسه ممكن تتعزف في العالم.",
-        "سنة 1939 اتعزفوا على الهوا في إذاعة BBC، والعالم سمع صوت من زمن توت عنخ آمون.",
-        "غالبًا كانوا بيستخدموا في احتفالات عسكرية أو دينية."
-      ],
-      "visual_cues": "Long slender metal trumpet with flared bell, engraved figures of gods near the bell, wooden core beside it.",
-      "kid_hook_en": "TA-DAAA! I'm over 3,000 years old and I can still make music!",
-      "kid_hook_ar": "طا-دااا! أنا عمري أكتر من 3000 سنة ولسه بعرف أعزف!"
-    },
-    {
-      "id": "khufu-boat",
-      "code": "GEM-30",
-      "zone": "khufu-boats",
-      "minutes": 15,
-      "tags": ["kings", "engineering", "afterlife", "khufu"],
-      "name_en": "Khufu's First Boat",
-      "name_ar": "مركب خوفو الأولى",
-      "era_en": "Old Kingdom, 4th Dynasty (reign of Khufu, c. 2589–2566 BC)",
-      "era_ar": "الدولة القديمة، الأسرة الرابعة (عصر خوفو، حوالي 2589–2566 ق.م)",
-      "material_en": "Lebanese cedar, about 43 m long",
-      "material_ar": "خشب أرز لبناني، بطول حوالي 43 مترًا",
-      "persona_en": "An old sailor full of adventure stories, proud of being rebuilt piece by piece like a giant puzzle.",
-      "persona_ar": "بحّار عجوز مليان حكايات مغامرات، وفخور إنه اتبنى من جديد حتة حتة زي بازل عملاق.",
-      "facts_en": [
-        "The boat was discovered in 1954 by Kamal el-Mallakh, sealed in a pit beside the Great Pyramid of Giza.",
-        "It was found dismantled into more than 1,200 pieces and reassembled over many years by restorer Hag Ahmed Youssef.",
-        "In 2021 it was moved in one piece to the GEM on a specially built remote-controlled vehicle.",
-        "It is more than 4,500 years old and one of the oldest and largest intact boats from antiquity."
-      ],
-      "facts_ar": [
-        "المركب اكتشفها كمال الملاخ سنة 1954، كانت مقفول عليها في حفرة جنب الهرم الأكبر في الجيزة.",
-        "اتلقت متفككة لأكتر من 1200 قطعة، والمرمم الحاج أحمد يوسف ركّبها على مدار سنين.",
-        "سنة 2021 اتنقلت حتة واحدة للمتحف على عربية بريموت كنترول اتصنعت مخصوص.",
-        "عمرها أكتر من 4500 سنة ومن أقدم وأكبر المراكب السليمة من العالم القديم."
-      ],
-      "visual_cues": "Very long elegant wooden boat with upturned papyrus-shaped ends, central deck cabin, oars, displayed in a large hall.",
-      "kid_hook_en": "I was a 1,200-piece puzzle buried next to a pyramid — and someone solved me!",
-      "kid_hook_ar": "أنا كنت بازل من 1200 قطعة مدفونة جنب الهرم — وفيه حد عرف يحلّني!"
-    }
-  ],
-  "tags": {
-    "kings": {"en": "Kings & queens", "ar": "ملوك وملكات"},
-    "tutankhamun": {"en": "Tutankhamun", "ar": "توت عنخ آمون"},
-    "gold": {"en": "Gold & treasure", "ar": "الدهب والكنوز"},
-    "afterlife": {"en": "Afterlife & mummies", "ar": "العالم الآخر والمومياوات"},
-    "gods": {"en": "Gods & myths", "ar": "الآلهة والأساطير"},
-    "science": {"en": "Science & discovery", "ar": "العلم والاكتشافات"},
-    "engineering": {"en": "Engineering", "ar": "الهندسة"},
-    "daily-life": {"en": "Daily life", "ar": "الحياة اليومية"},
-    "animals": {"en": "Animals", "ar": "الحيوانات"},
-    "architecture": {"en": "Architecture", "ar": "العمارة"},
-    "statues": {"en": "Giant statues", "ar": "التماثيل العملاقة"},
-    "music": {"en": "Music", "ar": "الموسيقى"},
-    "love": {"en": "Love stories", "ar": "قصص حب"},
-    "space": {"en": "Space", "ar": "الفضاء"},
-    "ramesses": {"en": "Ramesses II", "ar": "رمسيس الثاني"},
-    "khufu": {"en": "Khufu", "ar": "خوفو"}
+  {
+   "id": "grand-hall",
+   "name_en": "Grand Hall",
+   "name_ar": "البهو العظيم",
+   "order": 2
+  },
+  {
+   "id": "grand-staircase",
+   "name_en": "Grand Staircase",
+   "name_ar": "الدرج العظيم",
+   "order": 3
+  },
+  {
+   "id": "tutankhamun",
+   "name_en": "Tutankhamun Galleries",
+   "name_ar": "قاعات توت عنخ آمون",
+   "order": 4
+  },
+  {
+   "id": "khufu-boats",
+   "name_en": "Khufu's Boats Museum",
+   "name_ar": "متحف مراكب خوفو",
+   "order": 5
   }
+ ],
+ "artifacts": [
+  {
+   "id": "hanging-obelisk",
+   "code": "GEM-01",
+   "zone": "plaza",
+   "minutes": 8,
+   "tags": [
+    "kings",
+    "architecture",
+    "ramesses"
+   ],
+   "name_en": "The Hanging Obelisk of Ramesses II",
+   "name_ar": "المسلة المعلقة لرمسيس الثاني",
+   "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)",
+   "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)",
+   "material_en": "Red granite, about 16 m tall",
+   "material_ar": "جرانيت أحمر، بارتفاع حوالي 16 مترًا",
+   "persona_en": "A proud, towering voice; speaks slowly like stone that has watched three thousand years pass.",
+   "persona_ar": "صوت شامخ وفخور، يتكلم ببطء زي حجر شاف تلات آلاف سنة.",
+   "facts_en": [
+    "Carved for King Ramesses II and brought to the museum from San el-Hagar (ancient Tanis) in Sharqia.",
+    "It is raised above the ground so visitors can walk beneath it and see the king's cartouche carved on the underside of its base — a part of an obelisk normally hidden forever.",
+    "Obelisks were linked to the sun god; their pointed tip (the pyramidion) caught the first light of the morning."
+   ],
+   "facts_ar": [
+    "اتنحتت للملك رمسيس الثاني واتنقلت للمتحف من صان الحجر (تانيس القديمة) في الشرقية.",
+    "مرفوعة فوق الأرض عشان الزوار يمشوا تحتها ويشوفوا خرطوش الملك المنقوش تحت قاعدتها — جزء عادةً بيفضل مستخبي للأبد.",
+    "المسلات كانت مرتبطة بإله الشمس، وقمتها المدببة كانت أول حاجة يلمسها نور الصبح."
+   ],
+   "visual_cues": "Tall four-sided red granite pillar with pointed top, suspended on supports above a plaza; hieroglyph columns on its faces.",
+   "kid_hook_en": "I'm a giant stone needle floating in the air — look up under my feet to find my king's secret name!",
+   "kid_hook_ar": "أنا إبرة حجر عملاقة طايرة في الهوا — بص تحت رجلي هتلاقي اسم الملك السري!",
+   "visual_cues_ar": "عمود جرانيت أحمر طويل بأربع جوانب وراسه مدببة، متعلق فوق الأرض عشان تقدر تمشي تحته وتشوف النقش اللي تحت قاعدته."
+  },
+  {
+   "id": "ramesses-colossus",
+   "code": "GEM-02",
+   "zone": "grand-hall",
+   "minutes": 10,
+   "tags": [
+    "kings",
+    "statues",
+    "ramesses"
+   ],
+   "name_en": "Colossal Statue of Ramesses II",
+   "name_ar": "تمثال رمسيس الثاني العملاق",
+   "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)",
+   "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)",
+   "material_en": "Granite, about 11 m tall and roughly 83 tonnes",
+   "material_ar": "جرانيت، بارتفاع حوالي 11 مترًا ووزن حوالي 83 طنًا",
+   "persona_en": "A confident pharaoh who loves telling the story of his own long reign; warm but grand.",
+   "persona_ar": "فرعون واثق من نفسه وبيحب يحكي عن حكمه الطويل؛ دافي بس فيه هيبة.",
+   "facts_en": [
+    "Ramesses II ruled for about 66 years and is one of the most famous kings of ancient Egypt.",
+    "The statue was found in 1820 near Mit Rahina, the site of ancient Memphis, broken into pieces.",
+    "From 1955 it stood in Ramses Square in central Cairo; it was moved to the GEM site in 2006 and placed in the Grand Hall in 2018.",
+    "It is the first great figure visitors meet when they enter the museum."
+   ],
+   "facts_ar": [
+    "رمسيس الثاني حكم حوالي 66 سنة وهو من أشهر ملوك مصر القديمة.",
+    "التمثال اتلقى سنة 1820 جنب ميت رهينة، مكان منف القديمة، وكان مكسور لأجزاء.",
+    "من 1955 كان واقف في ميدان رمسيس في وسط القاهرة، واتنقل لموقع المتحف سنة 2006 واتحط في البهو العظيم سنة 2018.",
+    "هو أول وجه عظيم بيقابل الزوار أول ما يدخلوا المتحف."
+   ],
+   "visual_cues": "Huge standing pharaoh statue in a vast atrium, striding pose, nemes headdress, double crown absent, kilt; glass roof and staircase behind.",
+   "kid_hook_en": "I used to stand in the middle of Cairo traffic — now I guard the biggest museum door in the world!",
+   "kid_hook_ar": "أنا كنت واقف وسط زحمة ميدان رمسيس — دلوقتي بحرس باب أكبر متحف في العالم!",
+   "visual_cues_ar": "تمثال ضخم لملك واقف في بهو كبير، رجله الشمال لقدام كأنه ماشي، ولابس التاج والنقبة الملكية."
+  },
+  {
+   "id": "grand-staircase",
+   "code": "GEM-03",
+   "zone": "grand-staircase",
+   "minutes": 25,
+   "tags": [
+    "statues",
+    "kings",
+    "gods",
+    "architecture"
+   ],
+   "name_en": "The Grand Staircase",
+   "name_ar": "الدرج العظيم",
+   "era_en": "Spans the Old Kingdom to the Greco-Roman period",
+   "era_ar": "من الدولة القديمة حتى العصر اليوناني الروماني",
+   "material_en": "A six-storey stair-gallery lined with royal and divine statues",
+   "material_ar": "درج بارتفاع ست طوابق مليان تماثيل ملوك وآلهة",
+   "persona_en": "A wise narrator, like a grandparent walking you up through time one step at a time.",
+   "persona_ar": "راوي حكيم، زي جدك وهو طالع بيك على سلم الزمن خطوة خطوة.",
+   "facts_en": [
+    "The staircase is itself an exhibition: statues of kings and gods are arranged along it, roughly in time order, as you climb.",
+    "At the top, large windows look out toward the Giza pyramids.",
+    "It connects the Grand Hall with the main galleries and the Tutankhamun Galleries above."
+   ],
+   "facts_ar": [
+    "الدرج نفسه معرض: تماثيل ملوك وآلهة مترتبة عليه تقريبًا حسب الزمن وانت طالع.",
+    "في آخره شبابيك كبيرة بتطل على أهرامات الجيزة.",
+    "بيوصل البهو العظيم بالقاعات الرئيسية وقاعات توت عنخ آمون فوق."
+   ],
+   "visual_cues": "Wide multi-level staircase with many large stone statues on terraces, huge window at top showing pyramids.",
+   "kid_hook_en": "Every step you climb, you jump hundreds of years forward in time!",
+   "kid_hook_ar": "كل درجة بتطلعها بتنط مئات السنين قدام في الزمن!",
+   "visual_cues_ar": "سلم واسع على كذا دور، وعلى جنابه تماثيل حجر كبيرة لملوك وآلهة، وفي آخره شباك بيطل على الأهرامات."
+  },
+  {
+   "id": "tut-mask",
+   "code": "GEM-10",
+   "zone": "tutankhamun",
+   "minutes": 12,
+   "tags": [
+    "tutankhamun",
+    "gold",
+    "afterlife"
+   ],
+   "name_en": "The Golden Mask of Tutankhamun",
+   "name_ar": "القناع الذهبي لتوت عنخ آمون",
+   "era_en": "New Kingdom, 18th Dynasty (reign c. 1332–1323 BC)",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة (حكم حوالي 1332–1323 ق.م)",
+   "material_en": "Solid gold (about 10 kg) inlaid with lapis lazuli, carnelian, quartz, obsidian and coloured glass; 54 cm tall",
+   "material_ar": "ذهب خالص (حوالي 10 كيلو) مطعم باللازورد والعقيق والكوارتز والأوبسيديان والزجاج الملون؛ ارتفاعه 54 سم",
+   "persona_en": "A young king — curious, gentle and a little mischievous; he became king as a child and loves talking to young visitors.",
+   "persona_ar": "ملك صغير السن — فضولي ولطيف وشقي شوية؛ بقى ملك وهو طفل وبيحب يكلم الزوار الصغيرين.",
+   "facts_en": [
+    "Tutankhamun's tomb (KV62) in the Valley of the Kings was discovered by Howard Carter in November 1922.",
+    "The mask was placed directly over the face of the king's mummy and was found in 1925.",
+    "The back and shoulders carry a protective spell from the Book of the Dead.",
+    "Tutankhamun became king as a boy and died at about 19 years old."
+   ],
+   "facts_ar": [
+    "مقبرة توت عنخ آمون (KV62) في وادي الملوك اكتشفها هوارد كارتر في نوفمبر 1922.",
+    "القناع كان موضوع مباشرة على وش مومياء الملك، واتلقى سنة 1925.",
+    "على ضهره وكتافه تعويذة حماية من كتاب الموتى.",
+    "توت عنخ آمون بقى ملك وهو ولد صغير ومات وعمره حوالي 19 سنة."
+   ],
+   "visual_cues": "Gold funerary mask with blue-striped nemes headdress, cobra and vulture on brow, braided false beard, wide inlaid collar.",
+   "kid_hook_en": "I became king when I was about your age! Want to know what was hidden under my golden face?",
+   "kid_hook_ar": "أنا بقيت ملك وأنا في سنك تقريبًا! عايز تعرف إيه اللي كان مستخبي تحت وشي الدهب؟",
+   "visual_cues_ar": "قناع دهب لامع، على راسه غطاء النمس بخطوط زرقا ودهبي، وعلى الجبهة كوبرا ونسر، وتحت الدقن دقن مستعارة طويلة."
+  },
+  {
+   "id": "tut-throne",
+   "code": "GEM-11",
+   "zone": "tutankhamun",
+   "minutes": 8,
+   "tags": [
+    "tutankhamun",
+    "gold",
+    "daily-life",
+    "love"
+   ],
+   "name_en": "The Golden Throne of Tutankhamun",
+   "name_ar": "العرش الذهبي لتوت عنخ آمون",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Wood covered in sheet gold and silver, inlaid with glass, faience and semi-precious stones",
+   "material_ar": "خشب مغطى بالدهب والفضة ومطعم بالزجاج والفيانس والأحجار شبه الكريمة",
+   "persona_en": "A romantic storyteller who remembers a quiet, tender moment between a young king and queen.",
+   "persona_ar": "حكّاء رومانسي فاكر لحظة هادية وحنينة بين ملك وملكة صغيرين.",
+   "facts_en": [
+    "The backrest shows Queen Ankhesenamun gently touching the king's shoulder under the rays of the sun disc (the Aten), each ray ending in a hand.",
+    "The throne carries both the earlier and later forms of the king's name, a trace of the religious changes of his time.",
+    "Its legs end in lion's paws and the arms are formed by winged cobras."
+   ],
+   "facts_ar": [
+    "ضهر العرش بيورّي الملكة عنخ إسن آمون وهي بتلمس كتف الملك بحنية تحت أشعة قرص الشمس (آتون)، وكل شعاع آخره إيد.",
+    "العرش عليه الشكل القديم والجديد لاسم الملك، أثر للتغييرات الدينية في عصره.",
+    "رجليه على شكل كفوف أسد ودراعاته على شكل كوبرا مجنحة."
+   ],
+   "visual_cues": "Gilded chair with lion legs, back panel showing seated king and standing queen under a sun disc with ray-hands, blue and gold inlays.",
+   "kid_hook_en": "Look at my back — there's a 3,300-year-old picture of a king and queen being kind to each other!",
+   "kid_hook_ar": "بص على ضهري — فيه صورة عمرها 3300 سنة لملك وملكة بيعاملوا بعض بحنية!",
+   "visual_cues_ar": "كرسي متغطي دهب برجلين على شكل رجلين أسد، وعلى ضهره منظر الملك قاعد ومراته واقفة قدامه، وفوقهم قرص الشمس وأشعته منتهية بإيدين، ومطعّم بالأزرق والدهبي."
+  },
+  {
+   "id": "tut-dagger",
+   "code": "GEM-12",
+   "zone": "tutankhamun",
+   "minutes": 6,
+   "tags": [
+    "tutankhamun",
+    "science",
+    "space"
+   ],
+   "name_en": "Tutankhamun's Meteoritic Iron Dagger",
+   "name_ar": "خنجر توت عنخ آمون من حديد النيزك",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Iron blade from a meteorite, gold handle and gold sheath, rock-crystal pommel",
+   "material_ar": "نصل حديد من نيزك، مقبض وجراب دهب، ومقبض كريستال صخري",
+   "persona_en": "An excited space traveller who fell from the sky and can't stop talking about science.",
+   "persona_ar": "مسافر من الفضاء متحمس، وقع من السما ومش بيبطل كلام عن العلم.",
+   "facts_en": [
+    "It was found wrapped within the bandages of the king's mummy.",
+    "A 2016 scientific study measured high nickel and cobalt in the blade, showing the iron came from a meteorite.",
+    "Iron smelting was not yet common in Egypt then, so iron from the sky was rare and precious."
+   ],
+   "facts_ar": [
+    "اتلقى ملفوف جوه لفايف مومياء الملك.",
+    "دراسة علمية سنة 2016 قاست نسبة عالية من النيكل والكوبالت في النصل، وده أثبت إن الحديد جاي من نيزك.",
+    "صهر الحديد ماكانش منتشر في مصر وقتها، فالحديد اللي نازل من السما كان نادر وغالي."
+   ],
+   "visual_cues": "Slim dagger with silvery unrusted iron blade, gold granulated handle, ornate gold sheath with jackal or plant motifs.",
+   "kid_hook_en": "My blade fell from outer space! Can you guess how scientists proved it?",
+   "kid_hook_ar": "نصلي نازل من الفضاء! تفتكر العلماء عرفوا إزاي؟",
+   "visual_cues_ar": "خنجر رفيع نصله حديد فضي مش مصدّي، ومقبضه دهب بحبيبات دقيقة، وجرابه دهب منقوش."
+  },
+  {
+   "id": "tut-chariots",
+   "code": "GEM-13",
+   "zone": "tutankhamun",
+   "minutes": 8,
+   "tags": [
+    "tutankhamun",
+    "daily-life",
+    "engineering"
+   ],
+   "name_en": "Tutankhamun's Chariots",
+   "name_ar": "عربات توت عنخ آمون الحربية",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Bent wood, leather and gold leaf",
+   "material_ar": "خشب محني وجلد ورقائق دهب",
+   "persona_en": "An energetic charioteer who loves speed, hunting trips and clever engineering.",
+   "persona_ar": "سايق عربية حربية نشيط بيحب السرعة ورحلات الصيد والهندسة الذكية.",
+   "facts_en": [
+    "Six chariots were found in the tomb, taken apart so they would fit through the passages.",
+    "They were light enough for two horses to pull at speed, thanks to steam-bent wood and leather.",
+    "Some were richly decorated for ceremonies, while others look built for hunting or everyday driving."
+   ],
+   "facts_ar": [
+    "اتلقى في المقبرة ست عربيات، متفككة عشان تعدي من الممرات.",
+    "كانت خفيفة كفاية إن حصانين يجروها بسرعة بفضل الخشب المحني بالبخار والجلد.",
+    "بعضها متزين جدًا للاحتفالات، وبعضها شكله معمول للصيد أو الاستعمال اليومي."
+   ],
+   "visual_cues": "Two-wheeled gilded wooden chariot with six-spoke wheels, open car, long pole.",
+   "kid_hook_en": "I was the Ferrari of ancient Egypt — six of us were packed into the tomb!",
+   "kid_hook_ar": "أنا كنت الفيراري بتاعة مصر القديمة — كنا ست عربيات متشالين في المقبرة!",
+   "visual_cues_ar": "عربية حربية بعجلتين من خشب متغطي دهب، وكل عجلة فيها ست أشعة، والعربية مفتوحة من ورا."
+  },
+  {
+   "id": "tut-shrines",
+   "code": "GEM-14",
+   "zone": "tutankhamun",
+   "minutes": 8,
+   "tags": [
+    "tutankhamun",
+    "gold",
+    "afterlife"
+   ],
+   "name_en": "The Gilded Shrines of Tutankhamun",
+   "name_ar": "المقاصير المذهبة لتوت عنخ آمون",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Gilded wood with carved scenes and religious texts",
+   "material_ar": "خشب مذهب عليه مناظر منحوتة ونصوص دينية",
+   "persona_en": "A calm, protective guardian, like the outer layer of a set of nesting boxes keeping a secret safe.",
+   "persona_ar": "حارس هادي وحامي، زي أول علبة من علب جوه بعض بتحافظ على سر.",
+   "facts_en": [
+    "Four gilded shrines fitted inside one another, filling almost the whole burial chamber.",
+    "Inside the smallest shrine lay the stone sarcophagus, and inside that the nested coffins and the mummy.",
+    "Their surfaces are covered with texts and scenes meant to guide and protect the king in the afterlife."
+   ],
+   "facts_ar": [
+    "أربع مقاصير مذهبة متركبة جوه بعض، كانت مالية أوضة الدفن تقريبًا كلها.",
+    "جوه أصغر مقصورة كان التابوت الحجري، وجواه التوابيت المتداخلة والمومياء.",
+    "سطحها مليان نصوص ومناظر الهدف منها إرشاد الملك وحمايته في العالم الآخر."
+   ],
+   "visual_cues": "Large gold-covered wooden box-like shrine with doors, blue-inlaid hieroglyphs and figures of deities.",
+   "kid_hook_en": "I'm like a giant golden Russian doll — four boxes, one inside the other!",
+   "kid_hook_ar": "أنا زي العروسة الروسية بس دهب وعملاقة — أربع صناديق جوه بعض!",
+   "visual_cues_ar": "صندوق كبير من خشب متغطي دهب على شكل مقصورة بأبواب، ومزخرف بقيشاني أزرق ونقوش."
+  },
+  {
+   "id": "anubis-shrine",
+   "code": "GEM-15",
+   "zone": "tutankhamun",
+   "minutes": 6,
+   "tags": [
+    "tutankhamun",
+    "gods",
+    "afterlife",
+    "animals"
+   ],
+   "name_en": "The Anubis Shrine",
+   "name_ar": "مقصورة أنوبيس",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Wood coated in black resin, gilded details, eyes of calcite and obsidian, silver claws",
+   "material_ar": "خشب متغطي براتنج أسود، تفاصيل مذهبة، عيون من الكالسيت والأوبسيديان، ومخالب فضة",
+   "persona_en": "A loyal, watchful jackal guardian — few words, very serious, secretly kind.",
+   "persona_ar": "حارس على شكل ابن آوى، وفي وصاحي — كلامه قليل وجد جدًا، بس طيب من جوه.",
+   "facts_en": [
+    "Anubis was the jackal god of embalming who protected the dead.",
+    "This statue lay on top of a gilded chest at the entrance of the room Carter called the Treasury, as if guarding it.",
+    "The shrine has carrying poles, so it could be carried in a procession."
+   ],
+   "facts_ar": [
+    "أنوبيس كان إله التحنيط على شكل ابن آوى وكان بيحمي الموتى.",
+    "التمثال ده كان نايم فوق صندوق مذهب عند مدخل الأوضة اللي كارتر سماها الخزانة، كأنه بيحرسها.",
+    "المقصورة ليها عصيان شيل، يعني كان ممكن تتشال في موكب."
+   ],
+   "visual_cues": "Black recumbent jackal statue with gold-lined ears and collar lying on a gilded chest with carrying poles.",
+   "kid_hook_en": "Shhh… I've been on guard duty for over 3,000 years. Want to know what I'm guarding?",
+   "kid_hook_ar": "هششش… أنا في نوبة حراسة بقالي أكتر من 3000 سنة. عايز تعرف بحرس إيه؟",
+   "visual_cues_ar": "تمثال ابن آوى أسود نايم على بطنه فوق صندوق، وودانه وطوقه متحددين بالدهب."
+  },
+  {
+   "id": "canopic-chest",
+   "code": "GEM-16",
+   "zone": "tutankhamun",
+   "minutes": 6,
+   "tags": [
+    "tutankhamun",
+    "afterlife",
+    "science"
+   ],
+   "name_en": "Tutankhamun's Canopic Chest",
+   "name_ar": "صندوق الأواني الكانوبية لتوت عنخ آمون",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Calcite (Egyptian alabaster) with four lids carved in the king's likeness",
+   "material_ar": "كالسيت (ألباستر مصري) بأربع أغطية منحوتة على شكل وش الملك",
+   "persona_en": "A careful, gentle explainer — like a museum doctor describing ancient medicine without being scary.",
+   "persona_ar": "شارح هادي ودقيق — زي دكتور في المتحف بيحكي عن الطب القديم من غير ما يخوّف حد.",
+   "facts_en": [
+    "During mummification some internal organs were removed and preserved separately.",
+    "The chest has four compartments; inside were four miniature gold coffins holding the king's preserved organs.",
+    "The chest stood inside a gilded shrine protected by four goddesses: Isis, Nephthys, Neith and Serqet."
+   ],
+   "facts_ar": [
+    "وقت التحنيط كانوا بيشيلوا بعض الأعضاء الداخلية ويحفظوها لوحدها.",
+    "الصندوق فيه أربع خانات، وجواها أربع توابيت دهب صغيرة فيها أعضاء الملك المحفوظة.",
+    "الصندوق كان جوه مقصورة مذهبة بتحرسها أربع إلهات: إيزيس ونفتيس ونيت وسرقت."
+   ],
+   "visual_cues": "Translucent white-cream stone chest on a sledge base, four human-headed stoppers, goddess figures carved on corners.",
+   "kid_hook_en": "I'm a stone box with four secret rooms — and four tiny golden coffins used to live inside me!",
+   "kid_hook_ar": "أنا صندوق حجر فيه أربع أوض سرية — وكان عايش جوايا أربع توابيت دهب صغيرين!",
+   "visual_cues_ar": "صندوق من حجر أبيض مايل للكريمي على قاعدة زي الزلاجة، وفيه أربع أغطية على شكل راس إنسان، وفي أركانه إلهات منحوتين."
+  },
+  {
+   "id": "funerary-beds",
+   "code": "GEM-17",
+   "zone": "tutankhamun",
+   "minutes": 6,
+   "tags": [
+    "tutankhamun",
+    "animals",
+    "gods",
+    "afterlife"
+   ],
+   "name_en": "The Ritual Animal Beds",
+   "name_ar": "الأسرّة الطقسية على شكل حيوانات",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Gilded wood with glass and painted inlays",
+   "material_ar": "خشب مذهب بتطعيم زجاج ورسومات",
+   "persona_en": "Three playful animal friends who finish each other's sentences.",
+   "persona_ar": "تلات حيوانات أصحاب بيهزروا وبيكمّلوا كلام بعض.",
+   "facts_en": [
+    "Three long gilded beds were found in the tomb's antechamber, each with sides shaped like animals.",
+    "One is shaped like a cow, one like a lion and one like a composite creature with features of a hippopotamus and a crocodile.",
+    "They are thought to have played a role in rituals helping the king's rebirth in the afterlife."
+   ],
+   "facts_ar": [
+    "اتلقى تلات سراير طويلة مذهبة في الأوضة الأمامية للمقبرة، وكل واحد جوانبه على شكل حيوان.",
+    "واحد على شكل بقرة، وواحد على شكل أسد، وواحد على شكل كائن مركب فيه ملامح فرس النهر والتمساح.",
+    "بيتقال إنهم كان ليهم دور في طقوس بتساعد الملك يتولد من جديد في العالم الآخر."
+   ],
+   "visual_cues": "Long gilded couch whose side frames are elongated animal bodies with heads at one end — cow with sun disc horns, lion, or hippo with teeth.",
+   "kid_hook_en": "Which of us would you sleep on — the cow, the lion, or the hippo-crocodile?",
+   "kid_hook_ar": "تحب تنام على مين فينا — البقرة ولا الأسد ولا فرس النهر التمساح؟",
+   "visual_cues_ar": "سرير طويل متغطي دهب، جنابه على شكل جسم حيوان ممدود، واحد بقرة وواحد أسد وواحد زي فرس النهر."
+  },
+  {
+   "id": "shabtis",
+   "code": "GEM-18",
+   "zone": "tutankhamun",
+   "minutes": 5,
+   "tags": [
+    "tutankhamun",
+    "afterlife",
+    "daily-life"
+   ],
+   "name_en": "Tutankhamun's Shabti Figures",
+   "name_ar": "تماثيل الأوشابتي لتوت عنخ آمون",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "Wood, stone and faience figurines",
+   "material_ar": "تماثيل صغيرة من خشب وحجر وفيانس",
+   "persona_en": "A cheerful little worker who speaks for a whole team; proud of being helpful.",
+   "persona_ar": "عامل صغير مبسوط بيتكلم باسم فريق كامل؛ فخور إنه بيساعد.",
+   "facts_en": [
+    "Shabtis were small figures meant to do work on behalf of the dead in the afterlife.",
+    "More than 400 shabtis were found in Tutankhamun's tomb — roughly one worker for every day of the year, plus overseers to manage them.",
+    "Many are inscribed with a spell telling them to answer 'Here I am!' when called to work."
+   ],
+   "facts_ar": [
+    "الأوشابتي تماثيل صغيرة كانت المفروض تشتغل مكان الميت في العالم الآخر.",
+    "اتلقى أكتر من 400 أوشابتي في مقبرة توت عنخ آمون — تقريبًا عامل لكل يوم في السنة، وكمان مشرفين يديروهم.",
+    "كتير منهم مكتوب عليه تعويذة بتقولهم يردوا ويقولوا «أنا هنا!» لما يتنادوا للشغل."
+   ],
+   "visual_cues": "Many small mummy-shaped figurines in rows, holding hoes or crook and flail, some with gilded headdresses.",
+   "kid_hook_en": "There are hundreds of us — the king's helpers! When he calls, we shout 'Here I am!'",
+   "kid_hook_ar": "إحنا مئات — مساعدين الملك! لما ينادي بنقول «أنا هنا!»",
+   "visual_cues_ar": "تماثيل صغيرة كتير على شكل مومياء، مترصصة صفوف، وماسكين فؤوس أو قفف للشغل."
+  },
+  {
+   "id": "tut-trumpets",
+   "code": "GEM-19",
+   "zone": "tutankhamun",
+   "minutes": 5,
+   "tags": [
+    "tutankhamun",
+    "music",
+    "daily-life"
+   ],
+   "name_en": "Tutankhamun's Trumpets",
+   "name_ar": "أبواق توت عنخ آمون",
+   "era_en": "New Kingdom, 18th Dynasty",
+   "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة",
+   "material_en": "One trumpet of silver, one of copper alloy (bronze), each with a wooden core",
+   "material_ar": "بوق من الفضة وبوق من سبيكة نحاس (برونز)، وكل واحد له قلب خشب",
+   "persona_en": "A loud, theatrical musician who loves an audience and tells his story like a performance.",
+   "persona_ar": "موسيقار صوته عالي ومسرحي، بيحب الجمهور وبيحكي حكايته كأنها عرض.",
+   "facts_en": [
+    "Two trumpets were found in the tomb and are among the oldest playable trumpets in the world.",
+    "In 1939 they were played live on a BBC radio broadcast, letting the world hear a sound from Tutankhamun's time.",
+    "They were likely used in military or religious ceremonies."
+   ],
+   "facts_ar": [
+    "اتلقى بوقين في المقبرة، ومن أقدم الأبواق اللي لسه ممكن تتعزف في العالم.",
+    "سنة 1939 اتعزفوا على الهوا في إذاعة BBC، والعالم سمع صوت من زمن توت عنخ آمون.",
+    "غالبًا كانوا بيستخدموا في احتفالات عسكرية أو دينية."
+   ],
+   "visual_cues": "Long slender metal trumpet with flared bell, engraved figures of gods near the bell, wooden core beside it.",
+   "kid_hook_en": "TA-DAAA! I'm over 3,000 years old and I can still make music!",
+   "kid_hook_ar": "طا-دااا! أنا عمري أكتر من 3000 سنة ولسه بعرف أعزف!",
+   "visual_cues_ar": "بوق معدن طويل ورفيع آخره بيتسع زي الوردة، ومنقوش عليه صور آلهة."
+  },
+  {
+   "id": "khufu-boat",
+   "code": "GEM-30",
+   "zone": "khufu-boats",
+   "minutes": 15,
+   "tags": [
+    "kings",
+    "engineering",
+    "afterlife",
+    "khufu"
+   ],
+   "name_en": "Khufu's First Boat",
+   "name_ar": "مركب خوفو الأولى",
+   "era_en": "Old Kingdom, 4th Dynasty (reign of Khufu, c. 2589–2566 BC)",
+   "era_ar": "الدولة القديمة، الأسرة الرابعة (عصر خوفو، حوالي 2589–2566 ق.م)",
+   "material_en": "Lebanese cedar, about 43 m long",
+   "material_ar": "خشب أرز لبناني، بطول حوالي 43 مترًا",
+   "persona_en": "An old sailor full of adventure stories, proud of being rebuilt piece by piece like a giant puzzle.",
+   "persona_ar": "بحّار عجوز مليان حكايات مغامرات، وفخور إنه اتبنى من جديد حتة حتة زي بازل عملاق.",
+   "facts_en": [
+    "The boat was discovered in 1954 by Kamal el-Mallakh, sealed in a pit beside the Great Pyramid of Giza.",
+    "It was found dismantled into more than 1,200 pieces and reassembled over many years by restorer Hag Ahmed Youssef.",
+    "In 2021 it was moved in one piece to the GEM on a specially built remote-controlled vehicle.",
+    "It is more than 4,500 years old and one of the oldest and largest intact boats from antiquity."
+   ],
+   "facts_ar": [
+    "المركب اكتشفها كمال الملاخ سنة 1954، كانت مقفول عليها في حفرة جنب الهرم الأكبر في الجيزة.",
+    "اتلقت متفككة لأكتر من 1200 قطعة، والمرمم الحاج أحمد يوسف ركّبها على مدار سنين.",
+    "سنة 2021 اتنقلت حتة واحدة للمتحف على عربية بريموت كنترول اتصنعت مخصوص.",
+    "عمرها أكتر من 4500 سنة ومن أقدم وأكبر المراكب السليمة من العالم القديم."
+   ],
+   "visual_cues": "Very long elegant wooden boat with upturned papyrus-shaped ends, central deck cabin, oars, displayed in a large hall.",
+   "kid_hook_en": "I was a 1,200-piece puzzle buried next to a pyramid — and someone solved me!",
+   "kid_hook_ar": "أنا كنت بازل من 1200 قطعة مدفونة جنب الهرم — وفيه حد عرف يحلّني!",
+   "visual_cues_ar": "مركب خشب طويلة جدًا وشكلها رشيق، وطرفيها مرفوعين لفوق على شكل نبات البردي، وفي النص كابينة، وجنبها مجاديف، ومعروضة في قاعة كبيرة."
+  }
+ ],
+ "tags": {
+  "kings": {
+   "en": "Kings & queens",
+   "ar": "ملوك وملكات"
+  },
+  "tutankhamun": {
+   "en": "Tutankhamun",
+   "ar": "توت عنخ آمون"
+  },
+  "gold": {
+   "en": "Gold & treasure",
+   "ar": "الدهب والكنوز"
+  },
+  "afterlife": {
+   "en": "Afterlife & mummies",
+   "ar": "العالم الآخر والمومياوات"
+  },
+  "gods": {
+   "en": "Gods & myths",
+   "ar": "الآلهة والأساطير"
+  },
+  "science": {
+   "en": "Science & discovery",
+   "ar": "العلم والاكتشافات"
+  },
+  "engineering": {
+   "en": "Engineering",
+   "ar": "الهندسة"
+  },
+  "daily-life": {
+   "en": "Daily life",
+   "ar": "الحياة اليومية"
+  },
+  "animals": {
+   "en": "Animals",
+   "ar": "الحيوانات"
+  },
+  "architecture": {
+   "en": "Architecture",
+   "ar": "العمارة"
+  },
+  "statues": {
+   "en": "Giant statues",
+   "ar": "التماثيل العملاقة"
+  },
+  "music": {
+   "en": "Music",
+   "ar": "الموسيقى"
+  },
+  "love": {
+   "en": "Love stories",
+   "ar": "قصص حب"
+  },
+  "space": {
+   "en": "Space",
+   "ar": "الفضاء"
+  },
+  "ramesses": {
+   "en": "Ramesses II",
+   "ar": "رمسيس الثاني"
+  },
+  "khufu": {
+   "en": "Khufu",
+   "ar": "خوفو"
+  }
+ }
 }

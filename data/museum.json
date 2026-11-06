@@ -1,0 +1,367 @@
+{
+ "checked": "2026-11-04",
+ "official_booking": "https://tickets.gem.eg",
+ "note_en": "Visitor information gathered from public sources on 4 November 2026. Prices and hours change: always confirm on the official booking site before visiting. The map is an illustrative sketch, not to scale.",
+ "note_ar": "المعلومات دي متجمعة من مصادر منشورة يوم 4 نوفمبر 2026. الأسعار والمواعيد بتتغير، فاتأكد دايمًا من موقع الحجز الرسمي قبل الزيارة. الخريطة رسم توضيحي مش بالمقاس.",
+ "places": [
+  {
+   "id": "parking",
+   "n": 1,
+   "kind": "service",
+   "x": 200,
+   "y": 488,
+   "name_en": "Parking",
+   "name_ar": "الجراج",
+   "facts_en": [
+    "The museum has on-site parking for cars and coaches; parking is paid.",
+    "Taxis and ride-hailing cars can drop visitors off near the main entrance."
+   ],
+   "facts_ar": [
+    "فيه جراج للعربيات والأتوبيسات جوه المتحف، والركنة بفلوس.",
+    "التاكسي وعربيات أوبر وكريم بتنزّلك قريب من المدخل الرئيسي."
+   ]
+  },
+  {
+   "id": "gate",
+   "n": 2,
+   "kind": "service",
+   "x": 200,
+   "y": 440,
+   "name_en": "Ticket office & security",
+   "name_ar": "شباك التذاكر والأمن",
+   "facts_en": [
+    "All visitors pass a security check at the entrance, so allow a few minutes.",
+    "Tickets can be bought on site by card, but booking online in advance is safer because some dates sell out.",
+    "Have your ID or passport ready, plus a student card if you bought a student ticket."
+   ],
+   "facts_ar": [
+    "كل الزوار بيعدّوا على تفتيش أمني عند المدخل، فخلّي معاك كام دقيقة زيادة.",
+    "ممكن تشتري التذكرة من الشباك بالكارت، بس الحجز أونلاين قبلها أضمن لأن أيام بتخلص تذاكرها.",
+    "خلّي معاك البطاقة أو الباسبور، وكارنيه الجامعة لو حاجز تذكرة طالب."
+   ]
+  },
+  {
+   "id": "plaza",
+   "n": 3,
+   "kind": "hall",
+   "x": 200,
+   "y": 392,
+   "name_en": "Grand Forecourt & Hanging Obelisk",
+   "name_ar": "الساحة الأمامية والمسلة المعلقة",
+   "facts_en": [
+    "The open forecourt in front of the building holds the obelisk of Ramesses II, shown raised so visitors can walk beneath it and see the cartouche carved under its base.",
+    "It is described as the world's first hanging obelisk."
+   ],
+   "facts_ar": [
+    "في الساحة اللي قدام المبنى فيه مسلة رمسيس التاني، ومتعلقة لفوق عشان تقدر تمشي تحتها وتشوف الخرطوش المنقوش تحت قاعدتها.",
+    "بيقولوا عليها أول مسلة معلقة في العالم."
+   ]
+  },
+  {
+   "id": "grand-hall",
+   "n": 4,
+   "kind": "hall",
+   "x": 200,
+   "y": 334,
+   "name_en": "Grand Hall (Atrium)",
+   "name_ar": "البهو العظيم",
+   "facts_en": [
+    "The first great space inside, about 7,000 square metres, dominated by the colossal granite statue of Ramesses II, about 11 metres tall and over 80 tonnes.",
+    "The statue stood in Ramesses Square in central Cairo for decades before it was moved to the museum in 2018.",
+    "The Grand Hall is a good meeting point if your group gets separated."
+   ],
+   "facts_ar": [
+    "أول مساحة كبيرة جوه المتحف، حوالي 7000 متر مربع، وفي النص تمثال رمسيس التاني الجرانيت، طوله حوالي 11 متر ووزنه أكتر من 80 طن.",
+    "التمثال ده فضل سنين طويلة في ميدان رمسيس في وسط القاهرة قبل ما يتنقل للمتحف سنة 2018.",
+    "البهو العظيم مكان كويس تتقابل فيه مع اللي معاك لو اتفرقتوا."
+   ]
+  },
+  {
+   "id": "grand-staircase",
+   "n": 5,
+   "kind": "hall",
+   "x": 200,
+   "y": 238,
+   "name_en": "Grand Staircase",
+   "name_ar": "الدرج العظيم",
+   "facts_en": [
+    "A six-storey staircase, about 6,000 square metres, lined with around 60 statues, sarcophagi and columns of kings and gods.",
+    "It climbs to a large window with a view of the Pyramids of Giza at the top, where the main galleries begin.",
+    "Escalators and lifts run beside it for visitors who prefer not to climb."
+   ],
+   "facts_ar": [
+    "سلم بارتفاع 6 أدوار، مساحته حوالي 6000 متر مربع، وعلى جنابه حوالي 60 تمثال وتابوت وعمود لملوك وآلهة.",
+    "في آخره فوق فيه شباك كبير بيطل على أهرامات الجيزة، ومن هناك بتبدأ القاعات الرئيسية.",
+    "جنبه فيه سلالم كهربا وأسانسيرات للي مش عاوز يطلع على رجليه."
+   ]
+  },
+  {
+   "id": "view",
+   "n": 6,
+   "kind": "hall",
+   "x": 200,
+   "y": 152,
+   "name_en": "Pyramids view window",
+   "name_ar": "شباك الأهرامات",
+   "facts_en": [
+    "At the top of the Grand Staircase a wide glass wall frames the Pyramids of Giza, about 2 kilometres away.",
+    "It is one of the most photographed spots in the museum."
+   ],
+   "facts_ar": [
+    "في آخر الدرج العظيم فيه واجهة إزاز كبيرة بتطل على أهرامات الجيزة، اللي على بعد حوالي 2 كيلو.",
+    "ده من أكتر الأماكن اللي الناس بتتصور فيها في المتحف."
+   ]
+  },
+  {
+   "id": "galleries",
+   "n": 7,
+   "kind": "hall",
+   "x": 92,
+   "y": 196,
+   "name_en": "The 12 main galleries",
+   "name_ar": "القاعات الرئيسية الـ12",
+   "facts_en": [
+    "Twelve main galleries, about 18,000 square metres, tell Egypt's story from prehistory to the Roman era.",
+    "They are arranged by period: prehistory and the Old Kingdom, the Middle Kingdom, the New Kingdom, then the Late, Greek and Roman periods.",
+    "Each period is shown through three themes: society, kingship and beliefs.",
+    "Plan at least two hours for the main galleries alone."
+   ],
+   "facts_ar": [
+    "12 قاعة رئيسية، مساحتهم حوالي 18 ألف متر مربع، بيحكوا تاريخ مصر من عصور ما قبل التاريخ لحد العصر الروماني.",
+    "مترتبين حسب العصور: ما قبل التاريخ والدولة القديمة، والدولة الوسطى، والدولة الحديثة، وبعدين العصر المتأخر واليوناني والروماني.",
+    "كل عصر معروض من 3 زوايا: المجتمع، والمُلك، والمعتقدات.",
+    "خلّي على الأقل ساعتين للقاعات الرئيسية لوحدها."
+   ]
+  },
+  {
+   "id": "tutankhamun",
+   "n": 8,
+   "kind": "hall",
+   "x": 312,
+   "y": 168,
+   "name_en": "Tutankhamun Galleries",
+   "name_ar": "قاعات توت عنخ آمون",
+   "facts_en": [
+    "Two galleries, about 7,500 square metres, show more than 5,000 objects from Tutankhamun's tomb together for the first time since Howard Carter found it in 1922.",
+    "Highlights include the gold mask, the inner coffins, chariots, jewellery and the king's thrones.",
+    "These are the busiest rooms: go early in the morning or on a late-opening evening for fewer crowds.",
+    "Entry to the Tutankhamun Galleries is included in the standard museum ticket."
+   ],
+   "facts_ar": [
+    "قاعتين مساحتهم حوالي 7500 متر مربع، فيهم أكتر من 5000 قطعة من مقبرة توت عنخ آمون، معروضين مع بعض لأول مرة من ساعة ما هوارد كارتر لقاها سنة 1922.",
+    "من أهم القطع: القناع الدهب، والتوابيت الداخلية، والعجلات الحربية، والمجوهرات، وكراسي العرش.",
+    "دي أزحم قاعات في المتحف، فروح بدري الصبح أو في يوم من أيام السهر عشان الزحمة تبقى أقل.",
+    "دخول قاعات توت عنخ آمون داخل في التذكرة العادية."
+   ]
+  },
+  {
+   "id": "khufu-boats",
+   "n": 9,
+   "kind": "hall",
+   "x": 344,
+   "y": 322,
+   "name_en": "Khufu's Boats Museum",
+   "name_ar": "متحف مراكب خوفو",
+   "facts_en": [
+    "A dedicated building for the solar boats of King Khufu, found in pits beside the Great Pyramid.",
+    "The first boat, about 4,600 years old and over 40 metres long, is on display.",
+    "The second boat is being reassembled by conservators in front of visitors.",
+    "Check when booking whether it is included in your ticket for the date you choose."
+   ],
+   "facts_ar": [
+    "مبنى مخصوص لمراكب الملك خوفو، اللي اتلاقت في حفر جنب الهرم الأكبر.",
+    "المركب الأولى معروضة، عمرها حوالي 4600 سنة وطولها أكتر من 40 متر.",
+    "المركب التانية المرممين بيركّبوها قدام الزوار.",
+    "وإنت بتحجز، اتأكد إذا كانت داخلة في تذكرتك في اليوم اللي هتختاره."
+   ]
+  },
+  {
+   "id": "children",
+   "n": 10,
+   "kind": "hall",
+   "x": 58,
+   "y": 322,
+   "name_en": "Children's Museum",
+   "name_ar": "متحف الطفل",
+   "facts_en": [
+    "A 5,000-square-metre museum for children aged about 6 to 12, with hands-on activities about ancient Egypt.",
+    "It runs guided sessions of about 45 minutes in Arabic and English, booked as a separate experience on the official site.",
+    "Children aged 6 to 9 must be accompanied by an adult."
+   ],
+   "facts_ar": [
+    "متحف للأطفال من حوالي 6 لـ12 سنة، مساحته 5000 متر مربع، وفيه أنشطة تفاعلية عن مصر القديمة.",
+    "فيه جولات بمرشد مدتها حوالي 45 دقيقة بالعربي والإنجليزي، وبتتحجز لوحدها كتجربة منفصلة على الموقع الرسمي.",
+    "الأطفال من 6 لـ9 سنين لازم يبقى معاهم حد كبير."
+   ]
+  },
+  {
+   "id": "shops",
+   "n": 11,
+   "kind": "shop",
+   "x": 104,
+   "y": 420,
+   "name_en": "Shops & bazaar area",
+   "name_ar": "المحلات والبازارات",
+   "facts_en": [
+    "The commercial area has souvenir and gift shops, books, replicas of ancient pieces and Egyptian crafts.",
+    "Shopping on your way out saves carrying bags through the galleries.",
+    "Ask for a receipt for replicas, which shows they are copies and not antiquities."
+   ],
+   "facts_ar": [
+    "المنطقة التجارية فيها محلات هدايا وتذكارات وكتب ونسخ مقلدة من القطع الأثرية ومشغولات يدوية مصرية.",
+    "اشتري وإنت خارج أحسن، عشان ماتلفش بالشنط في القاعات.",
+    "خد فاتورة لأي نسخة مقلدة، عشان تثبت إنها نسخة مش أثر حقيقي."
+   ]
+  },
+  {
+   "id": "food",
+   "n": 12,
+   "kind": "food",
+   "x": 296,
+   "y": 420,
+   "name_en": "Restaurants & cafés",
+   "name_ar": "المطاعم والكافيهات",
+   "facts_en": [
+    "Several restaurants and cafés serve visitors in the commercial area and gardens, some with views towards the Pyramids.",
+    "Outside food and drinks are not allowed into the museum, so plan a break here during a long visit."
+   ],
+   "facts_ar": [
+    "فيه كذا مطعم وكافيه للزوار في المنطقة التجارية والحدايق، ومنهم اللي بيطل على ناحية الأهرامات.",
+    "ممنوع تدخل أكل أو شرب من بره، فخطط تاخد بريك هنا لو زيارتك طويلة."
+   ]
+  },
+  {
+   "id": "gardens",
+   "n": 13,
+   "kind": "outdoor",
+   "x": 92,
+   "y": 72,
+   "name_en": "Gardens & walkways",
+   "name_ar": "الحدائق والممشى",
+   "facts_en": [
+    "Landscaped gardens and walkways surround the museum on the side facing the Pyramids.",
+    "They are a calm place to rest between the galleries, especially in the evening."
+   ],
+   "facts_ar": [
+    "حوالين المتحف من ناحية الأهرامات فيه حدايق وممشى متنسقين.",
+    "مكان هادي تريح فيه بين القاعات، وخصوصًا بالليل."
+   ]
+  },
+  {
+   "id": "services",
+   "n": 14,
+   "kind": "service",
+   "x": 304,
+   "y": 470,
+   "name_en": "Visitor services",
+   "name_ar": "خدمات الزوار",
+   "facts_en": [
+    "Lifts and escalators connect the levels, and the main route is accessible for wheelchairs and strollers.",
+    "Visitors with disabilities have been admitted free; bring proof and confirm when booking.",
+    "Ask the information desk for a printed map, lost and found, and guided tour times."
+   ],
+   "facts_ar": [
+    "فيه أسانسيرات وسلالم كهربا بين الأدوار، والطريق الأساسي مناسب للكراسي المتحركة وعربيات الأطفال.",
+    "ذوي الهمم كان دخولهم ببلاش، فخلّي معاك إثبات واتأكد وإنت بتحجز.",
+    "اسأل مكتب الاستعلامات على خريطة مطبوعة، والمفقودات، ومواعيد الجولات بمرشد."
+   ]
+  }
+ ],
+ "visit": {
+  "tickets": [
+   {
+    "en": "Foreign adult",
+    "ar": "أجنبي (كبير)",
+    "egp": 1830
+   },
+   {
+    "en": "Foreign student or child",
+    "ar": "أجنبي (طالب أو طفل)",
+    "egp": 920
+   },
+   {
+    "en": "Foreign resident of Egypt, adult",
+    "ar": "أجنبي مقيم في مصر (كبير)",
+    "egp": 920
+   },
+   {
+    "en": "Foreign resident, student or child",
+    "ar": "أجنبي مقيم (طالب أو طفل)",
+    "egp": 460
+   },
+   {
+    "en": "Egyptian adult",
+    "ar": "مصري (كبير)",
+    "egp": 220
+   },
+   {
+    "en": "Egyptian student, child or senior",
+    "ar": "مصري (طالب أو طفل أو كبير سن)",
+    "egp": 110
+   },
+   {
+    "en": "Children under 6",
+    "ar": "أطفال أقل من 6 سنين",
+    "egp": 0
+   }
+  ],
+  "tickets_note_en": "Prices reported from 1 November 2026. They include the main galleries, the Grand Staircase and the Tutankhamun Galleries. Guided tours, the Children's Museum and extra experiences are priced separately.",
+  "tickets_note_ar": "دي الأسعار المعلنة من أول نوفمبر 2026، وبتشمل القاعات الرئيسية والدرج العظيم وقاعات توت عنخ آمون. الجولات بمرشد ومتحف الطفل والتجارب الإضافية ليهم أسعار لوحدهم.",
+  "hours": [
+   {
+    "en": "Sun, Mon, Tue, Thu, Fri",
+    "ar": "الحد والاتنين والتلات والخميس والجمعة",
+    "complex": "8:30–19:00",
+    "galleries": "9:00–18:00"
+   },
+   {
+    "en": "Wed and Sat (late opening)",
+    "ar": "الأربع والسبت (سهر)",
+    "complex": "8:30–22:00",
+    "galleries": "9:00–21:00"
+   }
+  ],
+  "hours_note_en": "Last entry is one hour before the galleries close.",
+  "hours_note_ar": "آخر دخول قبل ما القاعات تقفل بساعة.",
+  "validity_en": [
+   "A ticket is for one entry on the date you booked.",
+   "The time you pick is your entry time only, not a limit on how long you stay: you can stay until closing.",
+   "Tickets are non-refundable and non-transferable.",
+   "Leaving the museum ends the visit: re-entry needs a new ticket."
+  ],
+  "validity_ar": [
+   "التذكرة دخول مرة واحدة في اليوم اللي حجزته.",
+   "الميعاد اللي بتختاره هو ميعاد الدخول بس، مش مدة الزيارة: تقدر تفضل لحد ما المتحف يقفل.",
+   "التذكرة مش بترجع فلوسها ومينفعش تديها لحد تاني.",
+   "لو خرجت من المتحف الزيارة بتخلص، وعشان تدخل تاني محتاج تذكرة جديدة."
+  ],
+  "booking_en": [
+   "Open the official site tickets.gem.eg (visit-gem.com leads there too).",
+   "Choose general admission or a guided tour, then the date, the tour language and your entry time.",
+   "Add extras if you want them, then enter your name, email, mobile number and nationality.",
+   "Pay by card. The e-ticket arrives by email: show it on your phone at the gate.",
+   "Buy only from the official site: the museum is not responsible for tickets sold elsewhere."
+  ],
+  "booking_ar": [
+   "افتح الموقع الرسمي tickets.gem.eg (ولو دخلت visit-gem.com هيحولك عليه).",
+   "اختار دخول عادي أو جولة بمرشد، وبعدين اليوم ولغة الجولة وميعاد دخولك.",
+   "زوّد أي إضافات لو عاوز، وبعدين اكتب اسمك والإيميل ورقم الموبايل وجنسيتك.",
+   "ادفع بالكارت، والتذكرة الإلكترونية هتوصلك على الإيميل، وبتوريها من موبايلك على البوابة.",
+   "اشتري من الموقع الرسمي بس، لأن المتحف مش مسؤول عن أي تذاكر تتباع في حتة تانية."
+  ],
+  "rules_en": [
+   "Personal photos and videos are allowed; flash is not.",
+   "Tripods, selfie sticks, drones and live streaming are not allowed without a permit.",
+   "No outside food or drinks.",
+   "A full visit takes about 3 to 4 hours; wear comfortable shoes."
+  ],
+  "rules_ar": [
+   "التصوير الشخصي صور وفيديو مسموح، بس من غير فلاش.",
+   "الحامل والسيلفي ستيك والدرون والبث المباشر ممنوعين من غير تصريح.",
+   "ممنوع دخول أكل أو شرب من بره.",
+   "الزيارة الكاملة بتاخد من 3 لـ4 ساعات، فالبس جزمة مريحة."
+  ],
+  "getting_en": "The museum is on the Cairo–Alexandria Desert Road at the edge of the Giza Plateau, about 2 km from the Pyramids. From central Cairo it is roughly 30 to 45 minutes by car, taxi or ride-hailing depending on traffic.",
+  "getting_ar": "المتحف على طريق مصر إسكندرية الصحراوي على أول هضبة الجيزة، على بعد حوالي 2 كيلو من الأهرامات. من وسط البلد بياخد من 30 لـ45 دقيقة بالعربية أو التاكسي أو أوبر، على حسب الزحمة."
+ }
+}

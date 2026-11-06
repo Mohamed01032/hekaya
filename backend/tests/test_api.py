@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from app.knowledge import tokenize  # noqa: E402
 from app.main import app, kb  # noqa: E402
+import app.main as m  # noqa: E402
 
 client = TestClient(app)
 
@@ -177,3 +178,84 @@ def test_ai_failure_returns_readable_error(monkeypatch):
     png = b"\x89PNG\r\n\x1a\n" + b"0" * 20
     r = client.post("/api/recognize", files={"image": ("x.png", io.BytesIO(png), "image/png")})
     assert r.status_code == 502 and "gemini" in r.json()["detail"]
+
+
+# ---------------------------------------------------------------- museum guide (v2)
+def test_museum_endpoint_has_places_and_tickets():
+    m = client.get("/api/museum").json()
+    ids = {p["id"] for p in m["places"]}
+    assert {"grand-hall", "tutankhamun", "shops", "food", "gate"} <= ids
+    assert m["official_booking"].startswith("https://") and m["visit"]["tickets"]
+
+
+def test_guide_offline_answers_tickets_in_arabic():
+    r = client.post("/api/chat", json={"artifact_id": "guide", "message": "سعر التذكرة للمصري كام؟", "language": "ar"}).json()
+    assert r["provider"] == "offline" and "220" in r["reply"]
+
+
+def test_guide_offline_answers_shops_in_english():
+    r = client.post("/api/chat", json={"artifact_id": "guide", "message": "where are the shops and souvenirs?", "language": "en"}).json()
+    assert "shop" in r["reply"].lower()
+
+
+def test_guide_unknown_question_is_honest():
+    r = client.post("/api/chat", json={"artifact_id": "guide", "message": "xyzzy qwerty", "language": "en"}).json()
+    assert "information desk" in r["reply"]
+
+
+def test_guide_prompt_is_grounded():
+    body = m.ChatIn(artifact_id="guide", message="hours?", language="en")
+    system, turns, sources = m._build_chat(body)
+    assert "Never invent prices" in system and "tickets.gem.eg" in system and sources == ["museum"]
+
+
+def test_artifact_chat_can_use_museum_facts():
+    body = m.ChatIn(artifact_id="tut-mask", message="what time does the museum close on Wednesday hours", language="en")
+    system, _, sources = m._build_chat(body)
+    assert any(s.startswith("visit:") or s.startswith("place:") for s in sources)
+
+
+# ---------------------------------------------------------------- v2 features
+def test_dialogue_offline_alternates_and_uses_own_facts():
+    r = client.post("/api/dialogue", json={"a": "tut-mask", "b": "khufu-boat", "language": "en"}).json()
+    whos = [x["who"] for x in r["lines"]]
+    assert r["provider"] == "offline" and whos == ["a", "b", "a", "b"]
+    mask, boat = kb.by_id["tut-mask"], kb.by_id["khufu-boat"]
+    assert any(f in r["lines"][0]["text"] for f in mask["facts_en"])
+    assert any(f in r["lines"][1]["text"] for f in boat["facts_en"])
+
+
+def test_dialogue_question_and_validation():
+    r = client.post("/api/dialogue", json={"a": "tut-mask", "b": "tut-throne", "question": "ليه اتعملتوا؟",
+                                           "history": [{"who": "a", "text": "أهلاً"}], "language": "ar"}).json()
+    assert len(r["lines"]) == 2
+    assert client.post("/api/dialogue", json={"a": "tut-mask", "b": "tut-mask"}).status_code == 400
+    assert client.post("/api/dialogue", json={"a": "tut-mask", "b": "nope"}).status_code == 404
+
+
+def test_describe_offline_returns_appearance():
+    r = client.post("/api/chat", json={"artifact_id": "tut-mask", "message": "صف شكلك", "language": "ar"}).json()
+    assert r["reply"] == kb.by_id["tut-mask"]["visual_cues_ar"]
+
+
+def test_school_class_flow():
+    code = client.post("/api/class", json={"name": "Grade 5"}).json()["code"]
+    s1 = client.post(f"/api/class/{code}/join", json={"nick": "Mona"}).json()["sid"]
+    s2 = client.post(f"/api/class/{code}/join", json={"nick": "Omar"}).json()["sid"]
+    assert client.post(f"/api/class/{code}/progress", json={"sid": s1, "stamps": 2, "quiz": 1}).status_code == 204
+    assert client.post(f"/api/class/{code}/progress", json={"sid": s2, "stamps": 5, "quiz": 0}).status_code == 204
+    board = client.get(f"/api/class/{code.lower()}").json()
+    assert [s["nick"] for s in board["students"]] == ["Omar", "Mona"] and board["students"][0]["score"] == 50
+    assert client.post("/api/class/ZZZZZ/join", json={"nick": "x"}).status_code == 404
+    assert client.post(f"/api/class/{code}/progress", json={"sid": "fake-sid", "stamps": 1, "quiz": 0}).status_code == 404
+
+
+def test_analytics_counts_topics_not_text():
+    client.post("/api/chat", json={"artifact_id": "guide", "message": "التذكرة بكام؟", "language": "ar"})
+    client.post("/api/events", json={"kind": "place", "artifact_id": "shops"})
+    a = client.get("/api/analytics").json()
+    assert any(t["topic"] == "tickets" for t in a["topics"]) and len(a["hours"]) == 24
+    assert any(p["id"] == "shops" for p in a["places"]) and a["total"] > 0
+    import sqlite3
+    rows = sqlite3.connect(m.settings.db_path).execute("SELECT * FROM events").fetchall()
+    assert not any("بكام" in str(r) for r in rows)  # question text is never stored

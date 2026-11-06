@@ -19,7 +19,8 @@ from pydantic import BaseModel, Field
 from . import prompts
 from .analytics import Analytics
 from .config import ROOT, get_settings
-from .knowledge import load_kb
+from .classes import Classes
+from .knowledge import DESCRIBE_WORDS, load_kb, tokenize, topic_of
 from .llm import build_provider, parse_json
 from .tour import plan_tour
 
@@ -27,6 +28,7 @@ settings = get_settings()
 kb = load_kb(str(settings.data_path))
 llm = build_provider(settings)
 analytics = Analytics(settings.db_path)
+classes = Classes(settings.db_path)
 
 app = FastAPI(
     title="Hekaya — حكاية",
@@ -92,10 +94,44 @@ class TourIn(BaseModel):
 
 
 class EventIn(BaseModel):
-    kind: str
-    artifact_id: str | None = None
-    language: str | None = None
-    audience: str | None = None
+    kind: str = Field(max_length=24)
+    artifact_id: str | None = Field(default=None, max_length=64)
+    language: str | None = Field(default=None, max_length=8)
+    audience: str | None = Field(default=None, max_length=8)
+
+
+class Line(BaseModel):
+    who: Literal["a", "b", "visitor"]
+    text: str = Field(min_length=1, max_length=1000)
+
+
+class DialogueIn(BaseModel):
+    a: str
+    b: str
+    topic: str | None = Field(default=None, max_length=80)
+    question: str | None = Field(default=None, max_length=300)
+    history: list[Line] = Field(default_factory=list, max_length=30)
+    language: Language = "ar"
+    audience: Audience = "adult"
+
+
+class DialogueOut(BaseModel):
+    lines: list[dict]
+    provider: str
+
+
+class ClassIn(BaseModel):
+    name: str = Field(min_length=1, max_length=60)
+
+
+class JoinIn(BaseModel):
+    nick: str = Field(min_length=1, max_length=24)
+
+
+class ProgressIn(BaseModel):
+    sid: str = Field(min_length=4, max_length=40)
+    stamps: int = Field(ge=0, le=200)
+    quiz: int = Field(ge=0, le=200)
 
 
 # ---------------------------------------------------------------- helpers
@@ -110,7 +146,20 @@ def _offline_reply(body: "ChatIn") -> str:
     """Curated answer in the visitor's language when no AI model is configured."""
     a = _artifact(body.artifact_id)
     arabic = body.language.startswith("ar")
+    if a["id"] == "guide":
+        lang = "ar" if arabic else "en"
+        picked = kb.guide_answer(body.message, lang)
+        if not body.message:
+            return ("أهلاً بيك! أنا حكاية، مرشدتك في المتحف. اسألني عن القاعات والمحلات والأكل والتذاكر والمواعيد."
+                    if arabic else "Welcome! I am Hekaya, your museum guide. Ask me about halls, shops, food, tickets and hours.")
+        if not picked:
+            return ("المعلومة دي مش عندي. اسأل مكتب الاستعلامات في المتحف، أو شوف الموقع الرسمي "
+                    if arabic else "I don't have that information. Please ask the museum information desk or check ") + \
+                kb.museum.get("official_booking", "")
+        return " ".join(picked)
     facts = a["facts_ar"] if arabic else a["facts_en"]
+    if body.message and set(tokenize(body.message)) & set(tokenize(" ".join(DESCRIBE_WORDS))):
+        return (a.get("visual_cues_ar") if arabic else a.get("visual_cues")) or ""
     if body.message:
         hits = [h["text"] for h in kb.search(body.message, k=8, artifact_id=a["id"])
                 if h["artifact_id"] == a["id"]]
@@ -133,6 +182,14 @@ def _ai_error(exc: Exception) -> str:
 
 def _build_chat(body: ChatIn) -> tuple[str, list[dict], list[str]]:
     a = _artifact(body.artifact_id)
+    if a["id"] == "guide":
+        system = prompts.guide_prompt(kb.guide_sheet(), body.language, body.audience,
+                                      kb.museum.get("checked", ""), kb.museum.get("official_booking", ""))
+        turns = [t.model_dump() for t in body.history][-12:]
+        turns.append({"role": "user", "content": body.message or prompts.guide_intro_request()})
+        if turns[0]["role"] != "user":
+            turns = turns[1:]
+        return system, turns, ["museum"]
     persona = a["persona_ar"] if body.language.startswith("ar") else a["persona_en"]
     related, sources = "", [a["id"]]
     if body.message:
@@ -151,6 +208,12 @@ def _build_chat(body: ChatIn) -> tuple[str, list[dict], list[str]]:
 @app.get("/api/health")
 def health():
     return {"ok": True, "provider": llm.name, "artifacts": len(kb.artifacts), "version": app.version}
+
+
+@app.get("/api/museum")
+def museum_info():
+    """Map places, tickets, hours and booking steps (illustrative map, check prices on the official site)."""
+    return kb.museum
 
 
 @app.get("/api/artifacts")
@@ -224,7 +287,8 @@ def chat(body: ChatIn):
             raise HTTPException(502, _ai_error(exc))
         if is_intro and llm.name != "offline":
             _intro_cache[key] = reply
-    analytics.log("chat", body.artifact_id, body.language, body.audience)
+    analytics.log("guide" if body.artifact_id == "guide" else "chat", body.artifact_id, body.language,
+                  body.audience, topic_of(body.message))
     return ChatOut(artifact_id=body.artifact_id, reply=reply, sources=sources, provider=llm.name)
 
 
@@ -232,7 +296,8 @@ def chat(body: ChatIn):
 def chat_stream(body: ChatIn):
     """Server-sent events: `data: <text chunk>` lines, then `event: done`."""
     system, turns, _ = _build_chat(body)
-    analytics.log("chat", body.artifact_id, body.language, body.audience)
+    analytics.log("guide" if body.artifact_id == "guide" else "chat", body.artifact_id, body.language,
+                  body.audience, topic_of(body.message))
 
     key = (body.artifact_id, body.language, body.audience)
     is_intro = not body.message and not body.history
@@ -256,6 +321,102 @@ def chat_stream(body: ChatIn):
             yield f"event: error\ndata: {_ai_error(exc)}\n\n"
 
     return StreamingResponse(gen(), media_type="text/event-stream")
+
+
+def _offline_dialogue(body: DialogueIn, a: dict, b: dict) -> list[dict]:
+    arabic = body.language.startswith("ar")
+    fa, fb = (a["facts_ar"], b["facts_ar"]) if arabic else (a["facts_en"], b["facts_en"])
+    said = {"a": sum(1 for x in body.history if x.who == "a"), "b": sum(1 for x in body.history if x.who == "b")}
+    if body.question:
+        def best(art, facts):
+            hits = [h["text"] for h in kb.search(body.question, k=8, artifact_id=art["id"]) if h["artifact_id"] == art["id"]]
+            return next((f for f in facts if any(f in h for h in hits)), facts[said["a"] % len(facts)])
+        return [{"who": "a", "text": best(a, fa)}, {"who": "b", "text": best(b, fb)}]
+    na, nb = a["name_ar" if arabic else "name_en"], b["name_ar" if arabic else "name_en"]
+    i, j = said["a"], said["b"]
+    if not body.history:
+        opener_a = f"أهلاً يا {nb}! أنا {na}. " if arabic else f"Hello, {nb}! I am {na}. "
+        opener_b = f"وأنا {nb}، يا أهلاً بيك. " if arabic else f"And I am {nb}, welcome. "
+    else:
+        opener_a = "وكمان، " if arabic else "Also, "
+        opener_b = "وأنا كمان عندي حكاية: " if arabic else "I have a story too: "
+    ask_b = (f" وإنت يا {nb}؟" if arabic else f" And you, {nb}?")
+    lines = [{"who": "a", "text": opener_a + fa[i % len(fa)] + ask_b},
+             {"who": "b", "text": opener_b + fb[j % len(fb)]},
+             {"who": "a", "text": fa[(i + 1) % len(fa)]},
+             {"who": "b", "text": fb[(j + 1) % len(fb)]}]
+    return lines
+
+
+def _clean_dialogue(data: dict | None) -> list[dict] | None:
+    if not isinstance(data, dict) or not isinstance(data.get("lines"), list):
+        return None
+    out = [{"who": x["who"], "text": " ".join(str(x.get("text", "")).split())[:500]}
+           for x in data["lines"][:6] if isinstance(x, dict) and x.get("who") in ("a", "b") and x.get("text")]
+    return out or None
+
+
+@app.post("/api/dialogue", response_model=DialogueOut, dependencies=[Depends(rate_limit)])
+def dialogue(body: DialogueIn):
+    """Two artifacts talk to each other; the visitor can join with a question."""
+    a, b = _artifact(body.a), _artifact(body.b)
+    if a["id"] == b["id"] or "guide" in (a["id"], b["id"]):
+        raise HTTPException(400, "Pick two different artifacts.")
+    analytics.log("dialogue", a["id"], body.language, body.audience, topic_of(body.question))
+    analytics.log("dialogue", b["id"], body.language, body.audience)
+    lines = None
+    if llm.name != "offline":
+        arabic = body.language.startswith("ar")
+        system = prompts.dialogue_prompt(kb.fact_sheet(a), kb.fact_sheet(b),
+                                         a["persona_ar" if arabic else "persona_en"], b["persona_ar" if arabic else "persona_en"],
+                                         body.language, body.audience, body.topic)
+        names = {"a": a["name_en"], "b": b["name_en"], "visitor": "Visitor"}
+        transcript = "\n".join(f"{names[x.who]}: {x.text}" for x in body.history[-12:])
+        ask = (f"Conversation so far:\n{transcript}\n\n" if transcript else "Start the conversation.\n") + \
+              (f"The visitor now asks: {body.question}\n" if body.question else "Continue naturally.\n")
+        try:
+            lines = _clean_dialogue(parse_json(llm.complete(system, [{"role": "user", "content": ask}],
+                                                            fast=True, max_tokens=900)))
+        except Exception:
+            lines = None
+    used = llm.name if lines else "offline"
+    return DialogueOut(lines=lines or _offline_dialogue(body, a, b), provider=used)
+
+
+# ---------------------------------------------------------------- school trips
+def _code(code: str) -> str:
+    c = code.strip().upper()
+    if not (4 <= len(c) <= 8 and c.isalnum()):
+        raise HTTPException(400, "Bad class code.")
+    return c
+
+
+@app.post("/api/class", dependencies=[Depends(rate_limit)])
+def class_create(body: ClassIn):
+    return {"code": classes.create(" ".join(body.name.split()))}
+
+
+@app.post("/api/class/{code}/join", dependencies=[Depends(rate_limit)])
+def class_join(code: str, body: JoinIn):
+    sid = classes.join(_code(code), " ".join(body.nick.split()))
+    if not sid:
+        raise HTTPException(404, "Class not found, expired or full.")
+    analytics.log("class_join")
+    return {"sid": sid}
+
+
+@app.post("/api/class/{code}/progress", status_code=204, dependencies=[Depends(rate_limit)])
+def class_progress(code: str, body: ProgressIn):
+    if not classes.progress(_code(code), body.sid, body.stamps, body.quiz):
+        raise HTTPException(404, "Class or student not found.")
+
+
+@app.get("/api/class/{code}")
+def class_board(code: str):
+    board = classes.board(_code(code))
+    if not board:
+        raise HTTPException(404, "Class not found or expired.")
+    return board
 
 
 @app.post("/api/tour")

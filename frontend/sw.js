@@ -1,6 +1,6 @@
 // Offline shell: the app and its embedded knowledge base keep working inside the museum
 // even with weak signal. API calls always go to the network.
-const CACHE = "hekaya-v1";
+const CACHE = "hekaya-v2";
 const SHELL = ["/", "/manifest.webmanifest", "/icon.svg"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(

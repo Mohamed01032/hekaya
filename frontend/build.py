@@ -10,6 +10,7 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 kb = json.loads((root / "data" / "artifacts.json").read_text(encoding="utf-8"))
+kb["museum"] = json.loads((root / "data" / "museum.json").read_text(encoding="utf-8"))
 tpl = (root / "frontend" / "app.template.html").read_text(encoding="utf-8")
 body = tpl.replace("/*__KB__*/null", json.dumps(kb, ensure_ascii=False))
 

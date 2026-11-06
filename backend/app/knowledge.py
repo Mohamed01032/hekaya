@@ -55,11 +55,77 @@ class KnowledgeBase:
         self.artifacts: list[dict[str, Any]] = data["artifacts"]
         self.by_id = {a["id"]: a for a in self.artifacts}
         self.by_code = {a["code"].upper(): a for a in self.artifacts}
+        self.museum: dict[str, Any] = data.get("museum") or {}
+        self.places = {p["id"]: p for p in self.museum.get("places", [])}
+        if self.museum:
+            self.by_id["guide"] = GUIDE
         self._build_index()
 
     @classmethod
     def from_file(cls, path: Path) -> "KnowledgeBase":
-        return cls(json.loads(Path(path).read_text(encoding="utf-8")))
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+        museum = Path(path).with_name("museum.json")
+        if museum.exists() and "museum" not in data:
+            data["museum"] = json.loads(museum.read_text(encoding="utf-8"))
+        return cls(data)
+
+    # ---------- the museum itself (halls, shops, tickets) ----------
+    def museum_facts(self) -> list[tuple[str, str, str]]:
+        """(source id, language, text) for every place and visitor-info fact."""
+        rows: list[tuple[str, str, str]] = []
+        for p in self.museum.get("places", []):
+            for lang in ("en", "ar"):
+                for fact in p[f"facts_{lang}"]:
+                    rows.append((f"place:{p['id']}", lang, f"{p[f'name_{lang}']}: {fact}"))
+        v = self.museum.get("visit") or {}
+        if v:
+            for lang in ("en", "ar"):
+                cur = "EGP" if lang == "en" else "جنيه"
+                prices = "; ".join(f"{t[lang]} {t['egp']} {cur}" if t["egp"] else f"{t[lang]} {'free' if lang == 'en' else 'ببلاش'}"
+                                   for t in v.get("tickets", []))
+                head = "Ticket prices" if lang == "en" else "أسعار التذاكر"
+                rows.append(("visit:tickets", lang, f"{head}: {prices}. {v.get(f'tickets_note_{lang}', '')}"))
+                hours = "; ".join(f"{h[lang]}: {'complex' if lang == 'en' else 'المجمع'} {h['complex']}, "
+                                  f"{'galleries' if lang == 'en' else 'القاعات'} {h['galleries']}" for h in v.get("hours", []))
+                head = "Opening hours" if lang == "en" else "مواعيد الفتح"
+                rows.append(("visit:hours", lang, f"{head}: {hours}. {v.get(f'hours_note_{lang}', '')}"))
+                for key in ("validity", "booking", "rules"):
+                    for line in v.get(f"{key}_{lang}", []):
+                        rows.append((f"visit:{key}", lang, line))
+                if v.get(f"getting_{lang}"):
+                    rows.append(("visit:getting", lang, v[f"getting_{lang}"]))
+        return rows
+
+    def guide_sheet(self) -> str:
+        m = self.museum
+        lines = [f"Information checked on {m.get('checked')}. Official booking site: {m.get('official_booking')}.",
+                 m.get("note_en", ""), "Verified facts about the museum:"]
+        lines += [f"- [{src}] {text}" for src, lang, text in self.museum_facts() if lang == "en"]
+        return "\n".join(lines)
+
+    def guide_answer(self, query: str | None, lang: str, k: int = 3) -> list[str]:
+        """Best-matching museum facts in one language (used when no AI model is available)."""
+        facts = [(src, text) for src, l, text in self.museum_facts() if l == lang]
+        if not query:
+            return []
+        q = set(tokenize(query))
+
+        def score(src: str, text: str) -> int:
+            topic = src.split(":", 1)[1]
+            alias = set(tokenize(" ".join(TOPIC_WORDS.get(topic, ()))))
+            bonus = 0
+            if src.startswith("place:") and src[6:] in self.places:
+                if normalize(self.places[src[6:]][f"name_{lang}"]) in normalize(query):
+                    bonus = 10  # the visitor named this place
+            return len(q & set(tokenize(text))) + 3 * len(q & alias) + bonus
+
+        scored = sorted(((score(src, text), -i) for i, (src, text) in enumerate(facts)), reverse=True)
+        if not scored or scored[0][0] == 0:
+            return []
+        top = facts[-scored[0][1]][0]
+        if top.startswith("visit:"):  # practical topics read best as the whole short list, in order
+            return [text for src, text in facts if src == top][:4]
+        return [facts[-i][1] for sc, i in scored[:k] if sc > 0]
 
     # ---------- retrieval ----------
     def _passages(self) -> list[tuple[str, str]]:
@@ -70,6 +136,7 @@ class KnowledgeBase:
             rows.append((a["id"], header))
             for fact in a["facts_en"] + a["facts_ar"]:
                 rows.append((a["id"], f"{a['name_en']} — {fact}"))
+        rows += [(src, text) for src, _, text in self.museum_facts()]
         return rows
 
     def _build_index(self) -> None:
@@ -113,16 +180,68 @@ class KnowledgeBase:
         return {**a, "zone_name_en": zone.get("name_en"), "zone_name_ar": zone.get("name_ar")}
 
     def fact_sheet(self, a: dict[str, Any]) -> str:
+        if a["id"] == "guide":
+            return self.guide_sheet()
         lines = [
             f"Name: {a['name_en']} / {a['name_ar']}",
             f"Display code: {a['code']}",
             f"Location in museum: {self.zones[a['zone']]['name_en']}",
             f"Era: {a['era_en']}",
             f"Material: {a['material_en']}",
+            f"What it looks like (use when asked to describe yourself, e.g. for blind visitors): {a.get('visual_cues', '')}",
             "Verified facts:",
         ]
         lines += [f"- {f}" for f in a["facts_en"]]
         return "\n".join(lines)
+
+
+# Everyday words visitors use for each topic (Egyptian Arabic + English), so offline answers still match.
+TOPIC_WORDS: dict[str, tuple[str, ...]] = {
+    "tickets": ("سعر", "اسعار", "كام", "مصري", "للمصري", "للمصريين", "اجنبي", "للاجانب", "طالب", "طلبه", "بكام", "تمن", "فلوس", "جنيه", "price", "prices", "cost", "fee", "much", "egp"),
+    "hours": ("مواعيد", "ميعاد", "بيفتح", "بيقفل", "يفتح", "يقفل", "امتي", "الساعه", "open", "opening", "close", "closing", "hours", "time"),
+    "validity": ("مده", "مدتها", "قد", "صلاحيه", "تنفع", "ساعات", "اقعد", "خروج", "valid", "validity", "stay", "long", "reentry", "refund"),
+    "booking": ("احجز", "حجز", "اشتري", "اونلاين", "موقع", "book", "booking", "buy", "online", "website"),
+    "rules": ("تصوير", "فلاش", "ممنوع", "مسموح", "صور", "photo", "photos", "camera", "flash", "allowed", "rules", "tripod"),
+    "getting": ("اروح", "اوصل", "مواصلات", "عنوان", "مكان", "تاكسي", "اوبر", "get", "reach", "address", "taxi", "metro", "transport"),
+    "shops": ("محلات", "بازار", "بازارات", "هدايا", "تذكارات", "شوبينج", "shop", "shops", "shopping", "souvenir", "souvenirs", "gift", "bazaar"),
+    "food": ("اكل", "مطعم", "مطاعم", "كافيه", "قهوه", "اشرب", "جعان", "food", "eat", "restaurant", "cafe", "coffee", "drink"),
+    "parking": ("جراج", "اركن", "ركنه", "عربيه", "parking", "park", "car"),
+    "gate": ("امن", "تفتيش", "شباك", "مدخل", "security", "entrance", "gate"),
+    "children": ("اطفال", "طفل", "عيال", "ولادي", "children", "kids", "child"),
+    "services": ("اسانسير", "كرسي", "متحرك", "حمام", "استعلامات", "lift", "elevator", "wheelchair", "toilet", "help", "information"),
+    "tutankhamun": ("توت", "tut"),
+    "khufu-boats": ("مركب", "مراكب", "boat", "boats"),
+    "grand-staircase": ("سلم", "الدرج", "stairs", "staircase"),
+    "galleries": ("قاعات", "القاعات", "galleries", "halls", "rooms"),
+    "gardens": ("حدايق", "جنينه", "garden", "gardens"),
+}
+
+PRACTICAL = ("tickets", "hours", "validity", "booking", "rules", "getting", "shops", "food",
+             "parking", "gate", "children", "services")
+DESCRIBE_WORDS = {"صف", "اوصف", "وصف", "شكلك", "شكله", "شكل", "لونك", "describe", "look", "looks", "appearance", "colour", "color"}
+
+
+def topic_of(message: str | None) -> str | None:
+    """Coarse category of a visitor question, for anonymous analytics (never the text itself)."""
+    if not message:
+        return None
+    q = set(tokenize(message))
+    if q & set(tokenize(" ".join(DESCRIBE_WORDS))):
+        return "describe"
+    best, score = None, 0
+    for topic in PRACTICAL:
+        n = len(q & set(tokenize(" ".join(TOPIC_WORDS.get(topic, ())))))
+        if n > score:
+            best, score = topic, n
+    return best or "history"
+
+
+GUIDE: dict[str, Any] = {
+    "id": "guide", "code": "GUIDE", "zone": "plaza", "kind": "guide",
+    "name_en": "Hekaya, your museum guide", "name_ar": "حكاية، مرشدتك في المتحف",
+    "persona_en": "A warm, practical guide who knows every hall, shop, ticket rule and shortcut of the museum.",
+    "persona_ar": "مرشدة ودودة وعملية، عارفة كل قاعة ومحل وقواعد التذاكر وأقصر طريق في المتحف.",
+}
 
 
 @lru_cache(maxsize=4)

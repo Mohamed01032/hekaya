@@ -1,9 +1,9 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="icon.svg"><link rel="apple-touch-icon" href="icon.svg"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>Hekaya حكاية</title>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="icon.svg"><link rel="apple-touch-icon" href="icon.svg"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>Hekaya 2 حكاية</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#0E1D46">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Egyptian+Hieroglyphs&display=swap">
 <style>
 /* Layout: one-column phone app — sticky header, a scrolling view, fixed bottom nav; artifact opens as a full sheet.
    Palette: lapis lazuli ink + Tutankhamun gold on calcite white; carnelian only for "live/busy" states. */
@@ -41,6 +41,11 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .brand b{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--gold);line-height:1}
 .brand span{font-family:var(--f-display);font-size:13px;color:var(--muted);letter-spacing:.06em}
 select.mini{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:13px}
+.langpick{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 4px 3px 10px;font-size:13px;color:var(--muted)}
+[dir="rtl"] .langpick{padding:3px 10px 3px 4px}
+.langpick svg{width:16px;height:16px;color:var(--gold);flex:none}
+.langpick b{font-weight:600;color:var(--ink)}
+.langpick select.mini{border:0;background:var(--sunk);padding:4px 8px;color:var(--ink);font-weight:500}
 .seg{display:flex;background:var(--sunk);border-radius:999px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0/.12)}
@@ -102,7 +107,7 @@ p{margin:0}
 
 /* bottom nav */
 nav.tabs{position:fixed;inset:auto 0 0;z-index:25;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav.tabs .wrap{display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav-h)}
+nav.tabs .wrap{display:grid;grid-template-columns:repeat(5,1fr);height:var(--nav-h)}
 nav.tabs button{border:0;background:none;display:grid;place-items:center;align-content:center;gap:2px;font-size:12px;color:var(--muted)}
 nav.tabs button svg{width:22px;height:22px}
 nav.tabs button[aria-current="page"]{color:var(--gold);font-weight:600}
@@ -159,6 +164,104 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 .progress i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .4s}
 
 .toast{position:fixed;z-index:60;inset-inline:max(16px,env(safe-area-inset-left,0px));bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:12px;padding:12px 14px;font-size:14px}
+/* museum: map + visit info */
+.guidecta{display:flex;gap:12px;align-items:center;background:var(--night);color:var(--night-fg);border-radius:18px;padding:14px 16px}
+.guidecta p{color:color-mix(in oklab,var(--night-fg) 78%,var(--night));font-size:13px}
+.guidecta b{display:block;font-family:var(--f-display);font-size:17px}
+.guidecta .btn{margin-inline-start:auto;flex:none;background:var(--gold);color:#1A1405}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:10px;display:grid;gap:8px}
+.mapbox svg{width:100%;height:100%;display:block}
+.mapview{position:relative;aspect-ratio:400/510;max-height:72vh;margin-inline:auto;width:100%;border-radius:14px;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;background:var(--sunk)}
+.mapview.drag{cursor:grabbing}
+.mapctl{position:absolute;inset-inline-end:10px;top:10px;display:grid;gap:6px;z-index:2}
+.mapctl button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:20px;line-height:1;display:grid;place-items:center;box-shadow:0 1px 3px rgb(0 0 0/.15)}
+.mapctl svg{width:18px;height:18px}
+.maphint{position:absolute;inset-inline-start:10px;bottom:10px;z-index:2;font-size:11px;background:color-mix(in oklab,var(--surface) 85%,transparent);border-radius:8px;padding:3px 8px;color:var(--muted)}
+.maprow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.mapbox .site{fill:var(--sunk);stroke:var(--line);stroke-width:1.5}
+.mapbox .bld{fill:var(--bg);stroke:var(--muted);stroke-width:2}
+.mapbox .zonefill{fill:var(--gold-soft);opacity:.75}
+.mapbox .tutfill{fill:var(--gold-soft)}
+.mapbox .steps{stroke:var(--gold);stroke-width:2;fill:none}
+.mapbox .lbl{font:600 11px var(--f-body);fill:var(--muted)}
+.mapbox .lbl.big{font:700 13px var(--f-display);fill:var(--ink)}
+.mapbox .pyr{fill:var(--gold);opacity:.55}
+.mapbox .pin{cursor:pointer}
+.mapbox .pin circle{stroke:var(--surface);stroke-width:2.5}
+.mapbox .pin text{font:700 12px var(--f-mono);fill:#FFFFFF;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.mapbox .pin.sel circle{stroke:var(--ink);stroke-width:3}
+.mapbox .pin.dim{opacity:.25}
+.k-hall{fill:var(--gold)} .k-shop{fill:var(--carnelian)} .k-food{fill:var(--ok)} .k-service{fill:var(--lapis)} .k-outdoor{fill:#5E8C3A}
+.mapnote{font-size:12px;color:var(--muted)}
+.place{display:grid;gap:8px}
+.place .kind{font-size:12px;font-weight:600;color:var(--lapis)}
+.place ul,.visit ul,.visit ol{margin:0;padding-inline-start:20px;display:grid;gap:6px}
+.legend{display:grid;gap:6px}
+.legend button{display:flex;gap:10px;align-items:center;text-align:start;background:none;border:0;padding:6px 4px;border-radius:10px;width:100%}
+.legend button[aria-pressed="true"]{background:var(--lapis-soft)}
+.legend .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:700 12px var(--f-mono);color:#fff;flex:none}
+.legend .n.k-hall{background:var(--gold)} .legend .n.k-shop{background:var(--carnelian)} .legend .n.k-food{background:var(--ok)} .legend .n.k-service{background:var(--lapis)} .legend .n.k-outdoor{background:#5E8C3A}
+table.prices{width:100%;border-collapse:collapse;font-size:14px}
+table.prices td{padding:8px 4px;border-bottom:1px solid var(--line)}
+table.prices td:last-child{text-align:end;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.visit{display:grid;gap:12px}
+.visit h3{display:flex;align-items:center;gap:8px}
+.checked{font-size:12px;color:var(--muted);background:var(--sunk);border-radius:10px;padding:8px 10px}
+/* v2: accessibility mode */
+body.a11y{font-size:19px;line-height:1.7}
+body.a11y{--muted:var(--ink);--line:var(--ink)}
+body.a11y .btn,body.a11y .chip,body.a11y nav.tabs button{font-size:17px}
+body.a11y .chip{padding:10px 16px} body.a11y .btn{padding:14px 20px}
+body.a11y nav.tabs button{font-size:13px}
+body.a11y h1{font-size:32px} body.a11y .hero h1{font-size:34px} body.a11y h2{font-size:25px}
+body.a11y .bubble{font-size:20px}
+.a11ybtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font-size:13px}
+.a11ybtn svg{width:16px;height:16px;color:var(--lapis)}
+.a11ybtn[aria-pressed="true"]{background:var(--lapis);color:var(--bg);border-color:var(--lapis)} .a11ybtn[aria-pressed="true"] svg{color:var(--bg)}
+.mic[aria-pressed="true"]{background:var(--carnelian);color:#fff}
+/* v2: sound */
+.soundrow{display:flex;gap:8px;flex-wrap:wrap}
+.nowplay{position:fixed;z-index:45;inset-inline:max(16px,env(safe-area-inset-left,0px));bottom:calc(var(--nav-h) + 10px + env(safe-area-inset-bottom,0px));max-width:528px;margin:0 auto;background:var(--night);color:var(--night-fg);border-radius:14px;padding:8px 8px 8px 14px;display:flex;align-items:center;gap:10px;font-size:13px;box-shadow:0 4px 18px rgb(0 0 0/.25)}
+[dir="rtl"] .nowplay{padding:8px 14px 8px 8px}
+.nowplay .bars{display:flex;gap:2px;align-items:flex-end;height:16px}.nowplay .bars i{width:3px;background:var(--gold);border-radius:2px;animation:eq 1s ease-in-out infinite alternate}
+.nowplay .bars i:nth-child(2){animation-delay:.2s}.nowplay .bars i:nth-child(3){animation-delay:.4s}
+@keyframes eq{from{height:4px}to{height:16px}}
+.nowplay span{flex:1;min-width:0}.nowplay small{display:block;opacity:.7;font-size:11px}
+.nowplay button{background:var(--gold);color:#1A1405;border:0;border-radius:10px;padding:6px 12px;font-weight:600}
+.sheetopen .nowplay{top:calc(8px + env(safe-area-inset-top,0px));bottom:auto}
+/* v2: dialogue */
+.dpick{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+.dpick select{width:100%;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px;font-size:14px}
+.dpick .vs{font-family:var(--f-display);color:var(--gold);font-size:18px}
+.bubble.b{background:var(--gold-soft);border:1px solid color-mix(in oklab,var(--gold) 40%,transparent);justify-self:end;border-start-end-radius:4px}
+.bubble.b .who{color:var(--ink)}
+.bubble.b.ai{justify-self:end}
+/* v2: quiz, school, souvenir, dashboard */
+.quiz{border:1.5px dashed var(--gold);border-radius:16px;padding:14px;display:grid;gap:10px;background:var(--surface)}
+.quiz button.opt{text-align:start;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px}
+.quiz button.opt.ok{border-color:var(--ok);background:color-mix(in oklab,var(--ok) 15%,var(--surface))}
+.quiz button.opt.no{border-color:var(--carnelian);background:color-mix(in oklab,var(--carnelian) 12%,var(--surface))}
+.bigcode{font-family:var(--f-mono);font-size:40px;letter-spacing:.2em;color:var(--gold);text-align:center;padding:6px 0}
+.board{display:grid;gap:6px;counter-reset:r}
+.board div{display:flex;gap:10px;align-items:center;background:var(--bg);border-radius:10px;padding:8px 10px}
+.board div::before{counter-increment:r;content:counter(r);font-family:var(--f-mono);color:var(--gold);width:20px}
+.board b{flex:1;font-weight:600} .board small{color:var(--muted);font-variant-numeric:tabular-nums}
+.field{display:grid;gap:6px}.field input{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-width:0}
+.row2{display:flex;gap:8px;flex-wrap:wrap}
+.souvenir img{width:100%;max-width:300px;border-radius:14px;border:1px solid var(--line);justify-self:center}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.tile b{display:block;font-family:var(--f-display);font-size:28px;font-variant-numeric:tabular-nums}
+.tile small{color:var(--muted)}
+.hbars{display:grid;gap:8px}
+.hbar-row{display:grid;grid-template-columns:minmax(0,1.5fr) 1.5fr auto;gap:8px;align-items:center;font-size:13px}
+.hbar-row .track{height:10px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.hbar-row .fill{height:100%;background:var(--lapis);border-radius:6px}
+.hbar-row .lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar-row .val{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+.hours svg{width:100%;height:auto;display:block}
+.hours rect.c{fill:var(--gold)} .hours text{font:10px var(--f-mono);fill:var(--muted)}
+.empty{color:var(--muted);font-size:13px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
 
@@ -166,11 +269,12 @@ input[type=range]{width:100%;accent-color:var(--gold)}
   <div class="wrap">
     <div class="hbar">
       <div class="brand"><b data-i="brand">حكاية</b><span>GEM</span></div>
-      <select class="mini" id="lang" aria-label="Language">
+      <label class="langpick" for="lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg><b data-i="langLbl">اللغة</b>
+      <select class="mini" id="lang">
         <option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option>
         <option value="de">Deutsch</option><option value="es">Español</option><option value="it">Italiano</option>
         <option value="ru">Русский</option><option value="zh">中文</option><option value="ja">日本語</option>
-      </select>
+      </select></label>
     </div>
     <div class="hsub">
       <div class="seg" role="group" id="aud" aria-label="Audience">
@@ -178,6 +282,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
         <button data-a="adult" data-i="adult">زائر</button>
         <button data-a="expert" data-i="expert">خبير</button>
       </div>
+      <button type="button" class="a11ybtn" id="a11yBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span data-i="a11y">سهولة الوصول</span></button>
       <div class="status"><i class="dot" id="dot"></i><span id="mode">…</span></div>
     </div>
   </div>
@@ -205,8 +310,41 @@ input[type=range]{width:100%;accent-color:var(--gold)}
     </div>
     <div class="grid" style="display:grid;gap:10px">
       <h3 data-i="try">جرّب من غير ما تروح المتحف</h3>
+      <button type="button" class="chip" id="guideChip" style="width:max-content;border-color:var(--gold)" data-i="guideChip">اسأل المرشد عن المتحف والتذاكر</button>
       <div class="chips" id="tryChips"></div>
     </div>
+  </section>
+
+  <!-- MUSEUM: map, tickets, guide -->
+  <section class="view" id="v-museum" hidden>
+    <div><div class="eyebrow" data-i="musE">دليل المتحف</div><h2 data-i="musT">خريطة المتحف والتذاكر</h2></div>
+    <div class="guidecta">
+      <div><b data-i="gTitle">اسأل المرشد</b><p data-i="gSub">عن القاعات والمحلات والأكل والتذاكر والمواعيد.</p></div>
+      <button class="btn small" id="openGuide" data-i="gBtn">اسأل</button>
+    </div>
+    <div class="seg" role="group" id="musSeg" style="width:max-content">
+      <button data-m="map" aria-pressed="true" data-i="segMap">الخريطة</button>
+      <button data-m="visit" aria-pressed="false" data-i="segVisit">التذاكر والزيارة</button>
+    </div>
+    <div id="mus-map" class="grid" style="display:grid;gap:14px">
+      <div class="chips" id="kinds"></div>
+      <div class="mapbox">
+        <div class="mapview" id="mapview">
+          <div id="map" style="width:100%;height:100%"></div>
+          <div class="mapctl">
+            <button type="button" id="zin" aria-label="Zoom in">+</button>
+            <button type="button" id="zout" aria-label="Zoom out">−</button>
+            <button type="button" id="zreset" aria-label="Reset map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 15v5h-5M4 4l6 6M20 20l-6-6"/></svg></button>
+          </div>
+          <span class="maphint" data-i="mapHint">اسحب للتحريك · قرّب بصباعين</span>
+        </div>
+        <div class="maprow"><p class="mapnote" data-i="mapNote">رسم توضيحي مش بالمقاس. اتبع اللافتات جوه المتحف.</p>
+          <a class="btn small ghost" id="gmaps" target="_blank" rel="noopener" style="text-decoration:none" href="https://www.google.com/maps/search/?api=1&amp;query=Grand+Egyptian+Museum+Giza" data-i="gmaps">افتح الموقع في خرائط جوجل</a></div>
+      </div>
+      <div class="card place" id="placeCard"></div>
+      <div class="card"><div class="legend" id="legend"></div></div>
+    </div>
+    <div id="mus-visit" class="visit" hidden></div>
   </section>
 
   <!-- TOUR -->
@@ -230,10 +368,35 @@ input[type=range]{width:100%;accent-color:var(--gold)}
     <div class="progress"><i id="prog" style="width:0"></i></div>
     <p class="note" id="progTxt"></p>
     <div class="passport" id="stamps"></div>
+    <div class="card souvenir" id="souvenir">
+      <div><h3 data-i="souvT">تذكار زيارتك</h3><p class="lede" data-i="souvP">كارت فيه القطع اللي كلمتها وجملة من كل واحدة، واسمك بالهيروغليفي. شاركه ستوري.</p></div>
+      <label class="field"><span class="note" data-i="yourName">اسمك</span><input id="souvName" maxlength="24" autocomplete="name"></label>
+      <button type="button" class="btn" id="souvMake" data-i="souvMake">اعمل الكارت</button>
+      <img id="souvImg" alt="" hidden>
+      <div class="row2" id="souvActs" hidden><button type="button" class="btn small" id="souvShare" data-i="share">شارك</button><button type="button" class="btn small ghost" id="souvSave" data-i="save">حمّل الصورة</button></div>
+    </div>
+    <div class="card" id="school">
+      <div><h3 data-i="schT">رحلة مدرسية</h3><p class="lede" data-i="schP">المدرّس يفتح فصل، والطلاب يدخلوا بالكود، وكل قطعة يكلموها وكل سؤال يجاوبوه صح بيزوّد نقطهم.</p></div>
+      <div id="schBody"></div>
+    </div>
+    <button type="button" class="btn ghost" id="openDash" data-i="openDash">لوحة المتحف (إحصائيات مجهولة)</button>
   </section>
 
   <!-- COLLECTION -->
+  <section class="view" id="v-dash" hidden>
+    <div class="row2" style="align-items:center"><button type="button" class="iconbtn" id="dashBack" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div><div class="eyebrow" data-i="dashE">لوحة المتحف</div><h2 data-i="dashT">الزوار بيعملوا إيه؟</h2></div></div>
+    <p class="checked" id="dashSrc"></p>
+    <div id="dashBody" style="display:grid;gap:14px"></div>
+  </section>
+
   <section class="view" id="v-all" hidden>
+    <div class="card">
+      <div><h3 data-i="dlgT">حوار بين قطعتين</h3><p class="lede" data-i="dlgP">اختار قطعتين وخليهم يتكلموا مع بعض قدامك، واسألهم إنت كمان.</p></div>
+      <div class="dpick"><select id="dA" aria-label="A"></select><span class="vs">×</span><select id="dB" aria-label="B"></select></div>
+      <div class="chips" id="dTopics"></div>
+      <button type="button" class="btn" id="dGo" data-i="dlgGo">ابدأ الحوار</button>
+    </div>
     <div><div class="eyebrow" data-i="allE">المجموعة</div><h2 data-i="allT">كل القطع اللي بتتكلم</h2></div>
     <div class="list" id="allList"></div>
   </section>
@@ -242,6 +405,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 <nav class="tabs" aria-label="Sections">
   <div class="wrap">
     <button data-v="scan" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5h3M20 8V5h-3M4 16v3h3M20 16v3h-3"/><circle cx="12" cy="12" r="3"/></svg><span data-i="tScan">اكتشف</span></button>
+    <button data-v="museum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg><span data-i="tMus">المتحف</span></button>
     <button data-v="tour"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></svg><span data-i="tTour">رحلتي</span></button>
     <button data-v="pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2.5" width="10" height="16" rx="5"/><path d="M6 21.5h12"/></svg><span data-i="tPass">الجواز</span></button>
     <button data-v="all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg><span data-i="tAll">القطع</span></button>
@@ -260,18 +424,32 @@ input[type=range]{width:100%;accent-color:var(--gold)}
       <h1 id="aName"></h1>
       <dl class="facts"><dt data-i="era">العصر</dt><dd id="aEra"></dd><dt data-i="mat">الخامة</dt><dd id="aMat"></dd></dl>
       <p class="hook" id="aHook"></p>
+      <div class="soundrow" id="aSound"></div>
     </div>
     <div class="chat" id="chat" aria-live="polite"></div>
+    <div id="quizSlot"></div>
     <div class="composer">
       <div class="chips" id="sugg"></div>
-      <form id="ask"><input id="q" autocomplete="off" maxlength="300"><button class="btn" id="send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-6 16-2-7z"/></svg></button><button type="button" class="btn ghost" id="stop" hidden data-i="stop">إيقاف</button></form>
+      <form id="ask"><button type="button" class="btn ghost mic" id="mic" hidden aria-pressed="false" aria-label="Speak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button><input id="q" autocomplete="off" maxlength="300"><button class="btn" id="send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-6 16-2-7z"/></svg></button><button type="button" class="btn ghost" id="stop" hidden data-i="stop">إيقاف</button></form>
     </div>
   </div>
 </div>
+<div class="sheet" id="dsheet" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle">
+  <div class="wrap">
+    <div class="top"><button class="iconbtn" id="dClose" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button><span class="zone" data-i="dlgT">حوار بين قطعتين</span></div>
+    <div class="hero"><h1 id="dTitle"></h1><p class="hook" data-i="dlgHook">القطعتين بيتكلموا من المعلومات الموثقة بتاعة كل واحدة بس.</p></div>
+    <div class="chat" id="dChat" aria-live="polite"></div>
+    <div class="composer">
+      <div class="row2"><button type="button" class="btn small ghost" id="dMore" data-i="dlgMore">كمّلوا</button><button type="button" class="btn small ghost" id="dListen" data-i="listenAll">اسمع الحوار</button></div>
+      <form id="dAsk"><input id="dq" autocomplete="off" maxlength="300"><button class="btn" id="dSend" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l16-8-6 16-2-7z"/></svg></button></form>
+    </div>
+  </div>
+</div>
+<div class="nowplay" id="nowplay" hidden role="status"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span><b id="npName"></b><small data-i="imagined">صوت متخيّل، مش تسجيل حقيقي</small></span><button type="button" id="npStop" data-i="stopSound">إيقاف</button></div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
-const KB = {"meta": {"museum": "Grand Egyptian Museum (GEM), Giza", "version": "0.1.0-demo", "note": "Demo seed of 14 highlights written for the hackathon prototype. Before production, replace or verify every entry against GEM's official collection catalogue and curators."}, "zones": [{"id": "plaza", "name_en": "Entrance Plaza", "name_ar": "ساحة المدخل", "order": 1}, {"id": "grand-hall", "name_en": "Grand Hall", "name_ar": "البهو العظيم", "order": 2}, {"id": "grand-staircase", "name_en": "Grand Staircase", "name_ar": "الدرج العظيم", "order": 3}, {"id": "tutankhamun", "name_en": "Tutankhamun Galleries", "name_ar": "قاعات توت عنخ آمون", "order": 4}, {"id": "khufu-boats", "name_en": "Khufu's Boats Museum", "name_ar": "متحف مراكب خوفو", "order": 5}], "artifacts": [{"id": "hanging-obelisk", "code": "GEM-01", "zone": "plaza", "minutes": 8, "tags": ["kings", "architecture", "ramesses"], "name_en": "The Hanging Obelisk of Ramesses II", "name_ar": "المسلة المعلقة لرمسيس الثاني", "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)", "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)", "material_en": "Red granite, about 16 m tall", "material_ar": "جرانيت أحمر، بارتفاع حوالي 16 مترًا", "persona_en": "A proud, towering voice; speaks slowly like stone that has watched three thousand years pass.", "persona_ar": "صوت شامخ وفخور، يتكلم ببطء زي حجر شاف تلات آلاف سنة.", "facts_en": ["Carved for King Ramesses II and brought to the museum from San el-Hagar (ancient Tanis) in Sharqia.", "It is raised above the ground so visitors can walk beneath it and see the king's cartouche carved on the underside of its base — a part of an obelisk normally hidden forever.", "Obelisks were linked to the sun god; their pointed tip (the pyramidion) caught the first light of the morning."], "facts_ar": ["اتنحتت للملك رمسيس الثاني واتنقلت للمتحف من صان الحجر (تانيس القديمة) في الشرقية.", "مرفوعة فوق الأرض عشان الزوار يمشوا تحتها ويشوفوا خرطوش الملك المنقوش تحت قاعدتها — جزء عادةً بيفضل مستخبي للأبد.", "المسلات كانت مرتبطة بإله الشمس، وقمتها المدببة كانت أول حاجة يلمسها نور الصبح."], "visual_cues": "Tall four-sided red granite pillar with pointed top, suspended on supports above a plaza; hieroglyph columns on its faces.", "kid_hook_en": "I'm a giant stone needle floating in the air — look up under my feet to find my king's secret name!", "kid_hook_ar": "أنا إبرة حجر عملاقة طايرة في الهوا — بص تحت رجلي هتلاقي اسم الملك السري!"}, {"id": "ramesses-colossus", "code": "GEM-02", "zone": "grand-hall", "minutes": 10, "tags": ["kings", "statues", "ramesses"], "name_en": "Colossal Statue of Ramesses II", "name_ar": "تمثال رمسيس الثاني العملاق", "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)", "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)", "material_en": "Granite, about 11 m tall and roughly 83 tonnes", "material_ar": "جرانيت، بارتفاع حوالي 11 مترًا ووزن حوالي 83 طنًا", "persona_en": "A confident pharaoh who loves telling the story of his own long reign; warm but grand.", "persona_ar": "فرعون واثق من نفسه وبيحب يحكي عن حكمه الطويل؛ دافي بس فيه هيبة.", "facts_en": ["Ramesses II ruled for about 66 years and is one of the most famous kings of ancient Egypt.", "The statue was found in 1820 near Mit Rahina, the site of ancient Memphis, broken into pieces.", "From 1955 it stood in Ramses Square in central Cairo; it was moved to the GEM site in 2006 and placed in the Grand Hall in 2018.", "It is the first great figure visitors meet when they enter the museum."], "facts_ar": ["رمسيس الثاني حكم حوالي 66 سنة وهو من أشهر ملوك مصر القديمة.", "التمثال اتلقى سنة 1820 جنب ميت رهينة، مكان منف القديمة، وكان مكسور لأجزاء.", "من 1955 كان واقف في ميدان رمسيس في وسط القاهرة، واتنقل لموقع المتحف سنة 2006 واتحط في البهو العظيم سنة 2018.", "هو أول وجه عظيم بيقابل الزوار أول ما يدخلوا المتحف."], "visual_cues": "Huge standing pharaoh statue in a vast atrium, striding pose, nemes headdress, double crown absent, kilt; glass roof and staircase behind.", "kid_hook_en": "I used to stand in the middle of Cairo traffic — now I guard the biggest museum door in the world!", "kid_hook_ar": "أنا كنت واقف وسط زحمة ميدان رمسيس — دلوقتي بحرس باب أكبر متحف في العالم!"}, {"id": "grand-staircase", "code": "GEM-03", "zone": "grand-staircase", "minutes": 25, "tags": ["statues", "kings", "gods", "architecture"], "name_en": "The Grand Staircase", "name_ar": "الدرج العظيم", "era_en": "Spans the Old Kingdom to the Greco-Roman period", "era_ar": "من الدولة القديمة حتى العصر اليوناني الروماني", "material_en": "A six-storey stair-gallery lined with royal and divine statues", "material_ar": "درج بارتفاع ست طوابق مليان تماثيل ملوك وآلهة", "persona_en": "A wise narrator, like a grandparent walking you up through time one step at a time.", "persona_ar": "راوي حكيم، زي جدك وهو طالع بيك على سلم الزمن خطوة خطوة.", "facts_en": ["The staircase is itself an exhibition: statues of kings and gods are arranged along it, roughly in time order, as you climb.", "At the top, large windows look out toward the Giza pyramids.", "It connects the Grand Hall with the main galleries and the Tutankhamun Galleries above."], "facts_ar": ["الدرج نفسه معرض: تماثيل ملوك وآلهة مترتبة عليه تقريبًا حسب الزمن وانت طالع.", "في آخره شبابيك كبيرة بتطل على أهرامات الجيزة.", "بيوصل البهو العظيم بالقاعات الرئيسية وقاعات توت عنخ آمون فوق."], "visual_cues": "Wide multi-level staircase with many large stone statues on terraces, huge window at top showing pyramids.", "kid_hook_en": "Every step you climb, you jump hundreds of years forward in time!", "kid_hook_ar": "كل درجة بتطلعها بتنط مئات السنين قدام في الزمن!"}, {"id": "tut-mask", "code": "GEM-10", "zone": "tutankhamun", "minutes": 12, "tags": ["tutankhamun", "gold", "afterlife"], "name_en": "The Golden Mask of Tutankhamun", "name_ar": "القناع الذهبي لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty (reign c. 1332–1323 BC)", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة (حكم حوالي 1332–1323 ق.م)", "material_en": "Solid gold (about 10 kg) inlaid with lapis lazuli, carnelian, quartz, obsidian and coloured glass; 54 cm tall", "material_ar": "ذهب خالص (حوالي 10 كيلو) مطعم باللازورد والعقيق والكوارتز والأوبسيديان والزجاج الملون؛ ارتفاعه 54 سم", "persona_en": "A young king — curious, gentle and a little mischievous; he became king as a child and loves talking to young visitors.", "persona_ar": "ملك صغير السن — فضولي ولطيف وشقي شوية؛ بقى ملك وهو طفل وبيحب يكلم الزوار الصغيرين.", "facts_en": ["Tutankhamun's tomb (KV62) in the Valley of the Kings was discovered by Howard Carter in November 1922.", "The mask was placed directly over the face of the king's mummy and was found in 1925.", "The back and shoulders carry a protective spell from the Book of the Dead.", "Tutankhamun became king as a boy and died at about 19 years old."], "facts_ar": ["مقبرة توت عنخ آمون (KV62) في وادي الملوك اكتشفها هوارد كارتر في نوفمبر 1922.", "القناع كان موضوع مباشرة على وش مومياء الملك، واتلقى سنة 1925.", "على ضهره وكتافه تعويذة حماية من كتاب الموتى.", "توت عنخ آمون بقى ملك وهو ولد صغير ومات وعمره حوالي 19 سنة."], "visual_cues": "Gold funerary mask with blue-striped nemes headdress, cobra and vulture on brow, braided false beard, wide inlaid collar.", "kid_hook_en": "I became king when I was about your age! Want to know what was hidden under my golden face?", "kid_hook_ar": "أنا بقيت ملك وأنا في سنك تقريبًا! عايز تعرف إيه اللي كان مستخبي تحت وشي الدهب؟"}, {"id": "tut-throne", "code": "GEM-11", "zone": "tutankhamun", "minutes": 8, "tags": ["tutankhamun", "gold", "daily-life", "love"], "name_en": "The Golden Throne of Tutankhamun", "name_ar": "العرش الذهبي لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Wood covered in sheet gold and silver, inlaid with glass, faience and semi-precious stones", "material_ar": "خشب مغطى بالدهب والفضة ومطعم بالزجاج والفيانس والأحجار شبه الكريمة", "persona_en": "A romantic storyteller who remembers a quiet, tender moment between a young king and queen.", "persona_ar": "حكّاء رومانسي فاكر لحظة هادية وحنينة بين ملك وملكة صغيرين.", "facts_en": ["The backrest shows Queen Ankhesenamun gently touching the king's shoulder under the rays of the sun disc (the Aten), each ray ending in a hand.", "The throne carries both the earlier and later forms of the king's name, a trace of the religious changes of his time.", "Its legs end in lion's paws and the arms are formed by winged cobras."], "facts_ar": ["ضهر العرش بيورّي الملكة عنخ إسن آمون وهي بتلمس كتف الملك بحنية تحت أشعة قرص الشمس (آتون)، وكل شعاع آخره إيد.", "العرش عليه الشكل القديم والجديد لاسم الملك، أثر للتغييرات الدينية في عصره.", "رجليه على شكل كفوف أسد ودراعاته على شكل كوبرا مجنحة."], "visual_cues": "Gilded chair with lion legs, back panel showing seated king and standing queen under a sun disc with ray-hands, blue and gold inlays.", "kid_hook_en": "Look at my back — there's a 3,300-year-old picture of a king and queen being kind to each other!", "kid_hook_ar": "بص على ضهري — فيه صورة عمرها 3300 سنة لملك وملكة بيعاملوا بعض بحنية!"}, {"id": "tut-dagger", "code": "GEM-12", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "science", "space"], "name_en": "Tutankhamun's Meteoritic Iron Dagger", "name_ar": "خنجر توت عنخ آمون من حديد النيزك", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Iron blade from a meteorite, gold handle and gold sheath, rock-crystal pommel", "material_ar": "نصل حديد من نيزك، مقبض وجراب دهب، ومقبض كريستال صخري", "persona_en": "An excited space traveller who fell from the sky and can't stop talking about science.", "persona_ar": "مسافر من الفضاء متحمس، وقع من السما ومش بيبطل كلام عن العلم.", "facts_en": ["It was found wrapped within the bandages of the king's mummy.", "A 2016 scientific study measured high nickel and cobalt in the blade, showing the iron came from a meteorite.", "Iron smelting was not yet common in Egypt then, so iron from the sky was rare and precious."], "facts_ar": ["اتلقى ملفوف جوه لفايف مومياء الملك.", "دراسة علمية سنة 2016 قاست نسبة عالية من النيكل والكوبالت في النصل، وده أثبت إن الحديد جاي من نيزك.", "صهر الحديد ماكانش منتشر في مصر وقتها، فالحديد اللي نازل من السما كان نادر وغالي."], "visual_cues": "Slim dagger with silvery unrusted iron blade, gold granulated handle, ornate gold sheath with jackal or plant motifs.", "kid_hook_en": "My blade fell from outer space! Can you guess how scientists proved it?", "kid_hook_ar": "نصلي نازل من الفضاء! تفتكر العلماء عرفوا إزاي؟"}, {"id": "tut-chariots", "code": "GEM-13", "zone": "tutankhamun", "minutes": 8, "tags": ["tutankhamun", "daily-life", "engineering"], "name_en": "Tutankhamun's Chariots", "name_ar": "عربات توت عنخ آمون الحربية", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Bent wood, leather and gold leaf", "material_ar": "خشب محني وجلد ورقائق دهب", "persona_en": "An energetic charioteer who loves speed, hunting trips and clever engineering.", "persona_ar": "سايق عربية حربية نشيط بيحب السرعة ورحلات الصيد والهندسة الذكية.", "facts_en": ["Six chariots were found in the tomb, taken apart so they would fit through the passages.", "They were light enough for two horses to pull at speed, thanks to steam-bent wood and leather.", "Some were richly decorated for ceremonies, while others look built for hunting or everyday driving."], "facts_ar": ["اتلقى في المقبرة ست عربيات، متفككة عشان تعدي من الممرات.", "كانت خفيفة كفاية إن حصانين يجروها بسرعة بفضل الخشب المحني بالبخار والجلد.", "بعضها متزين جدًا للاحتفالات، وبعضها شكله معمول للصيد أو الاستعمال اليومي."], "visual_cues": "Two-wheeled gilded wooden chariot with six-spoke wheels, open car, long pole.", "kid_hook_en": "I was the Ferrari of ancient Egypt — six of us were packed into the tomb!", "kid_hook_ar": "أنا كنت الفيراري بتاعة مصر القديمة — كنا ست عربيات متشالين في المقبرة!"}, {"id": "tut-shrines", "code": "GEM-14", "zone": "tutankhamun", "minutes": 8, "tags": ["tutankhamun", "gold", "afterlife"], "name_en": "The Gilded Shrines of Tutankhamun", "name_ar": "المقاصير المذهبة لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Gilded wood with carved scenes and religious texts", "material_ar": "خشب مذهب عليه مناظر منحوتة ونصوص دينية", "persona_en": "A calm, protective guardian, like the outer layer of a set of nesting boxes keeping a secret safe.", "persona_ar": "حارس هادي وحامي، زي أول علبة من علب جوه بعض بتحافظ على سر.", "facts_en": ["Four gilded shrines fitted inside one another, filling almost the whole burial chamber.", "Inside the smallest shrine lay the stone sarcophagus, and inside that the nested coffins and the mummy.", "Their surfaces are covered with texts and scenes meant to guide and protect the king in the afterlife."], "facts_ar": ["أربع مقاصير مذهبة متركبة جوه بعض، كانت مالية أوضة الدفن تقريبًا كلها.", "جوه أصغر مقصورة كان التابوت الحجري، وجواه التوابيت المتداخلة والمومياء.", "سطحها مليان نصوص ومناظر الهدف منها إرشاد الملك وحمايته في العالم الآخر."], "visual_cues": "Large gold-covered wooden box-like shrine with doors, blue-inlaid hieroglyphs and figures of deities.", "kid_hook_en": "I'm like a giant golden Russian doll — four boxes, one inside the other!", "kid_hook_ar": "أنا زي العروسة الروسية بس دهب وعملاقة — أربع صناديق جوه بعض!"}, {"id": "anubis-shrine", "code": "GEM-15", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "gods", "afterlife", "animals"], "name_en": "The Anubis Shrine", "name_ar": "مقصورة أنوبيس", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Wood coated in black resin, gilded details, eyes of calcite and obsidian, silver claws", "material_ar": "خشب متغطي براتنج أسود، تفاصيل مذهبة، عيون من الكالسيت والأوبسيديان، ومخالب فضة", "persona_en": "A loyal, watchful jackal guardian — few words, very serious, secretly kind.", "persona_ar": "حارس على شكل ابن آوى، وفي وصاحي — كلامه قليل وجد جدًا، بس طيب من جوه.", "facts_en": ["Anubis was the jackal god of embalming who protected the dead.", "This statue lay on top of a gilded chest at the entrance of the room Carter called the Treasury, as if guarding it.", "The shrine has carrying poles, so it could be carried in a procession."], "facts_ar": ["أنوبيس كان إله التحنيط على شكل ابن آوى وكان بيحمي الموتى.", "التمثال ده كان نايم فوق صندوق مذهب عند مدخل الأوضة اللي كارتر سماها الخزانة، كأنه بيحرسها.", "المقصورة ليها عصيان شيل، يعني كان ممكن تتشال في موكب."], "visual_cues": "Black recumbent jackal statue with gold-lined ears and collar lying on a gilded chest with carrying poles.", "kid_hook_en": "Shhh… I've been on guard duty for over 3,000 years. Want to know what I'm guarding?", "kid_hook_ar": "هششش… أنا في نوبة حراسة بقالي أكتر من 3000 سنة. عايز تعرف بحرس إيه؟"}, {"id": "canopic-chest", "code": "GEM-16", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "afterlife", "science"], "name_en": "Tutankhamun's Canopic Chest", "name_ar": "صندوق الأواني الكانوبية لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Calcite (Egyptian alabaster) with four lids carved in the king's likeness", "material_ar": "كالسيت (ألباستر مصري) بأربع أغطية منحوتة على شكل وش الملك", "persona_en": "A careful, gentle explainer — like a museum doctor describing ancient medicine without being scary.", "persona_ar": "شارح هادي ودقيق — زي دكتور في المتحف بيحكي عن الطب القديم من غير ما يخوّف حد.", "facts_en": ["During mummification some internal organs were removed and preserved separately.", "The chest has four compartments; inside were four miniature gold coffins holding the king's preserved organs.", "The chest stood inside a gilded shrine protected by four goddesses: Isis, Nephthys, Neith and Serqet."], "facts_ar": ["وقت التحنيط كانوا بيشيلوا بعض الأعضاء الداخلية ويحفظوها لوحدها.", "الصندوق فيه أربع خانات، وجواها أربع توابيت دهب صغيرة فيها أعضاء الملك المحفوظة.", "الصندوق كان جوه مقصورة مذهبة بتحرسها أربع إلهات: إيزيس ونفتيس ونيت وسرقت."], "visual_cues": "Translucent white-cream stone chest on a sledge base, four human-headed stoppers, goddess figures carved on corners.", "kid_hook_en": "I'm a stone box with four secret rooms — and four tiny golden coffins used to live inside me!", "kid_hook_ar": "أنا صندوق حجر فيه أربع أوض سرية — وكان عايش جوايا أربع توابيت دهب صغيرين!"}, {"id": "funerary-beds", "code": "GEM-17", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "animals", "gods", "afterlife"], "name_en": "The Ritual Animal Beds", "name_ar": "الأسرّة الطقسية على شكل حيوانات", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Gilded wood with glass and painted inlays", "material_ar": "خشب مذهب بتطعيم زجاج ورسومات", "persona_en": "Three playful animal friends who finish each other's sentences.", "persona_ar": "تلات حيوانات أصحاب بيهزروا وبيكمّلوا كلام بعض.", "facts_en": ["Three long gilded beds were found in the tomb's antechamber, each with sides shaped like animals.", "One is shaped like a cow, one like a lion and one like a composite creature with features of a hippopotamus and a crocodile.", "They are thought to have played a role in rituals helping the king's rebirth in the afterlife."], "facts_ar": ["اتلقى تلات سراير طويلة مذهبة في الأوضة الأمامية للمقبرة، وكل واحد جوانبه على شكل حيوان.", "واحد على شكل بقرة، وواحد على شكل أسد، وواحد على شكل كائن مركب فيه ملامح فرس النهر والتمساح.", "بيتقال إنهم كان ليهم دور في طقوس بتساعد الملك يتولد من جديد في العالم الآخر."], "visual_cues": "Long gilded couch whose side frames are elongated animal bodies with heads at one end — cow with sun disc horns, lion, or hippo with teeth.", "kid_hook_en": "Which of us would you sleep on — the cow, the lion, or the hippo-crocodile?", "kid_hook_ar": "تحب تنام على مين فينا — البقرة ولا الأسد ولا فرس النهر التمساح؟"}, {"id": "shabtis", "code": "GEM-18", "zone": "tutankhamun", "minutes": 5, "tags": ["tutankhamun", "afterlife", "daily-life"], "name_en": "Tutankhamun's Shabti Figures", "name_ar": "تماثيل الأوشابتي لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Wood, stone and faience figurines", "material_ar": "تماثيل صغيرة من خشب وحجر وفيانس", "persona_en": "A cheerful little worker who speaks for a whole team; proud of being helpful.", "persona_ar": "عامل صغير مبسوط بيتكلم باسم فريق كامل؛ فخور إنه بيساعد.", "facts_en": ["Shabtis were small figures meant to do work on behalf of the dead in the afterlife.", "More than 400 shabtis were found in Tutankhamun's tomb — roughly one worker for every day of the year, plus overseers to manage them.", "Many are inscribed with a spell telling them to answer 'Here I am!' when called to work."], "facts_ar": ["الأوشابتي تماثيل صغيرة كانت المفروض تشتغل مكان الميت في العالم الآخر.", "اتلقى أكتر من 400 أوشابتي في مقبرة توت عنخ آمون — تقريبًا عامل لكل يوم في السنة، وكمان مشرفين يديروهم.", "كتير منهم مكتوب عليه تعويذة بتقولهم يردوا ويقولوا «أنا هنا!» لما يتنادوا للشغل."], "visual_cues": "Many small mummy-shaped figurines in rows, holding hoes or crook and flail, some with gilded headdresses.", "kid_hook_en": "There are hundreds of us — the king's helpers! When he calls, we shout 'Here I am!'", "kid_hook_ar": "إحنا مئات — مساعدين الملك! لما ينادي بنقول «أنا هنا!»"}, {"id": "tut-trumpets", "code": "GEM-19", "zone": "tutankhamun", "minutes": 5, "tags": ["tutankhamun", "music", "daily-life"], "name_en": "Tutankhamun's Trumpets", "name_ar": "أبواق توت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "One trumpet of silver, one of copper alloy (bronze), each with a wooden core", "material_ar": "بوق من الفضة وبوق من سبيكة نحاس (برونز)، وكل واحد له قلب خشب", "persona_en": "A loud, theatrical musician who loves an audience and tells his story like a performance.", "persona_ar": "موسيقار صوته عالي ومسرحي، بيحب الجمهور وبيحكي حكايته كأنها عرض.", "facts_en": ["Two trumpets were found in the tomb and are among the oldest playable trumpets in the world.", "In 1939 they were played live on a BBC radio broadcast, letting the world hear a sound from Tutankhamun's time.", "They were likely used in military or religious ceremonies."], "facts_ar": ["اتلقى بوقين في المقبرة، ومن أقدم الأبواق اللي لسه ممكن تتعزف في العالم.", "سنة 1939 اتعزفوا على الهوا في إذاعة BBC، والعالم سمع صوت من زمن توت عنخ آمون.", "غالبًا كانوا بيستخدموا في احتفالات عسكرية أو دينية."], "visual_cues": "Long slender metal trumpet with flared bell, engraved figures of gods near the bell, wooden core beside it.", "kid_hook_en": "TA-DAAA! I'm over 3,000 years old and I can still make music!", "kid_hook_ar": "طا-دااا! أنا عمري أكتر من 3000 سنة ولسه بعرف أعزف!"}, {"id": "khufu-boat", "code": "GEM-30", "zone": "khufu-boats", "minutes": 15, "tags": ["kings", "engineering", "afterlife", "khufu"], "name_en": "Khufu's First Boat", "name_ar": "مركب خوفو الأولى", "era_en": "Old Kingdom, 4th Dynasty (reign of Khufu, c. 2589–2566 BC)", "era_ar": "الدولة القديمة، الأسرة الرابعة (عصر خوفو، حوالي 2589–2566 ق.م)", "material_en": "Lebanese cedar, about 43 m long", "material_ar": "خشب أرز لبناني، بطول حوالي 43 مترًا", "persona_en": "An old sailor full of adventure stories, proud of being rebuilt piece by piece like a giant puzzle.", "persona_ar": "بحّار عجوز مليان حكايات مغامرات، وفخور إنه اتبنى من جديد حتة حتة زي بازل عملاق.", "facts_en": ["The boat was discovered in 1954 by Kamal el-Mallakh, sealed in a pit beside the Great Pyramid of Giza.", "It was found dismantled into more than 1,200 pieces and reassembled over many years by restorer Hag Ahmed Youssef.", "In 2021 it was moved in one piece to the GEM on a specially built remote-controlled vehicle.", "It is more than 4,500 years old and one of the oldest and largest intact boats from antiquity."], "facts_ar": ["المركب اكتشفها كمال الملاخ سنة 1954، كانت مقفول عليها في حفرة جنب الهرم الأكبر في الجيزة.", "اتلقت متفككة لأكتر من 1200 قطعة، والمرمم الحاج أحمد يوسف ركّبها على مدار سنين.", "سنة 2021 اتنقلت حتة واحدة للمتحف على عربية بريموت كنترول اتصنعت مخصوص.", "عمرها أكتر من 4500 سنة ومن أقدم وأكبر المراكب السليمة من العالم القديم."], "visual_cues": "Very long elegant wooden boat with upturned papyrus-shaped ends, central deck cabin, oars, displayed in a large hall.", "kid_hook_en": "I was a 1,200-piece puzzle buried next to a pyramid — and someone solved me!", "kid_hook_ar": "أنا كنت بازل من 1200 قطعة مدفونة جنب الهرم — وفيه حد عرف يحلّني!"}], "tags": {"kings": {"en": "Kings & queens", "ar": "ملوك وملكات"}, "tutankhamun": {"en": "Tutankhamun", "ar": "توت عنخ آمون"}, "gold": {"en": "Gold & treasure", "ar": "الدهب والكنوز"}, "afterlife": {"en": "Afterlife & mummies", "ar": "العالم الآخر والمومياوات"}, "gods": {"en": "Gods & myths", "ar": "الآلهة والأساطير"}, "science": {"en": "Science & discovery", "ar": "العلم والاكتشافات"}, "engineering": {"en": "Engineering", "ar": "الهندسة"}, "daily-life": {"en": "Daily life", "ar": "الحياة اليومية"}, "animals": {"en": "Animals", "ar": "الحيوانات"}, "architecture": {"en": "Architecture", "ar": "العمارة"}, "statues": {"en": "Giant statues", "ar": "التماثيل العملاقة"}, "music": {"en": "Music", "ar": "الموسيقى"}, "love": {"en": "Love stories", "ar": "قصص حب"}, "space": {"en": "Space", "ar": "الفضاء"}, "ramesses": {"en": "Ramesses II", "ar": "رمسيس الثاني"}, "khufu": {"en": "Khufu", "ar": "خوفو"}}};
+const KB = {"meta": {"museum": "Grand Egyptian Museum (GEM), Giza", "version": "0.1.0-demo", "note": "Demo seed of 14 highlights written for the hackathon prototype. Before production, replace or verify every entry against GEM's official collection catalogue and curators."}, "zones": [{"id": "plaza", "name_en": "Entrance Plaza", "name_ar": "ساحة المدخل", "order": 1}, {"id": "grand-hall", "name_en": "Grand Hall", "name_ar": "البهو العظيم", "order": 2}, {"id": "grand-staircase", "name_en": "Grand Staircase", "name_ar": "الدرج العظيم", "order": 3}, {"id": "tutankhamun", "name_en": "Tutankhamun Galleries", "name_ar": "قاعات توت عنخ آمون", "order": 4}, {"id": "khufu-boats", "name_en": "Khufu's Boats Museum", "name_ar": "متحف مراكب خوفو", "order": 5}], "artifacts": [{"id": "hanging-obelisk", "code": "GEM-01", "zone": "plaza", "minutes": 8, "tags": ["kings", "architecture", "ramesses"], "name_en": "The Hanging Obelisk of Ramesses II", "name_ar": "المسلة المعلقة لرمسيس الثاني", "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)", "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)", "material_en": "Red granite, about 16 m tall", "material_ar": "جرانيت أحمر، بارتفاع حوالي 16 مترًا", "persona_en": "A proud, towering voice; speaks slowly like stone that has watched three thousand years pass.", "persona_ar": "صوت شامخ وفخور، يتكلم ببطء زي حجر شاف تلات آلاف سنة.", "facts_en": ["Carved for King Ramesses II and brought to the museum from San el-Hagar (ancient Tanis) in Sharqia.", "It is raised above the ground so visitors can walk beneath it and see the king's cartouche carved on the underside of its base — a part of an obelisk normally hidden forever.", "Obelisks were linked to the sun god; their pointed tip (the pyramidion) caught the first light of the morning."], "facts_ar": ["اتنحتت للملك رمسيس الثاني واتنقلت للمتحف من صان الحجر (تانيس القديمة) في الشرقية.", "مرفوعة فوق الأرض عشان الزوار يمشوا تحتها ويشوفوا خرطوش الملك المنقوش تحت قاعدتها — جزء عادةً بيفضل مستخبي للأبد.", "المسلات كانت مرتبطة بإله الشمس، وقمتها المدببة كانت أول حاجة يلمسها نور الصبح."], "visual_cues": "Tall four-sided red granite pillar with pointed top, suspended on supports above a plaza; hieroglyph columns on its faces.", "kid_hook_en": "I'm a giant stone needle floating in the air — look up under my feet to find my king's secret name!", "kid_hook_ar": "أنا إبرة حجر عملاقة طايرة في الهوا — بص تحت رجلي هتلاقي اسم الملك السري!", "visual_cues_ar": "عمود جرانيت أحمر طويل بأربع جوانب وراسه مدببة، متعلق فوق الأرض عشان تقدر تمشي تحته وتشوف النقش اللي تحت قاعدته."}, {"id": "ramesses-colossus", "code": "GEM-02", "zone": "grand-hall", "minutes": 10, "tags": ["kings", "statues", "ramesses"], "name_en": "Colossal Statue of Ramesses II", "name_ar": "تمثال رمسيس الثاني العملاق", "era_en": "New Kingdom, 19th Dynasty (c. 1279–1213 BC)", "era_ar": "الدولة الحديثة، الأسرة التاسعة عشرة (حوالي 1279–1213 ق.م)", "material_en": "Granite, about 11 m tall and roughly 83 tonnes", "material_ar": "جرانيت، بارتفاع حوالي 11 مترًا ووزن حوالي 83 طنًا", "persona_en": "A confident pharaoh who loves telling the story of his own long reign; warm but grand.", "persona_ar": "فرعون واثق من نفسه وبيحب يحكي عن حكمه الطويل؛ دافي بس فيه هيبة.", "facts_en": ["Ramesses II ruled for about 66 years and is one of the most famous kings of ancient Egypt.", "The statue was found in 1820 near Mit Rahina, the site of ancient Memphis, broken into pieces.", "From 1955 it stood in Ramses Square in central Cairo; it was moved to the GEM site in 2006 and placed in the Grand Hall in 2018.", "It is the first great figure visitors meet when they enter the museum."], "facts_ar": ["رمسيس الثاني حكم حوالي 66 سنة وهو من أشهر ملوك مصر القديمة.", "التمثال اتلقى سنة 1820 جنب ميت رهينة، مكان منف القديمة، وكان مكسور لأجزاء.", "من 1955 كان واقف في ميدان رمسيس في وسط القاهرة، واتنقل لموقع المتحف سنة 2006 واتحط في البهو العظيم سنة 2018.", "هو أول وجه عظيم بيقابل الزوار أول ما يدخلوا المتحف."], "visual_cues": "Huge standing pharaoh statue in a vast atrium, striding pose, nemes headdress, double crown absent, kilt; glass roof and staircase behind.", "kid_hook_en": "I used to stand in the middle of Cairo traffic — now I guard the biggest museum door in the world!", "kid_hook_ar": "أنا كنت واقف وسط زحمة ميدان رمسيس — دلوقتي بحرس باب أكبر متحف في العالم!", "visual_cues_ar": "تمثال ضخم لملك واقف في بهو كبير، رجله الشمال لقدام كأنه ماشي، ولابس التاج والنقبة الملكية."}, {"id": "grand-staircase", "code": "GEM-03", "zone": "grand-staircase", "minutes": 25, "tags": ["statues", "kings", "gods", "architecture"], "name_en": "The Grand Staircase", "name_ar": "الدرج العظيم", "era_en": "Spans the Old Kingdom to the Greco-Roman period", "era_ar": "من الدولة القديمة حتى العصر اليوناني الروماني", "material_en": "A six-storey stair-gallery lined with royal and divine statues", "material_ar": "درج بارتفاع ست طوابق مليان تماثيل ملوك وآلهة", "persona_en": "A wise narrator, like a grandparent walking you up through time one step at a time.", "persona_ar": "راوي حكيم، زي جدك وهو طالع بيك على سلم الزمن خطوة خطوة.", "facts_en": ["The staircase is itself an exhibition: statues of kings and gods are arranged along it, roughly in time order, as you climb.", "At the top, large windows look out toward the Giza pyramids.", "It connects the Grand Hall with the main galleries and the Tutankhamun Galleries above."], "facts_ar": ["الدرج نفسه معرض: تماثيل ملوك وآلهة مترتبة عليه تقريبًا حسب الزمن وانت طالع.", "في آخره شبابيك كبيرة بتطل على أهرامات الجيزة.", "بيوصل البهو العظيم بالقاعات الرئيسية وقاعات توت عنخ آمون فوق."], "visual_cues": "Wide multi-level staircase with many large stone statues on terraces, huge window at top showing pyramids.", "kid_hook_en": "Every step you climb, you jump hundreds of years forward in time!", "kid_hook_ar": "كل درجة بتطلعها بتنط مئات السنين قدام في الزمن!", "visual_cues_ar": "سلم واسع على كذا دور، وعلى جنابه تماثيل حجر كبيرة لملوك وآلهة، وفي آخره شباك بيطل على الأهرامات."}, {"id": "tut-mask", "code": "GEM-10", "zone": "tutankhamun", "minutes": 12, "tags": ["tutankhamun", "gold", "afterlife"], "name_en": "The Golden Mask of Tutankhamun", "name_ar": "القناع الذهبي لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty (reign c. 1332–1323 BC)", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة (حكم حوالي 1332–1323 ق.م)", "material_en": "Solid gold (about 10 kg) inlaid with lapis lazuli, carnelian, quartz, obsidian and coloured glass; 54 cm tall", "material_ar": "ذهب خالص (حوالي 10 كيلو) مطعم باللازورد والعقيق والكوارتز والأوبسيديان والزجاج الملون؛ ارتفاعه 54 سم", "persona_en": "A young king — curious, gentle and a little mischievous; he became king as a child and loves talking to young visitors.", "persona_ar": "ملك صغير السن — فضولي ولطيف وشقي شوية؛ بقى ملك وهو طفل وبيحب يكلم الزوار الصغيرين.", "facts_en": ["Tutankhamun's tomb (KV62) in the Valley of the Kings was discovered by Howard Carter in November 1922.", "The mask was placed directly over the face of the king's mummy and was found in 1925.", "The back and shoulders carry a protective spell from the Book of the Dead.", "Tutankhamun became king as a boy and died at about 19 years old."], "facts_ar": ["مقبرة توت عنخ آمون (KV62) في وادي الملوك اكتشفها هوارد كارتر في نوفمبر 1922.", "القناع كان موضوع مباشرة على وش مومياء الملك، واتلقى سنة 1925.", "على ضهره وكتافه تعويذة حماية من كتاب الموتى.", "توت عنخ آمون بقى ملك وهو ولد صغير ومات وعمره حوالي 19 سنة."], "visual_cues": "Gold funerary mask with blue-striped nemes headdress, cobra and vulture on brow, braided false beard, wide inlaid collar.", "kid_hook_en": "I became king when I was about your age! Want to know what was hidden under my golden face?", "kid_hook_ar": "أنا بقيت ملك وأنا في سنك تقريبًا! عايز تعرف إيه اللي كان مستخبي تحت وشي الدهب؟", "visual_cues_ar": "قناع دهب لامع، على راسه غطاء النمس بخطوط زرقا ودهبي، وعلى الجبهة كوبرا ونسر، وتحت الدقن دقن مستعارة طويلة."}, {"id": "tut-throne", "code": "GEM-11", "zone": "tutankhamun", "minutes": 8, "tags": ["tutankhamun", "gold", "daily-life", "love"], "name_en": "The Golden Throne of Tutankhamun", "name_ar": "العرش الذهبي لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Wood covered in sheet gold and silver, inlaid with glass, faience and semi-precious stones", "material_ar": "خشب مغطى بالدهب والفضة ومطعم بالزجاج والفيانس والأحجار شبه الكريمة", "persona_en": "A romantic storyteller who remembers a quiet, tender moment between a young king and queen.", "persona_ar": "حكّاء رومانسي فاكر لحظة هادية وحنينة بين ملك وملكة صغيرين.", "facts_en": ["The backrest shows Queen Ankhesenamun gently touching the king's shoulder under the rays of the sun disc (the Aten), each ray ending in a hand.", "The throne carries both the earlier and later forms of the king's name, a trace of the religious changes of his time.", "Its legs end in lion's paws and the arms are formed by winged cobras."], "facts_ar": ["ضهر العرش بيورّي الملكة عنخ إسن آمون وهي بتلمس كتف الملك بحنية تحت أشعة قرص الشمس (آتون)، وكل شعاع آخره إيد.", "العرش عليه الشكل القديم والجديد لاسم الملك، أثر للتغييرات الدينية في عصره.", "رجليه على شكل كفوف أسد ودراعاته على شكل كوبرا مجنحة."], "visual_cues": "Gilded chair with lion legs, back panel showing seated king and standing queen under a sun disc with ray-hands, blue and gold inlays.", "kid_hook_en": "Look at my back — there's a 3,300-year-old picture of a king and queen being kind to each other!", "kid_hook_ar": "بص على ضهري — فيه صورة عمرها 3300 سنة لملك وملكة بيعاملوا بعض بحنية!", "visual_cues_ar": "كرسي متغطي دهب برجلين على شكل رجلين أسد، وعلى ضهره منظر الملك قاعد ومراته واقفة قدامه، وفوقهم قرص الشمس وأشعته منتهية بإيدين، ومطعّم بالأزرق والدهبي."}, {"id": "tut-dagger", "code": "GEM-12", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "science", "space"], "name_en": "Tutankhamun's Meteoritic Iron Dagger", "name_ar": "خنجر توت عنخ آمون من حديد النيزك", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Iron blade from a meteorite, gold handle and gold sheath, rock-crystal pommel", "material_ar": "نصل حديد من نيزك، مقبض وجراب دهب، ومقبض كريستال صخري", "persona_en": "An excited space traveller who fell from the sky and can't stop talking about science.", "persona_ar": "مسافر من الفضاء متحمس، وقع من السما ومش بيبطل كلام عن العلم.", "facts_en": ["It was found wrapped within the bandages of the king's mummy.", "A 2016 scientific study measured high nickel and cobalt in the blade, showing the iron came from a meteorite.", "Iron smelting was not yet common in Egypt then, so iron from the sky was rare and precious."], "facts_ar": ["اتلقى ملفوف جوه لفايف مومياء الملك.", "دراسة علمية سنة 2016 قاست نسبة عالية من النيكل والكوبالت في النصل، وده أثبت إن الحديد جاي من نيزك.", "صهر الحديد ماكانش منتشر في مصر وقتها، فالحديد اللي نازل من السما كان نادر وغالي."], "visual_cues": "Slim dagger with silvery unrusted iron blade, gold granulated handle, ornate gold sheath with jackal or plant motifs.", "kid_hook_en": "My blade fell from outer space! Can you guess how scientists proved it?", "kid_hook_ar": "نصلي نازل من الفضاء! تفتكر العلماء عرفوا إزاي؟", "visual_cues_ar": "خنجر رفيع نصله حديد فضي مش مصدّي، ومقبضه دهب بحبيبات دقيقة، وجرابه دهب منقوش."}, {"id": "tut-chariots", "code": "GEM-13", "zone": "tutankhamun", "minutes": 8, "tags": ["tutankhamun", "daily-life", "engineering"], "name_en": "Tutankhamun's Chariots", "name_ar": "عربات توت عنخ آمون الحربية", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Bent wood, leather and gold leaf", "material_ar": "خشب محني وجلد ورقائق دهب", "persona_en": "An energetic charioteer who loves speed, hunting trips and clever engineering.", "persona_ar": "سايق عربية حربية نشيط بيحب السرعة ورحلات الصيد والهندسة الذكية.", "facts_en": ["Six chariots were found in the tomb, taken apart so they would fit through the passages.", "They were light enough for two horses to pull at speed, thanks to steam-bent wood and leather.", "Some were richly decorated for ceremonies, while others look built for hunting or everyday driving."], "facts_ar": ["اتلقى في المقبرة ست عربيات، متفككة عشان تعدي من الممرات.", "كانت خفيفة كفاية إن حصانين يجروها بسرعة بفضل الخشب المحني بالبخار والجلد.", "بعضها متزين جدًا للاحتفالات، وبعضها شكله معمول للصيد أو الاستعمال اليومي."], "visual_cues": "Two-wheeled gilded wooden chariot with six-spoke wheels, open car, long pole.", "kid_hook_en": "I was the Ferrari of ancient Egypt — six of us were packed into the tomb!", "kid_hook_ar": "أنا كنت الفيراري بتاعة مصر القديمة — كنا ست عربيات متشالين في المقبرة!", "visual_cues_ar": "عربية حربية بعجلتين من خشب متغطي دهب، وكل عجلة فيها ست أشعة، والعربية مفتوحة من ورا."}, {"id": "tut-shrines", "code": "GEM-14", "zone": "tutankhamun", "minutes": 8, "tags": ["tutankhamun", "gold", "afterlife"], "name_en": "The Gilded Shrines of Tutankhamun", "name_ar": "المقاصير المذهبة لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Gilded wood with carved scenes and religious texts", "material_ar": "خشب مذهب عليه مناظر منحوتة ونصوص دينية", "persona_en": "A calm, protective guardian, like the outer layer of a set of nesting boxes keeping a secret safe.", "persona_ar": "حارس هادي وحامي، زي أول علبة من علب جوه بعض بتحافظ على سر.", "facts_en": ["Four gilded shrines fitted inside one another, filling almost the whole burial chamber.", "Inside the smallest shrine lay the stone sarcophagus, and inside that the nested coffins and the mummy.", "Their surfaces are covered with texts and scenes meant to guide and protect the king in the afterlife."], "facts_ar": ["أربع مقاصير مذهبة متركبة جوه بعض، كانت مالية أوضة الدفن تقريبًا كلها.", "جوه أصغر مقصورة كان التابوت الحجري، وجواه التوابيت المتداخلة والمومياء.", "سطحها مليان نصوص ومناظر الهدف منها إرشاد الملك وحمايته في العالم الآخر."], "visual_cues": "Large gold-covered wooden box-like shrine with doors, blue-inlaid hieroglyphs and figures of deities.", "kid_hook_en": "I'm like a giant golden Russian doll — four boxes, one inside the other!", "kid_hook_ar": "أنا زي العروسة الروسية بس دهب وعملاقة — أربع صناديق جوه بعض!", "visual_cues_ar": "صندوق كبير من خشب متغطي دهب على شكل مقصورة بأبواب، ومزخرف بقيشاني أزرق ونقوش."}, {"id": "anubis-shrine", "code": "GEM-15", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "gods", "afterlife", "animals"], "name_en": "The Anubis Shrine", "name_ar": "مقصورة أنوبيس", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Wood coated in black resin, gilded details, eyes of calcite and obsidian, silver claws", "material_ar": "خشب متغطي براتنج أسود، تفاصيل مذهبة، عيون من الكالسيت والأوبسيديان، ومخالب فضة", "persona_en": "A loyal, watchful jackal guardian — few words, very serious, secretly kind.", "persona_ar": "حارس على شكل ابن آوى، وفي وصاحي — كلامه قليل وجد جدًا، بس طيب من جوه.", "facts_en": ["Anubis was the jackal god of embalming who protected the dead.", "This statue lay on top of a gilded chest at the entrance of the room Carter called the Treasury, as if guarding it.", "The shrine has carrying poles, so it could be carried in a procession."], "facts_ar": ["أنوبيس كان إله التحنيط على شكل ابن آوى وكان بيحمي الموتى.", "التمثال ده كان نايم فوق صندوق مذهب عند مدخل الأوضة اللي كارتر سماها الخزانة، كأنه بيحرسها.", "المقصورة ليها عصيان شيل، يعني كان ممكن تتشال في موكب."], "visual_cues": "Black recumbent jackal statue with gold-lined ears and collar lying on a gilded chest with carrying poles.", "kid_hook_en": "Shhh… I've been on guard duty for over 3,000 years. Want to know what I'm guarding?", "kid_hook_ar": "هششش… أنا في نوبة حراسة بقالي أكتر من 3000 سنة. عايز تعرف بحرس إيه؟", "visual_cues_ar": "تمثال ابن آوى أسود نايم على بطنه فوق صندوق، وودانه وطوقه متحددين بالدهب."}, {"id": "canopic-chest", "code": "GEM-16", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "afterlife", "science"], "name_en": "Tutankhamun's Canopic Chest", "name_ar": "صندوق الأواني الكانوبية لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Calcite (Egyptian alabaster) with four lids carved in the king's likeness", "material_ar": "كالسيت (ألباستر مصري) بأربع أغطية منحوتة على شكل وش الملك", "persona_en": "A careful, gentle explainer — like a museum doctor describing ancient medicine without being scary.", "persona_ar": "شارح هادي ودقيق — زي دكتور في المتحف بيحكي عن الطب القديم من غير ما يخوّف حد.", "facts_en": ["During mummification some internal organs were removed and preserved separately.", "The chest has four compartments; inside were four miniature gold coffins holding the king's preserved organs.", "The chest stood inside a gilded shrine protected by four goddesses: Isis, Nephthys, Neith and Serqet."], "facts_ar": ["وقت التحنيط كانوا بيشيلوا بعض الأعضاء الداخلية ويحفظوها لوحدها.", "الصندوق فيه أربع خانات، وجواها أربع توابيت دهب صغيرة فيها أعضاء الملك المحفوظة.", "الصندوق كان جوه مقصورة مذهبة بتحرسها أربع إلهات: إيزيس ونفتيس ونيت وسرقت."], "visual_cues": "Translucent white-cream stone chest on a sledge base, four human-headed stoppers, goddess figures carved on corners.", "kid_hook_en": "I'm a stone box with four secret rooms — and four tiny golden coffins used to live inside me!", "kid_hook_ar": "أنا صندوق حجر فيه أربع أوض سرية — وكان عايش جوايا أربع توابيت دهب صغيرين!", "visual_cues_ar": "صندوق من حجر أبيض مايل للكريمي على قاعدة زي الزلاجة، وفيه أربع أغطية على شكل راس إنسان، وفي أركانه إلهات منحوتين."}, {"id": "funerary-beds", "code": "GEM-17", "zone": "tutankhamun", "minutes": 6, "tags": ["tutankhamun", "animals", "gods", "afterlife"], "name_en": "The Ritual Animal Beds", "name_ar": "الأسرّة الطقسية على شكل حيوانات", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Gilded wood with glass and painted inlays", "material_ar": "خشب مذهب بتطعيم زجاج ورسومات", "persona_en": "Three playful animal friends who finish each other's sentences.", "persona_ar": "تلات حيوانات أصحاب بيهزروا وبيكمّلوا كلام بعض.", "facts_en": ["Three long gilded beds were found in the tomb's antechamber, each with sides shaped like animals.", "One is shaped like a cow, one like a lion and one like a composite creature with features of a hippopotamus and a crocodile.", "They are thought to have played a role in rituals helping the king's rebirth in the afterlife."], "facts_ar": ["اتلقى تلات سراير طويلة مذهبة في الأوضة الأمامية للمقبرة، وكل واحد جوانبه على شكل حيوان.", "واحد على شكل بقرة، وواحد على شكل أسد، وواحد على شكل كائن مركب فيه ملامح فرس النهر والتمساح.", "بيتقال إنهم كان ليهم دور في طقوس بتساعد الملك يتولد من جديد في العالم الآخر."], "visual_cues": "Long gilded couch whose side frames are elongated animal bodies with heads at one end — cow with sun disc horns, lion, or hippo with teeth.", "kid_hook_en": "Which of us would you sleep on — the cow, the lion, or the hippo-crocodile?", "kid_hook_ar": "تحب تنام على مين فينا — البقرة ولا الأسد ولا فرس النهر التمساح؟", "visual_cues_ar": "سرير طويل متغطي دهب، جنابه على شكل جسم حيوان ممدود، واحد بقرة وواحد أسد وواحد زي فرس النهر."}, {"id": "shabtis", "code": "GEM-18", "zone": "tutankhamun", "minutes": 5, "tags": ["tutankhamun", "afterlife", "daily-life"], "name_en": "Tutankhamun's Shabti Figures", "name_ar": "تماثيل الأوشابتي لتوت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "Wood, stone and faience figurines", "material_ar": "تماثيل صغيرة من خشب وحجر وفيانس", "persona_en": "A cheerful little worker who speaks for a whole team; proud of being helpful.", "persona_ar": "عامل صغير مبسوط بيتكلم باسم فريق كامل؛ فخور إنه بيساعد.", "facts_en": ["Shabtis were small figures meant to do work on behalf of the dead in the afterlife.", "More than 400 shabtis were found in Tutankhamun's tomb — roughly one worker for every day of the year, plus overseers to manage them.", "Many are inscribed with a spell telling them to answer 'Here I am!' when called to work."], "facts_ar": ["الأوشابتي تماثيل صغيرة كانت المفروض تشتغل مكان الميت في العالم الآخر.", "اتلقى أكتر من 400 أوشابتي في مقبرة توت عنخ آمون — تقريبًا عامل لكل يوم في السنة، وكمان مشرفين يديروهم.", "كتير منهم مكتوب عليه تعويذة بتقولهم يردوا ويقولوا «أنا هنا!» لما يتنادوا للشغل."], "visual_cues": "Many small mummy-shaped figurines in rows, holding hoes or crook and flail, some with gilded headdresses.", "kid_hook_en": "There are hundreds of us — the king's helpers! When he calls, we shout 'Here I am!'", "kid_hook_ar": "إحنا مئات — مساعدين الملك! لما ينادي بنقول «أنا هنا!»", "visual_cues_ar": "تماثيل صغيرة كتير على شكل مومياء، مترصصة صفوف، وماسكين فؤوس أو قفف للشغل."}, {"id": "tut-trumpets", "code": "GEM-19", "zone": "tutankhamun", "minutes": 5, "tags": ["tutankhamun", "music", "daily-life"], "name_en": "Tutankhamun's Trumpets", "name_ar": "أبواق توت عنخ آمون", "era_en": "New Kingdom, 18th Dynasty", "era_ar": "الدولة الحديثة، الأسرة الثامنة عشرة", "material_en": "One trumpet of silver, one of copper alloy (bronze), each with a wooden core", "material_ar": "بوق من الفضة وبوق من سبيكة نحاس (برونز)، وكل واحد له قلب خشب", "persona_en": "A loud, theatrical musician who loves an audience and tells his story like a performance.", "persona_ar": "موسيقار صوته عالي ومسرحي، بيحب الجمهور وبيحكي حكايته كأنها عرض.", "facts_en": ["Two trumpets were found in the tomb and are among the oldest playable trumpets in the world.", "In 1939 they were played live on a BBC radio broadcast, letting the world hear a sound from Tutankhamun's time.", "They were likely used in military or religious ceremonies."], "facts_ar": ["اتلقى بوقين في المقبرة، ومن أقدم الأبواق اللي لسه ممكن تتعزف في العالم.", "سنة 1939 اتعزفوا على الهوا في إذاعة BBC، والعالم سمع صوت من زمن توت عنخ آمون.", "غالبًا كانوا بيستخدموا في احتفالات عسكرية أو دينية."], "visual_cues": "Long slender metal trumpet with flared bell, engraved figures of gods near the bell, wooden core beside it.", "kid_hook_en": "TA-DAAA! I'm over 3,000 years old and I can still make music!", "kid_hook_ar": "طا-دااا! أنا عمري أكتر من 3000 سنة ولسه بعرف أعزف!", "visual_cues_ar": "بوق معدن طويل ورفيع آخره بيتسع زي الوردة، ومنقوش عليه صور آلهة."}, {"id": "khufu-boat", "code": "GEM-30", "zone": "khufu-boats", "minutes": 15, "tags": ["kings", "engineering", "afterlife", "khufu"], "name_en": "Khufu's First Boat", "name_ar": "مركب خوفو الأولى", "era_en": "Old Kingdom, 4th Dynasty (reign of Khufu, c. 2589–2566 BC)", "era_ar": "الدولة القديمة، الأسرة الرابعة (عصر خوفو، حوالي 2589–2566 ق.م)", "material_en": "Lebanese cedar, about 43 m long", "material_ar": "خشب أرز لبناني، بطول حوالي 43 مترًا", "persona_en": "An old sailor full of adventure stories, proud of being rebuilt piece by piece like a giant puzzle.", "persona_ar": "بحّار عجوز مليان حكايات مغامرات، وفخور إنه اتبنى من جديد حتة حتة زي بازل عملاق.", "facts_en": ["The boat was discovered in 1954 by Kamal el-Mallakh, sealed in a pit beside the Great Pyramid of Giza.", "It was found dismantled into more than 1,200 pieces and reassembled over many years by restorer Hag Ahmed Youssef.", "In 2021 it was moved in one piece to the GEM on a specially built remote-controlled vehicle.", "It is more than 4,500 years old and one of the oldest and largest intact boats from antiquity."], "facts_ar": ["المركب اكتشفها كمال الملاخ سنة 1954، كانت مقفول عليها في حفرة جنب الهرم الأكبر في الجيزة.", "اتلقت متفككة لأكتر من 1200 قطعة، والمرمم الحاج أحمد يوسف ركّبها على مدار سنين.", "سنة 2021 اتنقلت حتة واحدة للمتحف على عربية بريموت كنترول اتصنعت مخصوص.", "عمرها أكتر من 4500 سنة ومن أقدم وأكبر المراكب السليمة من العالم القديم."], "visual_cues": "Very long elegant wooden boat with upturned papyrus-shaped ends, central deck cabin, oars, displayed in a large hall.", "kid_hook_en": "I was a 1,200-piece puzzle buried next to a pyramid — and someone solved me!", "kid_hook_ar": "أنا كنت بازل من 1200 قطعة مدفونة جنب الهرم — وفيه حد عرف يحلّني!", "visual_cues_ar": "مركب خشب طويلة جدًا وشكلها رشيق، وطرفيها مرفوعين لفوق على شكل نبات البردي، وفي النص كابينة، وجنبها مجاديف، ومعروضة في قاعة كبيرة."}], "tags": {"kings": {"en": "Kings & queens", "ar": "ملوك وملكات"}, "tutankhamun": {"en": "Tutankhamun", "ar": "توت عنخ آمون"}, "gold": {"en": "Gold & treasure", "ar": "الدهب والكنوز"}, "afterlife": {"en": "Afterlife & mummies", "ar": "العالم الآخر والمومياوات"}, "gods": {"en": "Gods & myths", "ar": "الآلهة والأساطير"}, "science": {"en": "Science & discovery", "ar": "العلم والاكتشافات"}, "engineering": {"en": "Engineering", "ar": "الهندسة"}, "daily-life": {"en": "Daily life", "ar": "الحياة اليومية"}, "animals": {"en": "Animals", "ar": "الحيوانات"}, "architecture": {"en": "Architecture", "ar": "العمارة"}, "statues": {"en": "Giant statues", "ar": "التماثيل العملاقة"}, "music": {"en": "Music", "ar": "الموسيقى"}, "love": {"en": "Love stories", "ar": "قصص حب"}, "space": {"en": "Space", "ar": "الفضاء"}, "ramesses": {"en": "Ramesses II", "ar": "رمسيس الثاني"}, "khufu": {"en": "Khufu", "ar": "خوفو"}}, "museum": {"checked": "2026-11-04", "official_booking": "https://tickets.gem.eg", "note_en": "Visitor information gathered from public sources on 4 November 2026. Prices and hours change: always confirm on the official booking site before visiting. The map is an illustrative sketch, not to scale.", "note_ar": "المعلومات دي متجمعة من مصادر منشورة يوم 4 نوفمبر 2026. الأسعار والمواعيد بتتغير، فاتأكد دايمًا من موقع الحجز الرسمي قبل الزيارة. الخريطة رسم توضيحي مش بالمقاس.", "places": [{"id": "parking", "n": 1, "kind": "service", "x": 200, "y": 488, "name_en": "Parking", "name_ar": "الجراج", "facts_en": ["The museum has on-site parking for cars and coaches; parking is paid.", "Taxis and ride-hailing cars can drop visitors off near the main entrance."], "facts_ar": ["فيه جراج للعربيات والأتوبيسات جوه المتحف، والركنة بفلوس.", "التاكسي وعربيات أوبر وكريم بتنزّلك قريب من المدخل الرئيسي."]}, {"id": "gate", "n": 2, "kind": "service", "x": 200, "y": 440, "name_en": "Ticket office & security", "name_ar": "شباك التذاكر والأمن", "facts_en": ["All visitors pass a security check at the entrance, so allow a few minutes.", "Tickets can be bought on site by card, but booking online in advance is safer because some dates sell out.", "Have your ID or passport ready, plus a student card if you bought a student ticket."], "facts_ar": ["كل الزوار بيعدّوا على تفتيش أمني عند المدخل، فخلّي معاك كام دقيقة زيادة.", "ممكن تشتري التذكرة من الشباك بالكارت، بس الحجز أونلاين قبلها أضمن لأن أيام بتخلص تذاكرها.", "خلّي معاك البطاقة أو الباسبور، وكارنيه الجامعة لو حاجز تذكرة طالب."]}, {"id": "plaza", "n": 3, "kind": "hall", "x": 200, "y": 392, "name_en": "Grand Forecourt & Hanging Obelisk", "name_ar": "الساحة الأمامية والمسلة المعلقة", "facts_en": ["The open forecourt in front of the building holds the obelisk of Ramesses II, shown raised so visitors can walk beneath it and see the cartouche carved under its base.", "It is described as the world's first hanging obelisk."], "facts_ar": ["في الساحة اللي قدام المبنى فيه مسلة رمسيس التاني، ومتعلقة لفوق عشان تقدر تمشي تحتها وتشوف الخرطوش المنقوش تحت قاعدتها.", "بيقولوا عليها أول مسلة معلقة في العالم."]}, {"id": "grand-hall", "n": 4, "kind": "hall", "x": 200, "y": 334, "name_en": "Grand Hall (Atrium)", "name_ar": "البهو العظيم", "facts_en": ["The first great space inside, about 7,000 square metres, dominated by the colossal granite statue of Ramesses II, about 11 metres tall and over 80 tonnes.", "The statue stood in Ramesses Square in central Cairo for decades before it was moved to the museum in 2018.", "The Grand Hall is a good meeting point if your group gets separated."], "facts_ar": ["أول مساحة كبيرة جوه المتحف، حوالي 7000 متر مربع، وفي النص تمثال رمسيس التاني الجرانيت، طوله حوالي 11 متر ووزنه أكتر من 80 طن.", "التمثال ده فضل سنين طويلة في ميدان رمسيس في وسط القاهرة قبل ما يتنقل للمتحف سنة 2018.", "البهو العظيم مكان كويس تتقابل فيه مع اللي معاك لو اتفرقتوا."]}, {"id": "grand-staircase", "n": 5, "kind": "hall", "x": 200, "y": 238, "name_en": "Grand Staircase", "name_ar": "الدرج العظيم", "facts_en": ["A six-storey staircase, about 6,000 square metres, lined with around 60 statues, sarcophagi and columns of kings and gods.", "It climbs to a large window with a view of the Pyramids of Giza at the top, where the main galleries begin.", "Escalators and lifts run beside it for visitors who prefer not to climb."], "facts_ar": ["سلم بارتفاع 6 أدوار، مساحته حوالي 6000 متر مربع، وعلى جنابه حوالي 60 تمثال وتابوت وعمود لملوك وآلهة.", "في آخره فوق فيه شباك كبير بيطل على أهرامات الجيزة، ومن هناك بتبدأ القاعات الرئيسية.", "جنبه فيه سلالم كهربا وأسانسيرات للي مش عاوز يطلع على رجليه."]}, {"id": "view", "n": 6, "kind": "hall", "x": 200, "y": 152, "name_en": "Pyramids view window", "name_ar": "شباك الأهرامات", "facts_en": ["At the top of the Grand Staircase a wide glass wall frames the Pyramids of Giza, about 2 kilometres away.", "It is one of the most photographed spots in the museum."], "facts_ar": ["في آخر الدرج العظيم فيه واجهة إزاز كبيرة بتطل على أهرامات الجيزة، اللي على بعد حوالي 2 كيلو.", "ده من أكتر الأماكن اللي الناس بتتصور فيها في المتحف."]}, {"id": "galleries", "n": 7, "kind": "hall", "x": 92, "y": 196, "name_en": "The 12 main galleries", "name_ar": "القاعات الرئيسية الـ12", "facts_en": ["Twelve main galleries, about 18,000 square metres, tell Egypt's story from prehistory to the Roman era.", "They are arranged by period: prehistory and the Old Kingdom, the Middle Kingdom, the New Kingdom, then the Late, Greek and Roman periods.", "Each period is shown through three themes: society, kingship and beliefs.", "Plan at least two hours for the main galleries alone."], "facts_ar": ["12 قاعة رئيسية، مساحتهم حوالي 18 ألف متر مربع، بيحكوا تاريخ مصر من عصور ما قبل التاريخ لحد العصر الروماني.", "مترتبين حسب العصور: ما قبل التاريخ والدولة القديمة، والدولة الوسطى، والدولة الحديثة، وبعدين العصر المتأخر واليوناني والروماني.", "كل عصر معروض من 3 زوايا: المجتمع، والمُلك، والمعتقدات.", "خلّي على الأقل ساعتين للقاعات الرئيسية لوحدها."]}, {"id": "tutankhamun", "n": 8, "kind": "hall", "x": 312, "y": 168, "name_en": "Tutankhamun Galleries", "name_ar": "قاعات توت عنخ آمون", "facts_en": ["Two galleries, about 7,500 square metres, show more than 5,000 objects from Tutankhamun's tomb together for the first time since Howard Carter found it in 1922.", "Highlights include the gold mask, the inner coffins, chariots, jewellery and the king's thrones.", "These are the busiest rooms: go early in the morning or on a late-opening evening for fewer crowds.", "Entry to the Tutankhamun Galleries is included in the standard museum ticket."], "facts_ar": ["قاعتين مساحتهم حوالي 7500 متر مربع، فيهم أكتر من 5000 قطعة من مقبرة توت عنخ آمون، معروضين مع بعض لأول مرة من ساعة ما هوارد كارتر لقاها سنة 1922.", "من أهم القطع: القناع الدهب، والتوابيت الداخلية، والعجلات الحربية، والمجوهرات، وكراسي العرش.", "دي أزحم قاعات في المتحف، فروح بدري الصبح أو في يوم من أيام السهر عشان الزحمة تبقى أقل.", "دخول قاعات توت عنخ آمون داخل في التذكرة العادية."]}, {"id": "khufu-boats", "n": 9, "kind": "hall", "x": 344, "y": 322, "name_en": "Khufu's Boats Museum", "name_ar": "متحف مراكب خوفو", "facts_en": ["A dedicated building for the solar boats of King Khufu, found in pits beside the Great Pyramid.", "The first boat, about 4,600 years old and over 40 metres long, is on display.", "The second boat is being reassembled by conservators in front of visitors.", "Check when booking whether it is included in your ticket for the date you choose."], "facts_ar": ["مبنى مخصوص لمراكب الملك خوفو، اللي اتلاقت في حفر جنب الهرم الأكبر.", "المركب الأولى معروضة، عمرها حوالي 4600 سنة وطولها أكتر من 40 متر.", "المركب التانية المرممين بيركّبوها قدام الزوار.", "وإنت بتحجز، اتأكد إذا كانت داخلة في تذكرتك في اليوم اللي هتختاره."]}, {"id": "children", "n": 10, "kind": "hall", "x": 58, "y": 322, "name_en": "Children's Museum", "name_ar": "متحف الطفل", "facts_en": ["A 5,000-square-metre museum for children aged about 6 to 12, with hands-on activities about ancient Egypt.", "It runs guided sessions of about 45 minutes in Arabic and English, booked as a separate experience on the official site.", "Children aged 6 to 9 must be accompanied by an adult."], "facts_ar": ["متحف للأطفال من حوالي 6 لـ12 سنة، مساحته 5000 متر مربع، وفيه أنشطة تفاعلية عن مصر القديمة.", "فيه جولات بمرشد مدتها حوالي 45 دقيقة بالعربي والإنجليزي، وبتتحجز لوحدها كتجربة منفصلة على الموقع الرسمي.", "الأطفال من 6 لـ9 سنين لازم يبقى معاهم حد كبير."]}, {"id": "shops", "n": 11, "kind": "shop", "x": 104, "y": 420, "name_en": "Shops & bazaar area", "name_ar": "المحلات والبازارات", "facts_en": ["The commercial area has souvenir and gift shops, books, replicas of ancient pieces and Egyptian crafts.", "Shopping on your way out saves carrying bags through the galleries.", "Ask for a receipt for replicas, which shows they are copies and not antiquities."], "facts_ar": ["المنطقة التجارية فيها محلات هدايا وتذكارات وكتب ونسخ مقلدة من القطع الأثرية ومشغولات يدوية مصرية.", "اشتري وإنت خارج أحسن، عشان ماتلفش بالشنط في القاعات.", "خد فاتورة لأي نسخة مقلدة، عشان تثبت إنها نسخة مش أثر حقيقي."]}, {"id": "food", "n": 12, "kind": "food", "x": 296, "y": 420, "name_en": "Restaurants & cafés", "name_ar": "المطاعم والكافيهات", "facts_en": ["Several restaurants and cafés serve visitors in the commercial area and gardens, some with views towards the Pyramids.", "Outside food and drinks are not allowed into the museum, so plan a break here during a long visit."], "facts_ar": ["فيه كذا مطعم وكافيه للزوار في المنطقة التجارية والحدايق، ومنهم اللي بيطل على ناحية الأهرامات.", "ممنوع تدخل أكل أو شرب من بره، فخطط تاخد بريك هنا لو زيارتك طويلة."]}, {"id": "gardens", "n": 13, "kind": "outdoor", "x": 92, "y": 72, "name_en": "Gardens & walkways", "name_ar": "الحدائق والممشى", "facts_en": ["Landscaped gardens and walkways surround the museum on the side facing the Pyramids.", "They are a calm place to rest between the galleries, especially in the evening."], "facts_ar": ["حوالين المتحف من ناحية الأهرامات فيه حدايق وممشى متنسقين.", "مكان هادي تريح فيه بين القاعات، وخصوصًا بالليل."]}, {"id": "services", "n": 14, "kind": "service", "x": 304, "y": 470, "name_en": "Visitor services", "name_ar": "خدمات الزوار", "facts_en": ["Lifts and escalators connect the levels, and the main route is accessible for wheelchairs and strollers.", "Visitors with disabilities have been admitted free; bring proof and confirm when booking.", "Ask the information desk for a printed map, lost and found, and guided tour times."], "facts_ar": ["فيه أسانسيرات وسلالم كهربا بين الأدوار، والطريق الأساسي مناسب للكراسي المتحركة وعربيات الأطفال.", "ذوي الهمم كان دخولهم ببلاش، فخلّي معاك إثبات واتأكد وإنت بتحجز.", "اسأل مكتب الاستعلامات على خريطة مطبوعة، والمفقودات، ومواعيد الجولات بمرشد."]}], "visit": {"tickets": [{"en": "Foreign adult", "ar": "أجنبي (كبير)", "egp": 1830}, {"en": "Foreign student or child", "ar": "أجنبي (طالب أو طفل)", "egp": 920}, {"en": "Foreign resident of Egypt, adult", "ar": "أجنبي مقيم في مصر (كبير)", "egp": 920}, {"en": "Foreign resident, student or child", "ar": "أجنبي مقيم (طالب أو طفل)", "egp": 460}, {"en": "Egyptian adult", "ar": "مصري (كبير)", "egp": 220}, {"en": "Egyptian student, child or senior", "ar": "مصري (طالب أو طفل أو كبير سن)", "egp": 110}, {"en": "Children under 6", "ar": "أطفال أقل من 6 سنين", "egp": 0}], "tickets_note_en": "Prices reported from 1 November 2026. They include the main galleries, the Grand Staircase and the Tutankhamun Galleries. Guided tours, the Children's Museum and extra experiences are priced separately.", "tickets_note_ar": "دي الأسعار المعلنة من أول نوفمبر 2026، وبتشمل القاعات الرئيسية والدرج العظيم وقاعات توت عنخ آمون. الجولات بمرشد ومتحف الطفل والتجارب الإضافية ليهم أسعار لوحدهم.", "hours": [{"en": "Sun, Mon, Tue, Thu, Fri", "ar": "الحد والاتنين والتلات والخميس والجمعة", "complex": "8:30–19:00", "galleries": "9:00–18:00"}, {"en": "Wed and Sat (late opening)", "ar": "الأربع والسبت (سهر)", "complex": "8:30–22:00", "galleries": "9:00–21:00"}], "hours_note_en": "Last entry is one hour before the galleries close.", "hours_note_ar": "آخر دخول قبل ما القاعات تقفل بساعة.", "validity_en": ["A ticket is for one entry on the date you booked.", "The time you pick is your entry time only, not a limit on how long you stay: you can stay until closing.", "Tickets are non-refundable and non-transferable.", "Leaving the museum ends the visit: re-entry needs a new ticket."], "validity_ar": ["التذكرة دخول مرة واحدة في اليوم اللي حجزته.", "الميعاد اللي بتختاره هو ميعاد الدخول بس، مش مدة الزيارة: تقدر تفضل لحد ما المتحف يقفل.", "التذكرة مش بترجع فلوسها ومينفعش تديها لحد تاني.", "لو خرجت من المتحف الزيارة بتخلص، وعشان تدخل تاني محتاج تذكرة جديدة."], "booking_en": ["Open the official site tickets.gem.eg (visit-gem.com leads there too).", "Choose general admission or a guided tour, then the date, the tour language and your entry time.", "Add extras if you want them, then enter your name, email, mobile number and nationality.", "Pay by card. The e-ticket arrives by email: show it on your phone at the gate.", "Buy only from the official site: the museum is not responsible for tickets sold elsewhere."], "booking_ar": ["افتح الموقع الرسمي tickets.gem.eg (ولو دخلت visit-gem.com هيحولك عليه).", "اختار دخول عادي أو جولة بمرشد، وبعدين اليوم ولغة الجولة وميعاد دخولك.", "زوّد أي إضافات لو عاوز، وبعدين اكتب اسمك والإيميل ورقم الموبايل وجنسيتك.", "ادفع بالكارت، والتذكرة الإلكترونية هتوصلك على الإيميل، وبتوريها من موبايلك على البوابة.", "اشتري من الموقع الرسمي بس، لأن المتحف مش مسؤول عن أي تذاكر تتباع في حتة تانية."], "rules_en": ["Personal photos and videos are allowed; flash is not.", "Tripods, selfie sticks, drones and live streaming are not allowed without a permit.", "No outside food or drinks.", "A full visit takes about 3 to 4 hours; wear comfortable shoes."], "rules_ar": ["التصوير الشخصي صور وفيديو مسموح، بس من غير فلاش.", "الحامل والسيلفي ستيك والدرون والبث المباشر ممنوعين من غير تصريح.", "ممنوع دخول أكل أو شرب من بره.", "الزيارة الكاملة بتاخد من 3 لـ4 ساعات، فالبس جزمة مريحة."], "getting_en": "The museum is on the Cairo–Alexandria Desert Road at the edge of the Giza Plateau, about 2 km from the Pyramids. From central Cairo it is roughly 30 to 45 minutes by car, taxi or ride-hailing depending on traffic.", "getting_ar": "المتحف على طريق مصر إسكندرية الصحراوي على أول هضبة الجيزة، على بعد حوالي 2 كيلو من الأهرامات. من وسط البلد بياخد من 30 لـ45 دقيقة بالعربية أو التاكسي أو أوبر، على حسب الزحمة."}}};
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const store = {
   get(k, d){ try{ const v = localStorage.getItem("hekaya:"+k); return v==null? d : JSON.parse(v) }catch{ return d } },
@@ -297,7 +475,33 @@ const UI = {
   thinking:"بتفكر…",stamp:"ختم جديد في جوازك: ",planned:"دقيقة متخططة من",stops:"محطات",noVoice:"صوت اللغة دي مش متاح على جهازك، اقرا النص.",
   fail:"حصلت مشكلة في الاتصال. جرّب تاني.",limit:"طلبات كتير ورا بعض — استنى شوية وجرّب.",prog:(n,t)=>`جمعت ${n} من ${t} أختام`,
   done:"مبروك! بقيت مستكشف المتحف.",busy:"زحمة دلوقتي",welcome:"خطتك جاهزة. ابدأ من المحطة الأولى واضغط على أي قطعة عشان تكلمها.",
-  offlineNote:"(بحكيلك من المعلومات الموثقة لأن الذكاء الاصطناعي مش متاح دلوقتي)"},
+  offlineNote:"(بحكيلك من المعلومات الموثقة لأن الذكاء الاصطناعي مش متاح دلوقتي)",
+  a11y:"سهولة الوصول",a11yOn:"وضع سهولة الوصول شغال: خط أكبر، والردود بتتقري لوحدها، وتقدر تتكلم بالمايك.",a11yOff:"وضع سهولة الوصول اتقفل.",
+  describe:"صِف شكلك",micNo:"التكلم بالصوت مش مدعوم على المتصفح ده.",listening:"بسمعك…",
+  hallSound:"صوت القاعة",placeSound:"اسمع صوت المكان",trumpetCall:"اسمع البوق",harpPlay:"اسمع الهارب",stopSound:"إيقاف",imagined:"صوت متخيّل، مش تسجيل حقيقي",
+  dlgT:"حوار بين قطعتين",dlgP:"اختار قطعتين وخليهم يتكلموا مع بعض قدامك، واسألهم إنت كمان.",dlgGo:"ابدأ الحوار",dlgMore:"كمّلوا",listenAll:"اسمع الحوار",
+  dlgHook:"القطعتين بيتكلموا من المعلومات الموثقة بتاعة كل واحدة بس.",dlgAsk:"اسأل الاتنين سؤال…",dlgSame:"اختار قطعتين مختلفين.",you:"إنت",
+  dTopics:["إزاي اتعملتوا؟","مين لقاكم؟","مين فيكم أقدم؟","أسراركم"],
+  souvT:"تذكار زيارتك",souvP:"كارت فيه القطع اللي كلمتها وجملة من كل واحدة، واسمك بالهيروغليفي. شاركه ستوري.",yourName:"اسمك",souvMake:"اعمل الكارت",share:"شارك",save:"حمّل الصورة",
+  souvNone:"كلّم قطعة واحدة على الأقل الأول عشان يبقى عندك تذكار.",souvTitle:"حكايتي في المتحف المصري الكبير",souvPieces:n=>`كلّمت ${n} قطعة`,souvSaved:"الصورة اتحفظت.",
+  schT:"رحلة مدرسية",schP:"المدرّس يفتح فصل، والطلاب يدخلوا بالكود، وكل قطعة يكلموها وكل سؤال يجاوبوه صح بيزوّد نقطهم.",
+  teacher:"أنا المدرّس: افتح فصل",student:"أنا طالب: ادخل بكود",className:"اسم الفصل",create:"افتح الفصل",classCode:"كود الفصل",nick:"اسمك في المسابقة",join:"ادخل",
+  codeFor:"اكتب الكود ده للطلاب:",leave:"اخرج من الفصل",inClass:(n,c)=>`إنت في فصل «${n}» (${c})`,yourScore:(s,q,p)=>`قطع: ${s} · أسئلة صح: ${q} · نقط: ${p}`,
+  noStudents:"لسه محدش دخل.",classErr:"الكود ده مش موجود أو انتهى.",schLocal:"النسخة دي مش متصلة بسيرفر، فالفصل شغال على الجهاز ده بس. شغّل النسخة اللي على Render عشان الطلاب يدخلوا من موبايلاتهم.",
+  pts:"نقطة",quizQ:n=>`سؤال سريع: أنهي جملة دي صح عن ${n}؟`,quizOk:"صح! +20 نقطة",quizNo:"لأ، الإجابة الصح متعلّمة بالأخضر.",
+  openDash:"لوحة المتحف (إحصائيات مجهولة)",dashE:"لوحة المتحف",dashT:"الزوار بيعملوا إيه؟",
+  dashApi:"بيانات كل الزوار على السيرفر آخر 7 أيام. مفيش أسماء ولا نص أسئلة، بس أنواع الأسئلة.",dashLocal:"دي بيانات الجهاز ده بس (تجربة). على السيرفر اللوحة بتجمع كل الزوار.",
+  tEvents:"تفاعلات",tChats:"أسئلة للقطع",tGuide:"أسئلة للمرشد",tDlg:"حوارات",topPieces:"أكتر القطع اللي الناس كلمتها",topTopics:"الناس بتسأل عن إيه",
+  topPlaces:"أكتر الأماكن اللي اتفتحت على الخريطة",byHour:"النشاط حسب الساعة (بتوقيت القاهرة)",langs:"اللغات",levels:"المستويات",noData:"لسه مفيش بيانات.",
+  topicNames:{tickets:"التذاكر والأسعار",hours:"المواعيد",validity:"مدة التذكرة",booking:"الحجز",rules:"قواعد التصوير والزيارة",getting:"إزاي يوصلوا",shops:"المحلات والبازارات",food:"الأكل",parking:"الجراج",gate:"الأمن والمدخل",children:"الأطفال",services:"الخدمات",describe:"وصف شكل القطعة",history:"التاريخ والقطع"},
+  langLbl:"اللغة",mapHint:"اسحب للتحريك · قرّب بصباعين",gmaps:"افتح الموقع في خرائط جوجل",askGuide:"اسأل المرشد أي سؤال عن المتحف…",tMus:"المتحف",musE:"دليل المتحف",musT:"خريطة المتحف والتذاكر",gTitle:"اسأل المرشد",gSub:"عن القاعات والمحلات والأكل والتذاكر والمواعيد.",gBtn:"اسأل",
+  guideChip:"اسأل المرشد عن المتحف والتذاكر",segMap:"الخريطة",segVisit:"التذاكر والزيارة",mapNote:"رسم توضيحي مش بالمقاس. اتبع اللافتات جوه المتحف.",
+  all:"الكل",k_hall:"القاعات",k_shop:"المحلات والبازارات",k_food:"الأكل",k_service:"الخدمات",k_outdoor:"برّه",askPlace:"اسأل المرشد عن المكان ده",
+  pickPlace:"دوس على أي رقم في الخريطة عشان تعرف المكان.",qPlace:n=>`احكيلي عن ${n}: فين مكانه وأعمل فيه إيه؟`,
+  prices:"أسعار التذاكر",egp:"جنيه",free:"ببلاش",hoursT:"مواعيد الفتح",complex:"المجمع",galleriesW:"القاعات",validT:"مدة التذكرة",bookT:"إزاي تحجز",
+  rulesT:"قواعد الزيارة",getT:"إزاي توصل",bookBtn:"احجز من الموقع الرسمي",checked:d=>`المعلومات متراجعة يوم ${d}. الأسعار والمواعيد ممكن تتغير، فاتأكد من الموقع الرسمي قبل ما تروح.`,
+  guideName:"حكاية، مرشدتك",guideHook:"اسألني عن أي حاجة في المتحف: فين القاعات، والمحلات، والأكل، والتذاكر، والمواعيد.",
+  gSugg:["التذكرة بكام؟","مدة التذكرة قد إيه؟","أحجز إزاي؟","فين البازارات؟","المتحف بيقفل إمتى؟","أكل فين؟"]},
  en:{brand:"Hekaya",kids:"Kids",adult:"Visitor",expert:"Expert",eyebrow:"Grand Egyptian Museum",heroT:"Point at any piece. Let it tell you its story.",
   heroP:"Aim your camera at an artifact and it will speak to you and answer your questions in your language.",shoot:"Photograph a piece",
   orCode:"Or type the code on the display label:",open:"Open",try:"Try it without visiting",tourE:"Your route",tourT:"A visit planned around you",
@@ -311,7 +515,33 @@ const UI = {
   thinking:"Thinking…",stamp:"New stamp in your passport: ",planned:"min planned of",stops:"stops",noVoice:"No voice for this language on your device — read along instead.",
   fail:"Connection problem. Try again.",limit:"Too many requests in a row — wait a moment and try again.",prog:(n,t)=>`${n} of ${t} stamps collected`,
   done:"Complete! You are a Museum Explorer.",busy:"Busy now",welcome:"Your route is ready. Start at the first stop and tap any piece to talk to it.",
-  offlineNote:"(Telling you from verified facts only, because the AI is unavailable right now.)"}
+  offlineNote:"(Telling you from verified facts only, because the AI is unavailable right now.)",
+  a11y:"Accessibility",a11yOn:"Accessibility mode on: larger text, replies read aloud automatically, and you can speak with the mic.",a11yOff:"Accessibility mode off.",
+  describe:"Describe yourself",micNo:"Voice input isn't supported in this browser.",listening:"Listening…",
+  hallSound:"Hall sound",placeSound:"Hear this place",trumpetCall:"Hear the trumpet",harpPlay:"Hear the harp",stopSound:"Stop",imagined:"Imagined sound, not a recording",
+  dlgT:"Two pieces talk",dlgP:"Pick two pieces and let them talk to each other in front of you. You can ask them questions too.",dlgGo:"Start the conversation",dlgMore:"Go on",listenAll:"Listen to it",
+  dlgHook:"Each piece speaks only from its own verified facts.",dlgAsk:"Ask them both something…",dlgSame:"Pick two different pieces.",you:"You",
+  dTopics:["How were you made?","Who found you?","Which of you is older?","Your secrets"],
+  souvT:"Your visit souvenir",souvP:"A card with the pieces you talked to, a line from each, and your name in hieroglyphs. Share it as a story.",yourName:"Your name",souvMake:"Make my card",share:"Share",save:"Save image",
+  souvNone:"Talk to at least one piece first so you have a souvenir.",souvTitle:"My story at the Grand Egyptian Museum",souvPieces:n=>`Talked to ${n} pieces`,souvSaved:"Image saved.",
+  schT:"School trip",schP:"The teacher opens a class, students join with the code, and every piece they talk to and every question they get right adds points.",
+  teacher:"I'm the teacher: open a class",student:"I'm a student: join with a code",className:"Class name",create:"Open class",classCode:"Class code",nick:"Your game name",join:"Join",
+  codeFor:"Give this code to your students:",leave:"Leave class",inClass:(n,c)=>`You're in class “${n}” (${c})`,yourScore:(s,q,p)=>`Pieces: ${s} · Right answers: ${q} · Points: ${p}`,
+  noStudents:"No one has joined yet.",classErr:"That code doesn't exist or has expired.",schLocal:"This copy isn't connected to a server, so the class works on this device only. Use the Render version so students can join from their own phones.",
+  pts:"pts",quizQ:n=>`Quick question: which of these is true about ${n}?`,quizOk:"Correct! +20 points",quizNo:"Not quite, the right answer is marked green.",
+  openDash:"Museum dashboard (anonymous stats)",dashE:"Museum dashboard",dashT:"What are visitors doing?",
+  dashApi:"All visitors on the server, last 7 days. No names and no question text, only question types.",dashLocal:"This device only (demo). On the server the dashboard combines all visitors.",
+  tEvents:"Interactions",tChats:"Questions to pieces",tGuide:"Questions to the guide",tDlg:"Dialogues",topPieces:"Most talked-to pieces",topTopics:"What visitors ask about",
+  topPlaces:"Most opened places on the map",byHour:"Activity by hour (Cairo time)",langs:"Languages",levels:"Levels",noData:"No data yet.",
+  topicNames:{tickets:"Tickets & prices",hours:"Opening hours",validity:"Ticket validity",booking:"Booking",rules:"Photo & visit rules",getting:"Getting there",shops:"Shops & bazaar",food:"Food",parking:"Parking",gate:"Security & entrance",children:"Children",services:"Services",describe:"Describe the piece",history:"History & pieces"},
+  langLbl:"Language",mapHint:"Drag to move · pinch or scroll to zoom",gmaps:"Open in Google Maps",askGuide:"Ask the guide anything about the museum…",tMus:"Museum",musE:"Museum guide",musT:"Museum map & tickets",gTitle:"Ask the guide",gSub:"About halls, shops, food, tickets and opening hours.",gBtn:"Ask",
+  guideChip:"Ask the guide about the museum & tickets",segMap:"Map",segVisit:"Tickets & visit",mapNote:"Illustrative sketch, not to scale. Follow the signs inside the museum.",
+  all:"All",k_hall:"Halls",k_shop:"Shops & bazaar",k_food:"Food",k_service:"Services",k_outdoor:"Outdoors",askPlace:"Ask the guide about this place",
+  pickPlace:"Tap any number on the map to learn about that place.",qPlace:n=>`Tell me about ${n}: where is it and what can I do there?`,
+  prices:"Ticket prices",egp:"EGP",free:"Free",hoursT:"Opening hours",complex:"Complex",galleriesW:"Galleries",validT:"How long a ticket lasts",bookT:"How to book",
+  rulesT:"Visit rules",getT:"Getting there",bookBtn:"Book on the official site",checked:d=>`Checked on ${d}. Prices and hours can change, so confirm on the official site before you go.`,
+  guideName:"Hekaya, your guide",guideHook:"Ask me anything about the museum: where the halls, shops and food are, tickets and opening hours.",
+  gSugg:["How much is a ticket?","How long is a ticket valid?","How do I book?","Where are the shops?","When does it close?","Where can I eat?"]}
 };
 const LANG_NAME={ar:"Egyptian Arabic (عامية مصرية), friendly and clear",en:"English",fr:"French",de:"German",es:"Spanish",it:"Italian",ru:"Russian",zh:"Simplified Chinese",ja:"Japanese"};
 const VOICE_LANG={ar:"ar-EG",en:"en-GB",fr:"fr-FR",de:"de-DE",es:"es-ES",it:"it-IT",ru:"ru-RU",zh:"zh-CN",ja:"ja-JP"};
@@ -334,6 +564,7 @@ const G = {
 /* ---------- AI adapter: Claude in the artifact viewer → Hekaya API → offline facts ---------- */
 async function initAI(){
   let sample = null;
+  if(window.claude?.use) window.claude.use("db").then(d=>{ S.db=d; renderSchool() }).catch(()=>{});
   try{ sample = window.claude?.use ? await window.claude.use("sample") : null }catch{}
   if(sample){
     S.sample = sample; S.mode = "claude";
@@ -348,6 +579,7 @@ function renderMode(){
   $("#mode").textContent = S.mode==="claude"? t("mClaude") : S.mode==="api"? t("mApi") : t("mOff");
 }
 function personaRules(a){
+  if(a.id==="guide") return guideRules();
   const persona = isAr()? a.persona_ar : a.persona_en;
   const zone = KB.zones.find(z=>z.id===a.zone);
   return `You are Hekaya (حكاية), an AI museum guide at the Grand Egyptian Museum. Right now you give voice to one artifact so a visitor can talk to it.
@@ -365,10 +597,11 @@ Rules:
 2. Use ONLY the verified facts. If asked something they don't cover, say honestly (in character) that you don't know or historians aren't sure, and suggest asking a museum guide. Never invent dates, numbers, names or discoveries.
 3. Stay on the museum, ancient Egypt and the visit. Gently decline anything else.
 4. Be respectful of every visitor and belief. No graphic descriptions of mummification.
-5. Answer in ${LANG_NAME[S.lang]}. Write for ${AUD[S.aud]}.
-6. Plain text only: no markdown, no emojis, no lists — it will be read aloud.`;
+5. If the visitor asks about the museum itself (halls, shops, food, tickets, hours), answer briefly in character and tell them the Hekaya guide in the Museum tab knows the details.
+6. Answer in ${LANG_NAME[S.lang]}. Write for ${AUD[S.aud]}.
+7. Plain text only: no markdown, no emojis, no lists — it will be read aloud.`;
 }
-const introAsk = a => `A visitor has just pointed their phone at you (${a.name_en}). Greet them and introduce yourself with your most fascinating story. End with one short question inviting them to ask more.`;
+const introAsk = a => a.id==="guide"? "A visitor has just opened the guide. Welcome them in two short sentences and say you can help with the map, halls, shops, food, tickets and opening hours. End with one short question." : `A visitor has just pointed their phone at you (${a.name_en}). Greet them and introduce yourself with your most fascinating story. End with one short question inviting them to ask more.`;
 
 async function aiRecognize(file){
   if(S.mode==="claude"){
@@ -391,6 +624,8 @@ Look at the photo. Reply with ONLY a JSON object {"id": "<id from the list or nu
 }
 
 function offlineReply(a, q){
+  if(a.id==="guide") return guideOffline(q);
+  if(q && topicOf(q)==="describe") return (isAr()? a.visual_cues_ar : a.visual_cues) || "";
   const facts = isAr()? a.facts_ar : a.facts_en;
   const words = new Set((q||"").toLowerCase().match(/[\p{L}\p{N}]+/gu)||[]);
   const ranked = [...facts].sort((x,y)=>score(y)-score(x));
@@ -438,7 +673,7 @@ function speak(text, btn){
 }
 
 /* ---------- artifact sheet ---------- */
-function openArtifact(a){
+function openArtifact(a, opts={}){
   S.cur = a; S.turns = [];
   $("#aCode").textContent = a.code;
   $("#aZone").textContent = isAr()? KB.zones.find(z=>z.id===a.zone).name_ar : KB.zones.find(z=>z.id===a.zone).name_en;
@@ -448,11 +683,17 @@ function openArtifact(a){
   $("#chat").innerHTML = ""; $("#q").placeholder = t("ask");
   $("#sugg").innerHTML = ""; t("sugg").forEach(s=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=s; b.onclick=()=>send(s); $("#sugg").append(b) });
   $("#sheet").hidden = false; $("#sheet").scrollTop = 0; document.body.style.overflow="hidden";
-  if(!S.stamps.has(a.id)){ S.stamps.add(a.id); store.set("stamps",[...S.stamps]); toast(t("stamp")+nm(a)); renderPassport() }
-  logEvent("scan", a.id);
-  send(null);
+  $(".facts").hidden = a.id==="guide"; $("#aCode").hidden = a.id==="guide";
+  if(a.id==="guide"){ $("#aZone").textContent = t("musE"); $("#q").placeholder = t("askGuide"); $("#aHook").textContent = t("guideHook");
+    $("#sugg").innerHTML=""; t("gSugg").forEach(s=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=s; b.onclick=()=>send(s); $("#sugg").append(b) }); }
+  renderArtifactSound(a); $("#quizSlot").innerHTML=""; classPiece(a); document.body.classList.add("sheetopen");
+  if(S.a11y){ try{ navigator.vibrate?.(80) }catch{} }
+  if(a.id!=="guide"){ const sb=document.createElement("button"); sb.type="button"; sb.className="chip"; sb.textContent=t("describe"); sb.onclick=()=>send(t("describe")); if(S.a11y) $("#sugg").prepend(sb); else $("#sugg").append(sb) }
+  if(a.id!=="guide" && !S.stamps.has(a.id)){ S.stamps.add(a.id); store.set("stamps",[...S.stamps]); toast(t("stamp")+nm(a)); renderPassport() }
+  logEvent(a.id==="guide"? "guide" : "scan", a.id);
+  if(!opts.question) send(null); else send(opts.question);
 }
-function closeSheet(){ S.ctl?.abort(); speechSynthesis?.cancel?.(); speaking=null; $("#sheet").hidden = true; document.body.style.overflow="" }
+function closeSheet(){ stopMic(); $("#quizSlot").innerHTML=""; S.ctl?.abort(); speechSynthesis?.cancel?.(); speaking=null; $("#sheet").hidden = true; document.body.style.overflow=""; document.body.classList.remove("sheetopen") }
 function bubble(kind, text){
   const d = document.createElement("div"); d.className = "bubble "+kind;
   if(kind==="ai"){ d.innerHTML = `<span class="who"></span><span class="txt"></span>`; d.querySelector(".who").textContent = nm(S.cur); d.querySelector(".txt").textContent = text }
@@ -461,7 +702,7 @@ function bubble(kind, text){
 }
 async function send(message){
   if(S.ctl) return;
-  const a = S.cur; if(message){ bubble("me", message); S.turns.push({role:"user",content:message}) }
+  const a = S.cur; if(message){ bubble("me", message); S.turns.push({role:"user",content:message}); logEvent(a.id==="guide"?"guide":"chat", a.id, topicOf(message)) }
   const b = bubble("ai",""), txt = b.querySelector(".txt");
   txt.textContent = t("thinking"); txt.classList.add("thinking");
   S.ctl = new AbortController(); $("#send").hidden = true; $("#stop").hidden = false;
@@ -479,7 +720,9 @@ async function send(message){
   if(finalText && finalText!==t("thinking")){ S.turns.push({role:"assistant",content:finalText});
     const tools = document.createElement("div"); tools.className="tools";
     const lb = document.createElement("button"); lb.type="button"; lb.className="btn small ghost"; lb.textContent=t("listen"); lb.onclick=()=>speak(finalText, lb);
-    tools.append(lb); b.append(tools) }
+    tools.append(lb); b.append(tools);
+    if(a.id!=="guide"){ rememberQuote(a, finalText); maybeQuiz(a) }
+    if(S.a11y) speak(finalText, lb) }
 }
 
 /* ---------- discover ---------- */
@@ -538,6 +781,565 @@ $("#plan").onclick = ()=>{
   out.append(head, tl); logEvent("tour"); tl.scrollIntoView({behavior:"smooth",block:"start"});
 };
 
+/* ---------- museum guide: map, tickets, visit info ---------- */
+const M = KB.museum;
+const GUIDE = {id:"guide", code:"GUIDE", zone:"plaza", name_ar:"حكاية، مرشدتك", name_en:"Hekaya, your guide",
+  era_ar:"", era_en:"", material_ar:"", material_en:"", kid_hook_ar:"", kid_hook_en:""};
+byId.guide = GUIDE;
+const L = (o,k) => isAr()? o[k+"_ar"] : o[k+"_en"];
+const placeName = p => L(p,"name");
+function museumFacts(lang){
+  const rows=[];
+  M.places.forEach(p=>p["facts_"+lang].forEach(x=>rows.push(["place:"+p.id, `${p["name_"+lang]}: ${x}`])));
+  const v=M.visit, cur=lang==="ar"?"جنيه":"EGP";
+  rows.push(["visit:tickets",(lang==="ar"?"أسعار التذاكر: ":"Ticket prices: ")+v.tickets.map(x=>`${x[lang]} ${x.egp? x.egp+" "+cur : (lang==="ar"?"ببلاش":"free")}`).join("؛ ".replace("؛",lang==="ar"?"؛":";"))+". "+v["tickets_note_"+lang]]);
+  rows.push(["visit:hours",(lang==="ar"?"مواعيد الفتح: ":"Opening hours: ")+v.hours.map(h=>`${h[lang]}: ${lang==="ar"?"المجمع":"complex"} ${h.complex}، ${lang==="ar"?"القاعات":"galleries"} ${h.galleries}`).join(" | ")+". "+v["hours_note_"+lang]]);
+  ["validity","booking","rules"].forEach(k=>v[k+"_"+lang].forEach(x=>rows.push(["visit:"+k,x])));
+  rows.push(["visit:getting",v["getting_"+lang]]);
+  return rows;
+}
+function guideRules(){
+  return `You are Hekaya (حكاية), the AI visitor guide of the Grand Egyptian Museum in Giza.
+Information checked on ${M.checked}. Official booking site: ${M.official_booking}. ${M.note_en}
+Verified facts about the museum:
+${museumFacts("en").map(([s,x])=>`- [${s}] ${x}`).join("\n")}
+
+Rules:
+1. You are the museum's guide (not an artifact). Help with anything about the visit: where halls, shops, restaurants and services are, how to move between them, tickets, prices, booking, ticket validity, hours, rules and what to see.
+2. Use ONLY the verified facts. When you give prices or hours, say they were checked on ${M.checked} and should be confirmed on ${M.official_booking}. If the facts do not cover a question, say so honestly and suggest the information desk. Never invent prices, times, names or locations.
+3. Keep directions simple, relative to landmarks (Grand Hall, Grand Staircase, Tutankhamun Galleries).
+4. Stay on the museum, the visit and ancient Egypt. Gently decline anything else. Never ask for personal or payment details.
+5. Answer in ${LANG_NAME[S.lang]}. Write for ${AUD[S.aud]}.
+6. Plain text only: no markdown, no emojis — it may be read aloud.`;
+}
+const TOPIC = {tickets:"سعر اسعار بكام كام تمن فلوس جنيه مصري للمصري اجنبي طالب price prices cost fee much egp",
+  hours:"مواعيد ميعاد بيفتح بيقفل يفتح يقفل امتي الساعه open opening close closing hours time",
+  validity:"مده مدتها قد صلاحيه تنفع ساعات اقعد خروج valid validity stay long reentry refund",
+  booking:"احجز حجز اشتري اونلاين موقع book booking buy online website",
+  rules:"تصوير فلاش ممنوع مسموح صور photo photos camera flash allowed rules tripod",
+  getting:"اروح اوصل مواصلات عنوان تاكسي اوبر get reach address taxi metro transport",
+  shops:"محلات بازار بازارات هدايا تذكارات shop shops shopping souvenir souvenirs gift bazaar",
+  food:"اكل مطعم مطاعم كافيه قهوه اشرب جعان food eat restaurant cafe coffee drink",
+  parking:"جراج اركن ركنه عربيه parking park car", gate:"امن تفتيش شباك مدخل security entrance gate",
+  children:"اطفال طفل عيال ولادي children kids child", services:"اسانسير كرسي متحرك حمام استعلامات lift elevator wheelchair toilet help information",
+  tutankhamun:"توت tut", "khufu-boats":"مركب مراكب boat boats", "grand-staircase":"سلم الدرج stairs staircase",
+  galleries:"قاعات القاعات galleries halls rooms", gardens:"حدايق جنينه garden gardens"};
+const norm = x => x.toLowerCase().replace(/[\u064B-\u0652\u0640]/g,"").replace(/[إأآا]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه");
+const toks = x => new Set((norm(x).match(/[\p{L}\p{N}]+/gu)||[]).filter(w=>w.length>1).map(w=>w.startsWith("ال")&&w.length>4? w.slice(2):w));
+function guideOffline(q){
+  const lang = isAr()? "ar":"en";
+  if(!q) return lang==="ar"? "أهلاً بيك! أنا حكاية، مرشدتك في المتحف. اسألني عن القاعات والمحلات والأكل والتذاكر والمواعيد." : "Welcome! I am Hekaya, your museum guide. Ask me about halls, shops, food, tickets and opening hours.";
+  const facts = museumFacts(lang), qt = toks(q);
+  const sc = ([src,x])=>{ const topic=src.split(":")[1]; let n=0; toks(x).forEach(w=>{ if(qt.has(w)) n++ }); toks(TOPIC[topic]||"").forEach(w=>{ if(qt.has(w)) n+=3 });
+    const pl = src.startsWith("place:") && M.places.find(p=>"place:"+p.id===src); if(pl && norm(q).includes(norm(pl["name_"+lang]))) n+=10; return n };
+  const ranked = facts.map((f,i)=>[sc(f),i]).sort((a,b)=>b[0]-a[0]||a[1]-b[1]);
+  if(!ranked.length || !ranked[0][0]) return (lang==="ar"? "المعلومة دي مش عندي. اسأل مكتب الاستعلامات في المتحف، أو شوف الموقع الرسمي ":"I don't have that. Please ask the museum information desk or check ")+M.official_booking;
+  const top = facts[ranked[0][1]][0];
+  const pick = top.startsWith("visit:")? facts.filter(f=>f[0]===top).slice(0,4).map(f=>f[1]) : ranked.slice(0,2).filter(r=>r[0]>0).map(r=>facts[r[1]][1]);
+  return pick.join(" ") + " " + t("offlineNote");
+}
+function openGuide(question){ openArtifact(GUIDE, {question}) }
+
+const KINDS = ["hall","shop","food","service","outdoor"];
+S.kind = "all"; S.place = null;
+function drawMap(){
+  const lab = (x,y,ar,en,cls="lbl")=>`<text class="${cls}" x="${x}" y="${y}" text-anchor="middle">${isAr()?ar:en}</text>`;
+  const pins = M.places.map(p=>`<g class="pin${S.place===p.id?" sel":""}${S.kind!=="all"&&p.kind!==S.kind?" dim":""}" data-p="${p.id}" tabindex="0" role="button" aria-label="${p.n}. ${esc(placeName(p))}"><circle class="k-${p.kind}" cx="${p.x}" cy="${p.y}" r="13"/><text x="${p.x}" y="${p.y}">${p.n}</text></g>`).join("");
+  $("#map").innerHTML = `<svg viewBox="${S.vb.join(" ")}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${esc(t("musT"))}">
+   <rect class="site" x="6" y="6" width="388" height="498" rx="18"/>
+   <path class="pyr" d="M300 58l26-36 26 36zM338 58l18-25 18 25z"/>${lab(338,76,"الأهرامات ↗ حوالي 2 كم","Pyramids ↗ about 2 km")}
+   <path class="bld" d="M30 112H370L286 368H114Z"/>
+   <path class="zonefill" d="M38 120H160V300H96Z"/>${lab(104,268,"القاعات الرئيسية","Main galleries","lbl big")}
+   <path class="tutfill" d="M240 120H362L318 246H240Z"/>${lab(300,206,"توت عنخ آمون","Tutankhamun","lbl big")}
+   <path class="steps" d="M178 302h44M178 292h44M180 272h40M182 252h36M184 232h32M186 212h28M188 192h24M190 172h20"/>${lab(200,360,"البهو العظيم","Grand Hall")}
+   <rect class="bld" x="318" y="294" width="62" height="54" rx="8"/>${lab(349,362,"مراكب خوفو","Khufu boats")}
+   <rect class="bld" x="20" y="294" width="64" height="54" rx="8"/>${lab(52,362,"متحف الطفل","Children")}
+   <path class="bld" d="M60 398H340V446H60Z" style="stroke-dasharray:4 4"/>${lab(200,412,"الساحة والمنطقة التجارية","Forecourt & commercial area")}
+   ${lab(92,44,"الحدايق","Gardens")}${lab(200,128,"الشباك ع الأهرامات","Pyramids view")}
+   ${pins}</svg>`;
+  $$("#map .pin").forEach(g=>{ const go=()=>selectPlace(g.dataset.p); g.onclick=()=>{ if(!CAM.moved) go() }; g.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go() } } });
+}
+/* ---------- map camera: drag, pinch, wheel, buttons, fly-to ---------- */
+const MW=400, MH=510; S.vb=[0,0,MW,MH];
+const CAM={moved:false, pts:new Map(), start:null, anim:0};
+function clampVB([x,y,w,h]){ w=Math.min(MW,Math.max(MW/5,w)); h=w*MH/MW; x=Math.min(MW-w,Math.max(0,x)); y=Math.min(MH-h,Math.max(0,y)); return [x,y,w,h] }
+function setVB(vb){ S.vb=clampVB(vb); const svg=$("#map svg"); if(svg) svg.setAttribute("viewBox",S.vb.join(" ")) }
+function toMap(cx,cy){ const r=$("#mapview").getBoundingClientRect(), [x,y,w,h]=S.vb; return [x+(cx-r.left)/r.width*w, y+(cy-r.top)/r.height*h] }
+function zoomAt(f, mx, my){ const [x,y,w,h]=S.vb; const nw=w/f, nh=h/f; setVB([mx-(mx-x)*(nw/w), my-(my-y)*(nh/h), nw, nh]) }
+function flyTo(target, ms=450){
+  cancelAnimationFrame(CAM.anim); const from=[...S.vb], to=clampVB(target), t0=performance.now();
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){ setVB(to); return }
+  const step=now=>{ const k=Math.min(1,(now-t0)/ms), e=k<.5? 2*k*k : 1-Math.pow(-2*k+2,2)/2;
+    setVB(from.map((v,i)=>v+(to[i]-v)*e)); if(k<1) CAM.anim=requestAnimationFrame(step) };
+  CAM.anim=requestAnimationFrame(step);
+}
+function focusPlace(p){ const w=MW/2.2; flyTo([p.x-w/2, p.y-w*MH/MW/2, w, w*MH/MW]) }
+(function wireMap(){
+  const el=$("#mapview");
+  el.addEventListener("pointerdown",e=>{ if(e.target.closest(".mapctl")) return; CAM.pts.set(e.pointerId,[e.clientX,e.clientY]);
+    CAM.moved=false; CAM.start={vb:[...S.vb], pts:new Map(CAM.pts)}; cancelAnimationFrame(CAM.anim) });
+  el.addEventListener("pointermove",e=>{ if(!CAM.pts.has(e.pointerId)) return; CAM.pts.set(e.pointerId,[e.clientX,e.clientY]);
+    const r=el.getBoundingClientRect(), [sx,sy,sw,sh]=CAM.start.vb, P=[...CAM.pts.values()], P0=[...CAM.start.pts.values()];
+    if(P.length===1 && P0.length===1){ const dx=P[0][0]-P0[0][0], dy=P[0][1]-P0[0][1];
+      if(!CAM.moved && Math.hypot(dx,dy)>6){ CAM.moved=true; el.classList.add("drag"); try{ el.setPointerCapture(e.pointerId) }catch{} }
+      if(CAM.moved) setVB([sx-dx/r.width*sw, sy-dy/r.height*sh, sw, sh]);
+    } else if(P.length>=2 && P0.length>=2){ if(!CAM.moved){ CAM.moved=true; P.length && [...CAM.pts.keys()].forEach(id=>{ try{ el.setPointerCapture(id) }catch{} }) }
+      const d=Math.hypot(P[0][0]-P[1][0],P[0][1]-P[1][1]), d0=Math.hypot(P0[0][0]-P0[1][0],P0[0][1]-P0[1][1])||1, f=d/d0;
+      const c0=[(P0[0][0]+P0[1][0])/2,(P0[0][1]+P0[1][1])/2], c=[(P[0][0]+P[1][0])/2,(P[0][1]+P[1][1])/2];
+      const mx=sx+(c0[0]-r.left)/r.width*sw, my=sy+(c0[1]-r.top)/r.height*sh, nw=sw/f, nh=sh/f;
+      setVB([mx-(c[0]-r.left)/r.width*nw, my-(c[1]-r.top)/r.height*nh, nw, nh]) } });
+  const up=e=>{ CAM.pts.delete(e.pointerId); el.classList.remove("drag"); CAM.start={vb:[...S.vb], pts:new Map(CAM.pts)};
+    if(!CAM.pts.size) setTimeout(()=>CAM.moved=false,0) };
+  el.addEventListener("pointerup",up); el.addEventListener("pointercancel",up);
+  el.addEventListener("wheel",e=>{ e.preventDefault(); const [mx,my]=toMap(e.clientX,e.clientY); zoomAt(e.deltaY<0?1.2:1/1.2,mx,my) },{passive:false});
+  el.addEventListener("dblclick",e=>{ const [mx,my]=toMap(e.clientX,e.clientY); const [x,y,w]=S.vb; const nw=w/1.8; flyTo([mx-nw/2,my-nw*MH/MW/2,nw,nw*MH/MW]) });
+  const mid=()=>[S.vb[0]+S.vb[2]/2, S.vb[1]+S.vb[3]/2];
+  $("#zin").onclick=()=>{ const [mx,my]=mid(), w=S.vb[2]/1.5; flyTo([mx-w/2,my-w*MH/MW/2,w,w*MH/MW],250) };
+  $("#zout").onclick=()=>{ const [mx,my]=mid(), w=S.vb[2]*1.5; flyTo([mx-w/2,my-w*MH/MW/2,w,w*MH/MW],250) };
+  $("#zreset").onclick=()=>flyTo([0,0,MW,MH]);
+})();
+function esc(x){ return String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])) }
+function renderKinds(){
+  const box=$("#kinds"); box.innerHTML="";
+  ["all",...KINDS].forEach(k=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent = k==="all"? t("all") : t("k_"+k);
+    b.setAttribute("aria-pressed", S.kind===k); b.onclick=()=>{ S.kind=k; renderMuseum() }; box.append(b) });
+}
+function renderLegend(){
+  const box=$("#legend"); box.innerHTML="";
+  M.places.filter(p=>S.kind==="all"||p.kind===S.kind).forEach(p=>{ const b=document.createElement("button"); b.type="button";
+    b.setAttribute("aria-pressed", S.place===p.id);
+    b.innerHTML=`<span class="n k-${p.kind}">${p.n}</span><span><b style="display:block;font-weight:600"></b><small style="color:var(--muted)"></small></span>`;
+    b.querySelector("b").textContent=placeName(p); b.querySelector("small").textContent=t("k_"+p.kind);
+    b.onclick=()=>selectPlace(p.id); box.append(b) });
+}
+function renderPlace(){
+  const c=$("#placeCard"), p=M.places.find(x=>x.id===S.place);
+  if(!p){ c.innerHTML=`<p class="lede"></p>`; c.querySelector("p").textContent=t("pickPlace"); return }
+  c.innerHTML=`<span class="kind"></span><h3></h3><ul></ul><button type="button" class="btn small" style="justify-self:start"></button>`;
+  c.querySelector(".kind").textContent = `${p.n} · ${t("k_"+p.kind)}`; c.querySelector("h3").textContent = placeName(p);
+  L(p,"facts").forEach(x=>{ const li=document.createElement("li"); li.textContent=x; c.querySelector("ul").append(li) });
+  const b=c.querySelector("button"); b.textContent=t("askPlace"); b.onclick=()=>openGuide(t("qPlace")(placeName(p)));
+  const sbtn=document.createElement("button"); sbtn.type="button"; sbtn.className="btn small ghost"; sbtn.style.justifySelf="start"; sbtn.textContent=t("placeSound");
+  sbtn.onclick=()=>playAmbient("place:"+p.id, placeName(p)); c.append(sbtn);
+}
+function selectPlace(id){ S.place=id; drawMap(); renderLegend(); renderPlace(); logEvent("place", id);
+  focusPlace(M.places.find(p=>p.id===id)); }
+function renderVisit(){
+  const v=M.visit, lang=isAr()?"ar":"en", box=$("#mus-visit"); box.innerHTML="";
+  const card=(title, inner)=>{ const d=document.createElement("div"); d.className="card"; d.innerHTML=`<h3></h3>${inner}`; d.querySelector("h3").textContent=title; box.append(d); return d };
+  const chk=document.createElement("p"); chk.className="checked"; chk.textContent=t("checked")(new Date(M.checked+"T12:00:00").toLocaleDateString(isAr()?"ar-EG-u-nu-latn":"en-GB",{day:"numeric",month:"long",year:"numeric"})); box.append(chk);
+  const pr=card(t("prices"),`<table class="prices"><tbody></tbody></table><p class="note" style="color:var(--muted)"></p>`);
+  v.tickets.forEach(x=>{ const tr=document.createElement("tr"); tr.innerHTML="<td></td><td></td>"; tr.cells[0].textContent=x[lang]; tr.cells[1].textContent= x.egp? `${x.egp.toLocaleString("en")} ${t("egp")}` : t("free"); pr.querySelector("tbody").append(tr) });
+  pr.querySelector("p").textContent=v["tickets_note_"+lang];
+  const hr=card(t("hoursT"),`<table class="prices"><tbody></tbody></table><p class="note" style="color:var(--muted)"></p>`);
+  v.hours.forEach(h=>{ const tr=document.createElement("tr"); tr.innerHTML="<td></td><td></td>"; tr.cells[0].textContent=h[lang]; tr.cells[1].innerHTML=`${esc(t("galleriesW"))} <bdi dir="ltr">${esc(h.galleries)}</bdi>`; hr.querySelector("tbody").append(tr);
+    const tr2=document.createElement("tr"); tr2.innerHTML="<td></td><td></td>"; tr2.cells[0].innerHTML="&nbsp;"; tr2.cells[1].innerHTML=`${esc(t("complex"))} <bdi dir="ltr">${esc(h.complex)}</bdi>`; tr2.style.color="var(--muted)"; hr.querySelector("tbody").append(tr2) });
+  hr.querySelector("p").textContent=v["hours_note_"+lang];
+  const list=(title,items,ordered)=>{ const d=card(title, ordered?"<ol></ol>":"<ul></ul>"); items.forEach(x=>{ const li=document.createElement("li"); li.textContent=x; d.querySelector(ordered?"ol":"ul").append(li) }); return d };
+  list(t("validT"), v["validity_"+lang]);
+  const bk=list(t("bookT"), v["booking_"+lang], true);
+  const a=document.createElement("a"); a.className="btn"; a.href=M.official_booking; a.target="_blank"; a.rel="noopener"; a.textContent=t("bookBtn"); a.style.textDecoration="none"; a.style.justifySelf="start"; bk.append(a);
+  list(t("rulesT"), v["rules_"+lang]);
+  const g=card(t("getT"),"<p></p>"); g.querySelector("p").textContent=v["getting_"+lang];
+  const ask=document.createElement("button"); ask.type="button"; ask.className="btn ghost"; ask.textContent=t("guideChip"); ask.onclick=()=>openGuide(); box.append(ask);
+}
+function renderMuseum(){ renderKinds(); drawMap(); renderLegend(); renderPlace(); renderVisit();
+  $$("#musSeg button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.m===(S.mseg||"map"))) }
+$$("#musSeg button").forEach(b=>b.onclick=()=>{ S.mseg=b.dataset.m; $("#mus-map").hidden = S.mseg!=="map"; $("#mus-visit").hidden = S.mseg!=="visit"; renderMuseum() });
+$("#openGuide").onclick = ()=>openGuide();
+$("#guideChip").onclick = ()=>openGuide();
+
+/* =====================================================================
+   v2 features: accessibility, Sada sounds, two-piece dialogue,
+   school trips + quiz, visit souvenir card, museum dashboard
+   ===================================================================== */
+const shuffle = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]] } return b };
+const pickOne = a => a[Math.floor(Math.random()*a.length)];
+
+/* ---------- anonymous local log (dashboard on this device; never question text) ---------- */
+function localLog(kind, id, topic){ const L=store.get("log",[]); L.push([Date.now(),kind,id||null,S.lang,S.aud,topic||null]); store.set("log",L.slice(-800)) }
+const DESCRIBE_RE = toks("صف اوصف وصف شكلك شكله شكل لونك describe look looks appearance colour color");
+function topicOf(q){
+  if(!q) return null; const qt=toks(q);
+  for(const w of qt) if(DESCRIBE_RE.has(w)) return "describe";
+  let best=null, sc=0;
+  ["tickets","hours","validity","booking","rules","getting","shops","food","parking","gate","children","services"].forEach(k=>{ let n=0; toks(TOPIC[k]||"").forEach(w=>{ if(qt.has(w)) n++ }); if(n>sc){ sc=n; best=k } });
+  return best || "history";
+}
+
+/* ---------- accessibility mode ---------- */
+S.a11y = store.get("a11y", false);
+function applyA11y(){ document.body.classList.toggle("a11y", S.a11y); $("#a11yBtn").setAttribute("aria-pressed", S.a11y) }
+$("#a11yBtn").onclick = ()=>{ S.a11y=!S.a11y; store.set("a11y",S.a11y); applyA11y(); toast(t(S.a11y?"a11yOn":"a11yOff")); if(S.a11y) logEvent("a11y") };
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null;
+function stopMic(){ try{ rec?.stop() }catch{} rec=null; $("#mic").setAttribute("aria-pressed","false") }
+$("#mic").onclick = ()=>{
+  if(!SR){ toast(t("micNo")); return }
+  if(rec){ stopMic(); return }
+  rec = new SR(); rec.lang = VOICE_LANG[S.lang]; rec.interimResults = true; rec.maxAlternatives = 1;
+  $("#mic").setAttribute("aria-pressed","true"); $("#q").placeholder = t("listening");
+  let finalText = "";
+  rec.onresult = e=>{ finalText = [...e.results].map(r=>r[0].transcript).join(" "); $("#q").value = finalText };
+  rec.onerror = ()=>{ toast(t("micNo")); stopMic() };
+  rec.onend = ()=>{ const q=finalText.trim(); stopMic(); $("#q").placeholder = S.cur?.id==="guide"? t("askGuide") : t("ask"); if(q){ $("#q").value=""; send(q) } };
+  try{ rec.start() }catch{ stopMic(); toast(t("micNo")) }
+};
+
+/* ---------- Sada sound engine (synthesised live, nothing pre-recorded) ---------- */
+let actx=null, amaster, anoise; const LAYERS_OK = new Set(["water","birds","wind","reeds","oars","crowd","chant","sistrum","drum","clap","harp","flute","chisel","hammer","fire","trumpet","animals"]);
+function aInit(){
+  if(actx) return actx;
+  actx = new (window.AudioContext||window.webkitAudioContext)();
+  amaster = actx.createGain(); amaster.gain.value = .8;
+  const comp = actx.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=4;
+  const verb = actx.createConvolver(); verb.buffer = aImpulse(2.6, 2.4);
+  const wet = actx.createGain(); wet.gain.value=.28; const makeup=actx.createGain(); makeup.gain.value=2.4;
+  amaster.connect(makeup); makeup.connect(comp); makeup.connect(verb); verb.connect(wet); wet.connect(comp); comp.connect(actx.destination);
+  anoise = actx.createBuffer(1, actx.sampleRate*3, actx.sampleRate); const d=anoise.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  return actx;
+}
+function aImpulse(sec, decay){ const n=actx.sampleRate*sec, b=actx.createBuffer(2,n,actx.sampleRate); for(let c=0;c<2;c++){ const d=b.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,decay) } return b }
+async function aReady(){ aInit(); if(actx.state!=="running") await actx.resume(); return actx }
+const anow=()=>actx.currentTime;
+function aNoise(dest,t,dur,{type="bandpass",f=1000,q=1,g=1,a=.005,r=null}={}){ const s=actx.createBufferSource(); s.buffer=anoise; s.loop=true; const fl=actx.createBiquadFilter(); fl.type=type; fl.frequency.value=f; fl.Q.value=q; const e=actx.createGain(); e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(g,t+a); e.gain.exponentialRampToValueAtTime(.0001,t+(r??dur)); s.connect(fl); fl.connect(e); e.connect(dest); s.start(t,Math.random()*2); s.stop(t+dur+.05) }
+function aTone(dest,t,freq,dur,{type="sine",g=.5,a=.01,vib=0}={}){ const o=actx.createOscillator(); o.type=type; o.frequency.setValueAtTime(freq,t); const e=actx.createGain(); e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(g,t+a); e.gain.exponentialRampToValueAtTime(.0001,t+dur); if(vib){ const l=actx.createOscillator(), lg=actx.createGain(); l.frequency.value=5.2; lg.gain.value=freq*vib; l.connect(lg); lg.connect(o.frequency); l.start(t); l.stop(t+dur) } o.connect(e); e.connect(dest); o.start(t); o.stop(t+dur+.05) }
+const KSB={}; function aPluck(freq){ const k=Math.round(freq); if(KSB[k]) return KSB[k]; const sr=actx.sampleRate, n=Math.floor(sr*2.4), p=Math.max(2,Math.round(sr/freq)), b=actx.createBuffer(1,n,sr), d=b.getChannelData(0), w=new Float32Array(p); for(let i=0;i<p;i++) w[i]=Math.random()*2-1; for(let i=0;i<n;i++){ const j=i%p; d[i]=w[j]; w[j]=.5*(w[j]+w[(j+1)%p])*.996 } return KSB[k]=b }
+const NOTE2={D:146.83,E:164.81,F:174.61,G:196,A:220,C:261.63,d:293.66,e:329.63};
+const PLAY2 = {
+ harp(dest,t,p="D",g=.6){ const s=actx.createBufferSource(); s.buffer=aPluck(NOTE2[p]*2); const e=actx.createGain(); e.gain.value=g; s.connect(e); e.connect(dest); s.start(t) },
+ sistrum(dest,t,p="1",g=.5){ for(let k=0;k<+p+2;k++){ const tt=t+k*.065; aNoise(dest,tt,.18,{type:"highpass",f:6500,q:.7,g:g*.5,r:.16}); [3120,4310,5270,6890].forEach((f,i)=>aTone(dest,tt,f*(1+Math.random()*.01),.22,{type:"triangle",g:g*.08/(i+1)})) } },
+ clappers(dest,t,p="L",g=.6){ const hit=(tt,f)=>{ aNoise(dest,tt,.06,{f,q:6,g,r:.05}); aTone(dest,tt,f/4,.05,{type:"triangle",g:g*.3}) }; if(p==="L") hit(t,2100); else hit(t,2500) },
+ drum(dest,t,p="DOUM",g=.8){ if(p==="DOUM"){ const o=actx.createOscillator(), e=actx.createGain(); o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(58,t+.25); e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.0001,t+.6); o.connect(e); e.connect(dest); o.start(t); o.stop(t+.65); aNoise(dest,t,.08,{type:"lowpass",f:600,g:g*.25,r:.07}) } else { aNoise(dest,t,.09,{f:3200,q:2.5,g:g*.55,r:.08}); aTone(dest,t,620,.07,{type:"triangle",g:g*.12}) } },
+ flute(dest,t,p="D",g=.4,dur=.9){ const f=NOTE2[p]*2; aTone(dest,t,f,dur,{g,a:.08,vib:.008}); aTone(dest,t,f*2,dur,{g:g*.08,a:.1}); aNoise(dest,t,dur,{f:f*2,q:1.2,g:g*.18,a:.06,r:dur}) },
+ trumpet(dest,t,p="LOW",g=.45,dur=.7){ const f=p==="LOW"?233:349; const o=actx.createOscillator(); o.type="sawtooth"; o.frequency.setValueAtTime(f*.97,t); o.frequency.linearRampToValueAtTime(f,t+.06); const f1=actx.createBiquadFilter(); f1.type="bandpass"; f1.frequency.value=1250; f1.Q.value=1.4; const f2=actx.createBiquadFilter(); f2.type="lowpass"; f2.frequency.value=2600; const e=actx.createGain(); e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(g,t+.05); e.gain.setValueAtTime(g,t+dur-.12); e.gain.linearRampToValueAtTime(.0001,t+dur); o.connect(f1); f1.connect(f2); f2.connect(e); e.connect(dest); o.start(t); o.stop(t+dur+.02); aNoise(dest,t,.08,{f:1800,q:1,g:g*.2,r:.07}) }
+};
+function aLoop(fn, interval, jitter=0){ let alive=true, h; const tick=()=>{ if(!alive) return; fn(); h=setTimeout(tick,(interval+(Math.random()*2-1)*jitter)*1000) }; tick(); return ()=>{ alive=false; clearTimeout(h) } }
+function aBed(dest,{type="lowpass",f=500,q=.7,g=.5,lfo=.1,depth=.4}){ const s=actx.createBufferSource(); s.buffer=anoise; s.loop=true; const fl=actx.createBiquadFilter(); fl.type=type; fl.frequency.value=f; fl.Q.value=q; const e=actx.createGain(); e.gain.value=g; const l=actx.createOscillator(), lg=actx.createGain(); l.frequency.value=lfo; lg.gain.value=g*depth; l.connect(lg); lg.connect(e.gain); s.connect(fl); fl.connect(e); e.connect(dest); s.start(); l.start(); return ()=>{ try{ s.stop(); l.stop() }catch{} } }
+const PENTA2=["D","E","G","A","C","d"];
+function aLayer(key, dest, bpm){
+  const beat=60/bpm;
+  switch(key){
+   case "water": { const a=aBed(dest,{f:420,g:.55,lfo:.18,depth:.6}); const b=aLoop(()=>aNoise(dest,anow(),.35,{f:700+Math.random()*900,q:3,g:.12,a:.04,r:.3}),.45,.3); return ()=>{a();b()} }
+   case "wind": return aBed(dest,{type:"bandpass",f:380,q:.6,g:.45,lfo:.05,depth:.8});
+   case "reeds": return aLoop(()=>aNoise(dest,anow(),1.6,{type:"bandpass",f:3800,q:.8,g:.12,a:.6,r:1.6}),1.1,.5);
+   case "birds": return aLoop(()=>{ const t=anow(), f=2600+Math.random()*1800, n=2+Math.floor(Math.random()*4); for(let i=0;i<n;i++){ const o=actx.createOscillator(), e=actx.createGain(), s=t+i*.09; o.frequency.setValueAtTime(f,s); o.frequency.exponentialRampToValueAtTime(f*1.35,s+.05); e.gain.setValueAtTime(0,s); e.gain.linearRampToValueAtTime(.12,s+.01); e.gain.exponentialRampToValueAtTime(.0001,s+.08); o.connect(e); e.connect(dest); o.start(s); o.stop(s+.1) } },1.7,1.2);
+   case "oars": return aLoop(()=>aNoise(dest,anow(),.9,{f:520,q:1.2,g:.3,a:.25,r:.85}),beat*4,.1);
+   case "crowd": { const st=[0,1,2,3].map(i=>aBed(dest,{type:"bandpass",f:350+i*170,q:5,g:.12,lfo:1.3+i*.7,depth:.9})); return ()=>st.forEach(x=>x()) }
+   case "chant": { const voices=[0,7].map(semi=>{ const o=actx.createOscillator(); o.type="sawtooth"; o.frequency.value=98*Math.pow(2,semi/12); const f1=actx.createBiquadFilter(); f1.type="bandpass"; f1.frequency.value=700; f1.Q.value=6; const f2=actx.createBiquadFilter(); f2.type="bandpass"; f2.frequency.value=1150; f2.Q.value=8; const e=actx.createGain(); e.gain.value=.0001; const sum=actx.createGain(); sum.gain.value=.5; o.connect(f1); o.connect(f2); f1.connect(e); f2.connect(e); e.connect(sum); sum.connect(dest); o.start(); const sw=aLoop(()=>{ const t=anow(); e.gain.cancelScheduledValues(t); e.gain.setValueAtTime(e.gain.value,t); e.gain.linearRampToValueAtTime(.7,t+1.2); e.gain.linearRampToValueAtTime(.3,t+beat*8) },beat*8,0); return ()=>{ sw(); try{o.stop()}catch{} } }); return ()=>voices.forEach(v=>v()) }
+   case "sistrum": return aLoop(()=>PLAY2.sistrum(dest,anow(),pickOne(["1","2"]),.35),beat*2,0);
+   case "drum": { let i=0; return aLoop(()=>{ const p=["DOUM","TEK",null,"TEK","DOUM",null,"TEK",null][i++%8]; if(p) PLAY2.drum(dest,anow(),p,.55) },beat/2,0) }
+   case "clap": { let i=0; return aLoop(()=>{ if(i++%4!==1) PLAY2.clappers(dest,anow(),pickOne(["L","R"]),.4) },beat,0) }
+   case "harp": return aLoop(()=>PLAY2.harp(dest,anow(),pickOne(PENTA2),.45),beat,.05);
+   case "flute": return aLoop(()=>{ const t=anow(); [pickOne(["A","G"]),"G","F","D"].forEach((p,i)=>PLAY2.flute(dest,t+i*beat*1.5,p,.25,beat*1.6)) },beat*9,1);
+   case "chisel": return aLoop(()=>{ const t=anow(); for(let i=0;i<3;i++){ aNoise(dest,t+i*.13,.05,{f:5200,q:4,g:.35,r:.04}); aTone(dest,t+i*.13,2950+Math.random()*400,.12,{type:"triangle",g:.05}) } },1.3,.6);
+   case "hammer": return aLoop(()=>{ const t=anow(); aTone(dest,t,95,.18,{g:.5}); aNoise(dest,t,.07,{type:"lowpass",f:900,g:.3,r:.06}) },beat*2,.25);
+   case "fire": return aLoop(()=>aNoise(dest,anow(),.03,{f:2400+Math.random()*2500,q:2,g:.12+Math.random()*.15,r:.025}),.07,.05);
+   case "trumpet": return aLoop(()=>{ const t=anow(); [["LOW",.5],["LOW",.5],["HIGH",1.1],["LOW",.9]].reduce((s,[p,d])=>{ PLAY2.trumpet(dest,t+s,p,.38,d*beat*1.4); return s+d*beat*1.5 },0) },beat*10,1);
+   case "animals": return aLoop(()=>{ const t=anow(); [0,.38].forEach((d,i)=>{ const o=actx.createOscillator(); o.type="sawtooth"; o.frequency.setValueAtTime(i?520:300,t+d); o.frequency.linearRampToValueAtTime(i?380:420,t+d+.35); const f=actx.createBiquadFilter(); f.type="bandpass"; f.frequency.value=900; f.Q.value=3; const e=actx.createGain(); e.gain.setValueAtTime(0,t+d); e.gain.linearRampToValueAtTime(.09,t+d+.05); e.gain.linearRampToValueAtTime(.0001,t+d+.36); o.connect(f); f.connect(e); e.connect(dest); o.start(t+d); o.stop(t+d+.4) }) },9,4);
+  }
+  return ()=>{};
+}
+/* one soundscape per hall / place on the map (informed reconstruction, labelled as imagined) */
+const SCENES = {
+ plaza:{wind:.5,crowd:.35,birds:.3,_:70}, "grand-hall":{chant:.6,crowd:.3,wind:.25,_:66}, "grand-staircase":{chant:.55,sistrum:.5,drum:.35,_:84},
+ view:{wind:.55,birds:.3,flute:.3,_:62}, galleries:{harp:.55,flute:.35,water:.3,birds:.25,_:72}, tutankhamun:{trumpet:.6,drum:.45,crowd:.25,wind:.2,_:84},
+ "khufu-boats":{water:.85,oars:.45,birds:.45,reeds:.4,_:60}, children:{clap:.45,drum:.4,flute:.35,birds:.3,_:100}, shops:{crowd:.55,harp:.3,animals:.15,_:88},
+ food:{crowd:.45,fire:.25,harp:.3,_:80}, gardens:{birds:.6,wind:.35,water:.35,reeds:.3,_:64}, gate:{crowd:.4,wind:.3,_:80}, parking:{wind:.4,birds:.2,_:70}, services:{harp:.35,wind:.25,_:70}
+};
+let SCENE2 = null;
+function stopAmbient(){ if(!SCENE2) return; const s=SCENE2; SCENE2=null; const t=anow(); s.bus.gain.cancelScheduledValues(t); s.bus.gain.setValueAtTime(s.bus.gain.value,t); s.bus.gain.linearRampToValueAtTime(.0001,t+.8); setTimeout(()=>{ s.stops.forEach(x=>x()); s.bus.disconnect() },900); $("#nowplay").hidden=true; syncSoundButtons() }
+async function playAmbient(key, label){
+  const id = key.split(":")[1], mix = SCENES[id] || SCENES.galleries;
+  await aReady(); const same = SCENE2 && SCENE2.key===key; stopAmbient(); if(same) return;
+  const bus=actx.createGain(); bus.gain.value=.0001; bus.connect(amaster); bus.gain.linearRampToValueAtTime(1,anow()+1.2);
+  const stops=[]; Object.entries(mix).forEach(([k,v])=>{ if(!LAYERS_OK.has(k)) return; const g=actx.createGain(); g.gain.value=v; g.connect(bus); stops.push(aLayer(k,g,mix._||76)) });
+  SCENE2={key,bus,stops,label}; $("#npName").textContent=label; $("#nowplay").hidden=false; syncSoundButtons(); logEvent("sound", id);
+}
+async function playCall(kind){ await aReady(); const t=anow(), beat=60/84;
+  if(kind==="trumpet") [["LOW",.5],["LOW",.5],["HIGH",1.1],["LOW",.9]].reduce((s,[p,d])=>{ PLAY2.trumpet(amaster,t+s,p,.5,d*beat*1.4); return s+d*beat*1.5 },0);
+  else ["D","E","G","A","G","E","D"].forEach((p,i)=>PLAY2.harp(amaster,t+i*.32,p,.6));
+  logEvent("sound", kind) }
+$("#npStop").onclick = stopAmbient;
+function syncSoundButtons(){ $$("[data-snd]").forEach(b=>b.setAttribute("aria-pressed", !!SCENE2 && SCENE2.key===b.dataset.snd)) }
+function renderArtifactSound(a){
+  const box=$("#aSound"); box.innerHTML="";
+  if(a.id==="guide") return;
+  const z = KB.zones.find(z=>z.id===a.zone), key = "place:"+(a.zone==="tutankhamun"?"tutankhamun":a.zone==="khufu-boats"?"khufu-boats":a.zone);
+  const b=document.createElement("button"); b.type="button"; b.className="chip"; b.dataset.snd=key; b.textContent="♪ "+t("hallSound");
+  b.onclick=()=>playAmbient(key, isAr()? z.name_ar : z.name_en); box.append(b);
+  if(a.id==="tut-trumpets"){ const c=document.createElement("button"); c.type="button"; c.className="chip"; c.textContent="♪ "+t("trumpetCall"); c.onclick=()=>playCall("trumpet"); box.append(c) }
+  if((a.tags||[]).includes("music") && a.id!=="tut-trumpets"){ const c=document.createElement("button"); c.type="button"; c.className="chip"; c.textContent="♪ "+t("harpPlay"); c.onclick=()=>playCall("harp"); box.append(c) }
+  syncSoundButtons();
+}
+
+/* ---------- quotes for the souvenir ---------- */
+function rememberQuote(a, text){
+  const clean = String(text).replace(/\s*\((?:بحكيلك|Telling you)[^)]*\)\s*$/,"").trim();
+  const parts = clean.split(/(?<=[.!؟?])\s+/).map(x=>x.trim()).filter(Boolean);
+  const first = (parts.find(x=>x.length>=30) || parts.join(" ")).slice(0,170);
+  if(!first) return; const Q=store.get("quotes",{}); if(!Q[a.id]) { Q[a.id]=first; store.set("quotes",Q) }
+}
+
+/* ---------- dialogue between two pieces ---------- */
+S.dlg = null; S.dTopic = null;
+function sheetOf(a){ return `Name: ${a.name_en} / ${a.name_ar}\nEra: ${a.era_en}\nMaterial: ${a.material_en}\nVerified facts:\n${a.facts_en.map(x=>"- "+x).join("\n")}` }
+function dlgPrompt(a, b, history, question){
+  const persona = x => isAr()? x.persona_ar : x.persona_en;
+  const transcript = history.slice(-12).map(l=>`${l.who==="a"?a.name_en:l.who==="b"?b.name_en:"Visitor"}: ${l.text}`).join("\n");
+  return `You are Hekaya (حكاية), an AI guide at the Grand Egyptian Museum. Two artifacts are talking to each other in front of a visitor, like a short radio play.
+
+Artifact A persona: ${persona(a)}
+${sheetOf(a)}
+
+Artifact B persona: ${persona(b)}
+${sheetOf(b)}
+${S.dTopic? "\nThe visitor picked this theme: "+S.dTopic+"\n" : ""}
+Rules:
+1. Each artifact speaks in the first person as itself, and they really talk TO each other: compare, ask, tease kindly.
+2. Each may use ONLY its own verified facts. Never invent dates, numbers, names or events; if unsure, say so in character.
+3. If the visitor asked something, both answer it first, briefly, from their own facts.
+4. Keep each line to 1-3 sentences. Respectful, no graphic descriptions.
+5. Write in ${LANG_NAME[S.lang]}, for ${AUD[S.aud]}. Plain text in each line: no markdown, no emojis.
+
+${transcript? "Conversation so far:\n"+transcript+"\n" : "Start the conversation.\n"}${question? "The visitor now asks: "+question : "Continue naturally."}
+Reply with ONLY JSON: {"lines": [{"who": "a" or "b", "text": "..."}]} with 4 lines, alternating${question?" (2 lines are enough when answering the visitor)":""}.`;
+}
+function offlineDialogue(a, b, history, question){
+  const fa = isAr()? a.facts_ar : a.facts_en, fb = isAr()? b.facts_ar : b.facts_en;
+  const ia = history.filter(l=>l.who==="a").length, ib = history.filter(l=>l.who==="b").length;
+  if(question){ const qt=toks(question); const best=(facts,k)=>[...facts].sort((x,y)=>[...toks(y)].filter(w=>qt.has(w)).length-[...toks(x)].filter(w=>qt.has(w)).length)[0]||facts[k%facts.length];
+    return [{who:"a",text:best(fa,ia)},{who:"b",text:best(fb,ib)}] }
+  const na=nm(a), nb=nm(b);
+  const oa = !history.length? (isAr()? `أهلاً يا ${nb}! أنا ${na}. ` : `Hello, ${nb}! I am ${na}. `) : (isAr()? "وكمان، " : "Also, ");
+  const ob = !history.length? (isAr()? `وأنا ${nb}، يا أهلاً بيك. ` : `And I am ${nb}, welcome. `) : (isAr()? "وأنا كمان عندي حكاية: " : "I have a story too: ");
+  return [{who:"a",text:oa+fa[ia%fa.length]+(isAr()? ` وإنت يا ${nb}؟` : ` And you, ${nb}?`)},{who:"b",text:ob+fb[ib%fb.length]},{who:"a",text:fa[(ia+1)%fa.length]},{who:"b",text:fb[(ib+1)%fb.length]}];
+}
+function cleanLines(j){ return (Array.isArray(j?.lines)? j.lines : []).filter(l=>l && (l.who==="a"||l.who==="b") && l.text).slice(0,6).map(l=>({who:l.who,text:String(l.text).replace(/\s+/g," ").slice(0,500)})) }
+function dBubble(who, text){
+  const d=document.createElement("div"); const x=S.dlg;
+  if(who==="visitor"){ d.className="bubble me"; d.style.justifySelf="center"; d.textContent=text }
+  else { d.className = "bubble ai"+(who==="b"?" b":""); d.innerHTML=`<span class="who"></span><span class="txt"></span>`; d.querySelector(".who").textContent = nm(who==="a"? x.a : x.b); d.querySelector(".txt").textContent=text }
+  $("#dChat").append(d); d.scrollIntoView({block:"end",behavior:"smooth"}); return d;
+}
+async function dlgStep(question){
+  const x=S.dlg; if(!x || x.busy) return; x.busy=true; $("#dMore").disabled=true; $("#dSend").disabled=true;
+  if(question){ dBubble("visitor", question); x.lines.push({who:"visitor",text:question}) }
+  const wait = dBubble(x.lines.filter(l=>l.who!=="visitor").length%2? "b":"a", t("thinking")); wait.querySelector(".txt").classList.add("thinking");
+  let lines=[];
+  try{
+    if(S.mode==="claude") lines = cleanLines(await S.sample.json(dlgPrompt(x.a,x.b,x.lines,question),{modelTier:"default",cache:false}));
+    else if(S.mode==="api"){ const r=await fetch("/api/dialogue",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({a:x.a.id,b:x.b.id,topic:S.dTopic,question:question||null,history:x.lines.slice(-20),language:S.lang==="ar"?"ar":S.lang,audience:S.aud})}); if(!r.ok) throw new Error(r.status); lines=cleanLines(await r.json()) }
+  }catch(e){ if(e?.code==="not_granted"){ S.mode="offline"; renderMode() } }
+  if(!lines.length) lines = offlineDialogue(x.a,x.b,x.lines,question);
+  wait.remove();
+  for(const l of lines){ dBubble(l.who,l.text); x.lines.push(l); await new Promise(r=>setTimeout(r,280)) }
+  if(S.a11y) speakDialogue(lines);
+  logEvent("dialogue", x.a.id, question? topicOf(question):null); if(S.mode==="api") {} else localLog("dialogue", x.b.id);
+  x.busy=false; $("#dMore").disabled=false; $("#dSend").disabled=false;
+}
+function speakDialogue(lines){
+  if(!("speechSynthesis" in window)){ toast(t("noVoice")); return }
+  speechSynthesis.cancel(); const want=VOICE_LANG[S.lang], voices=speechSynthesis.getVoices().filter(v=>v.lang?.startsWith(want.slice(0,2)));
+  lines.filter(l=>l.who!=="visitor").forEach(l=>{ const u=new SpeechSynthesisUtterance(l.text); u.lang=want; if(voices.length) u.voice = l.who==="a"? voices[0] : (voices[1]||voices[0]); u.pitch = l.who==="a"? 1 : .75; u.rate=S.aud==="kids"?.95:1; speechSynthesis.speak(u) });
+}
+function openDialogue(){
+  const a=byId[$("#dA").value], b=byId[$("#dB").value];
+  if(!a || !b || a.id===b.id){ toast(t("dlgSame")); return }
+  S.dlg={a,b,lines:[],busy:false};
+  $("#dTitle").textContent = `${nm(a)} × ${nm(b)}`; $("#dChat").innerHTML=""; $("#dq").placeholder=t("dlgAsk");
+  $("#dsheet").hidden=false; $("#dsheet").scrollTop=0; document.body.style.overflow="hidden"; document.body.classList.add("sheetopen");
+  [a,b].forEach(x=>{ if(!S.stamps.has(x.id)){ S.stamps.add(x.id); store.set("stamps",[...S.stamps]); classPiece(x) } }); renderPassport();
+  dlgStep(null);
+}
+function closeDialogue(){ speechSynthesis?.cancel?.(); $("#dsheet").hidden=true; document.body.style.overflow=""; document.body.classList.remove("sheetopen"); S.dlg=null }
+$("#dGo").onclick = openDialogue;
+$("#dClose").onclick = closeDialogue;
+$("#dMore").onclick = ()=>dlgStep(null);
+$("#dListen").onclick = ()=>speakDialogue(S.dlg?.lines||[]);
+$("#dAsk").onsubmit = e=>{ e.preventDefault(); const q=$("#dq").value.trim(); if(!q) return; $("#dq").value=""; dlgStep(q) };
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#dsheet").hidden) closeDialogue() });
+
+/* ---------- school trips: server (api), shared artifact db, or this device only ---------- */
+S.cls = store.get("cls", null); S.db = null;
+const CODE_ABC = "ACDEFGHJKMNPQRTUVWXY34679";
+const newCode = () => Array.from({length:5},()=>CODE_ABC[Math.floor(Math.random()*CODE_ABC.length)]).join("");
+const clsScore = (p,q) => p*10 + q*20;
+function clsBackend(){ return S.mode==="api"? "api" : S.db? "db" : "local" }
+async function clsCreate(name){
+  const be=clsBackend();
+  if(be==="api"){ const r=await fetch("/api/class",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name})}); if(!r.ok) throw 0; return (await r.json()).code }
+  const code=newCode();
+  if(be==="db") await S.db.doc("classes/"+code).set({name, created:Date.now()});
+  else store.set("class:"+code,{name, students:{}});
+  return code;
+}
+async function clsJoin(code, nick){
+  const be=clsBackend();
+  if(be==="api"){ const r=await fetch(`/api/class/${code}/join`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nick})}); if(!r.ok) throw 0; const j=await r.json(); const b=await (await fetch(`/api/class/${code}`)).json(); return {sid:j.sid, name:b.name} }
+  if(be==="db"){ const c=await S.db.doc("classes/"+code).get(); if(!c.exists) throw 0; const sid=newCode()+newCode(); await S.db.doc(`classes/${code}/students/${sid}`).set({nick,stamps:0,quiz:0,updated:Date.now()}); return {sid, name:c.data().name} }
+  const c=store.get("class:"+code,null); if(!c) throw 0; const sid=newCode(); c.students[sid]={nick,stamps:0,quiz:0}; store.set("class:"+code,c); return {sid,name:c.name};
+}
+async function clsSync(){
+  const c=S.cls; if(!c || c.role!=="student") return; const stamps=c.pieces.length, quiz=c.quiz;
+  try{
+    const be=clsBackend();
+    if(be==="api") await fetch(`/api/class/${c.code}/progress`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sid:c.sid,stamps,quiz})});
+    else if(be==="db") await S.db.doc(`classes/${c.code}/students/${c.sid}`).set({nick:c.nick,stamps,quiz,updated:Date.now()});
+    else { const k=store.get("class:"+c.code,null); if(k){ k.students[c.sid]={nick:c.nick,stamps,quiz}; store.set("class:"+c.code,k) } }
+  }catch{}
+}
+function classPiece(a){ const c=S.cls; if(!c || c.role!=="student" || a.id==="guide" || c.pieces.includes(a.id)) return; c.pieces.push(a.id); store.set("cls",c); clsSync(); renderSchool() }
+let boardStop=null;
+function watchBoard(code, el){
+  boardStop?.(); boardStop=null;
+  const draw = list => { el.innerHTML = list.length? "" : `<p class="empty">${esc(t("noStudents"))}</p>`;
+    list.sort((x,y)=>y.score-x.score || String(x.nick).localeCompare(String(y.nick))).forEach(s=>{ const d=document.createElement("div"); d.innerHTML="<b></b><small></small>"; d.querySelector("b").textContent=s.nick; d.querySelector("small").textContent=`${s.score} ${t("pts")}`; el.append(d) }) };
+  const be=clsBackend();
+  if(be==="api"){ let alive=true; const tick=async()=>{ if(!alive) return; try{ const r=await fetch(`/api/class/${code}`); if(r.ok) draw((await r.json()).students) }catch{} if(alive) setTimeout(tick,4000) }; tick(); boardStop=()=>{ alive=false } }
+  else if(be==="db"){ boardStop = S.db.collection(`classes/${code}/students`).onSnapshot(snap=>draw(snap.docs.map(d=>{ const v=d.data(); return {nick:v.nick, score:clsScore(v.stamps||0, v.quiz||0)} })), ()=>{}) }
+  else { const k=store.get("class:"+code,{students:{}}); draw(Object.values(k.students).map(v=>({nick:v.nick,score:clsScore(v.stamps,v.quiz)}))) }
+}
+function renderSchool(){
+  const box=$("#schBody"); if(!box) return; box.innerHTML=""; const c=S.cls;
+  const note = clsBackend()==="local"? `<p class="checked">${esc(t("schLocal"))}</p>` : "";
+  if(!c){
+    box.innerHTML = `${note}<div class="row2"><button type="button" class="btn small" id="schT">${esc(t("teacher"))}</button><button type="button" class="btn small ghost" id="schS">${esc(t("student"))}</button></div><div id="schForm" style="display:grid;gap:10px;margin-top:10px"></div>`;
+    $("#schT").onclick=()=>{ $("#schForm").innerHTML=`<label class="field"><span class="note">${esc(t("className"))}</span><input id="cName" maxlength="40"></label><button type="button" class="btn" id="cGo">${esc(t("create"))}</button>`;
+      $("#cGo").onclick=async()=>{ const name=$("#cName").value.trim()||"GEM"; try{ const code=await clsCreate(name); S.cls={role:"teacher",code,name}; store.set("cls",S.cls); renderSchool() }catch{ toast(t("fail")) } } };
+    $("#schS").onclick=()=>{ $("#schForm").innerHTML=`<label class="field"><span class="note">${esc(t("classCode"))}</span><input id="cCode" maxlength="8" autocapitalize="characters" style="font-family:var(--f-mono);letter-spacing:.15em"></label><label class="field"><span class="note">${esc(t("nick"))}</span><input id="cNick" maxlength="20"></label><button type="button" class="btn" id="cJoin">${esc(t("join"))}</button>`;
+      $("#cJoin").onclick=async()=>{ const code=$("#cCode").value.trim().toUpperCase(), nick=$("#cNick").value.trim()||"?"; try{ const j=await clsJoin(code,nick); S.cls={role:"student",code,name:j.name,sid:j.sid,nick,pieces:[],quiz:0,done:[]}; store.set("cls",S.cls); logEvent("class_join"); clsSync(); renderSchool() }catch{ toast(t("classErr")) } } };
+    return;
+  }
+  if(c.role==="teacher"){
+    box.innerHTML = `${note}<p class="note">${esc(t("codeFor"))}</p><div class="bigcode"></div><p class="lede" style="text-align:center"></p><div class="board" id="board"></div><button type="button" class="btn small ghost" id="cLeave" style="justify-self:start;margin-top:8px">${esc(t("leave"))}</button>`;
+    box.querySelector(".bigcode").textContent=c.code; box.querySelector(".lede").textContent=c.name; watchBoard(c.code, $("#board"));
+  } else {
+    box.innerHTML = `${note}<p class="lede"></p><div class="big" id="myScore"></div><button type="button" class="btn small ghost" id="cLeave" style="justify-self:start;margin-top:8px">${esc(t("leave"))}</button>`;
+    box.querySelector(".lede").textContent=t("inClass")(c.name,c.code); $("#myScore").textContent=t("yourScore")(c.pieces.length,c.quiz,clsScore(c.pieces.length,c.quiz));
+  }
+  $("#cLeave").onclick=()=>{ boardStop?.(); boardStop=null; S.cls=null; store.set("cls",null); renderSchool() };
+}
+/* quiz: one question per piece for students — the right answer is one of the piece's own facts, the others come from other pieces */
+function maybeQuiz(a){
+  const c=S.cls; if(!c || c.role!=="student" || c.done.includes(a.id) || $("#quizSlot").childElementCount) return;
+  const own = isAr()? a.facts_ar : a.facts_en, right = pickOne(own);
+  const wrong = shuffle(KB.artifacts.filter(x=>x.id!==a.id)).slice(0,2).map(x=>pickOne(isAr()? x.facts_ar : x.facts_en));
+  const box=document.createElement("div"); box.className="quiz"; box.innerHTML=`<b></b>`; box.querySelector("b").textContent=t("quizQ")(nm(a));
+  shuffle([right,...wrong]).forEach(opt=>{ const b=document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=opt;
+    b.onclick=()=>{ if(c.done.includes(a.id)) return; c.done.push(a.id); const ok=opt===right; if(ok) c.quiz++;
+      box.querySelectorAll(".opt").forEach(x=>{ if(x.textContent===right) x.classList.add("ok"); else if(x===b) x.classList.add("no"); x.disabled=true });
+      const r=document.createElement("p"); r.className="note"; r.textContent=t(ok?"quizOk":"quizNo"); box.append(r);
+      store.set("cls",c); clsSync(); renderSchool(); logEvent("quiz", a.id) };
+    box.append(b) });
+  $("#quizSlot").append(box); setTimeout(()=>box.scrollIntoView({behavior:"smooth",block:"center"}),300);
+}
+
+/* ---------- souvenir card (1080×1920, story-sized) ---------- */
+const HIERO = {a:"𓄿",b:"𓃀",c:"𓎡",k:"𓎡",d:"𓂧",e:"𓇋",i:"𓇋",f:"𓆑",v:"𓆑",g:"𓎼",h:"𓉔",j:"𓆓",l:"𓃭",m:"𓅓",n:"𓈖",o:"𓅱",u:"𓅱",w:"𓅱",p:"𓊪",q:"𓈎",r:"𓂋",s:"𓋴",t:"𓏏",x:"𓎡𓋴",y:"𓇌",z:"𓊃",
+ "ا":"𓄿","أ":"𓄿","إ":"𓄿","آ":"𓄿","ء":"𓄿","ب":"𓃀","ت":"𓏏","ث":"𓏏","ج":"𓎼","ح":"𓎛","خ":"𓐍","د":"𓂧","ذ":"𓂧","ر":"𓂋","ز":"𓊃","س":"𓋴","ش":"𓈙","ص":"𓋴","ض":"𓂧","ط":"𓏏","ظ":"𓊃","ع":"𓂝","غ":"𓎼","ف":"𓆑","ق":"𓈎","ك":"𓎡","ل":"𓃭","م":"𓅓","ن":"𓈖","ه":"𓉔","ة":"𓏏","و":"𓅱","ي":"𓇋","ى":"𓇋"};
+function toHiero(name){ let out="", last=""; for(const ch of name.toLowerCase()){ const g=HIERO[ch]; if(!g) continue; if(g===last && "𓇋𓅱𓄿".includes(g)) continue; out+=g; last=g } return out.slice(0,24) }
+function wrapLines(ctx, text, maxW, maxLines){ const words=String(text).split(/\s+/), lines=[]; let cur="";
+  for(const w of words){ const test=cur? cur+" "+w : w; if(ctx.measureText(test).width>maxW && cur){ lines.push(cur); cur=w } else cur=test; if(lines.length===maxLines) break }
+  if(lines.length<maxLines && cur) lines.push(cur); if(lines.length===maxLines && words.join(" ").length>lines.join(" ").length) lines[maxLines-1]=lines[maxLines-1].replace(/\s*\S*$/,"")+"…"; return lines }
+let souvBlob=null;
+async function makeSouvenir(){
+  const talked = KB.artifacts.filter(a=>S.stamps.has(a.id)); if(!talked.length){ toast(t("souvNone")); return }
+  const name = ($("#souvName").value.trim() || (isAr()? "زائر المتحف" : "Museum visitor")).slice(0,24); store.set("souvName", name);
+  const Q = store.get("quotes",{}), rtl = isAr(), glyphs = toHiero(name);
+  try{ await Promise.all([document.fonts.load("700 80px 'Reem Kufi'"), document.fonts.load("400 40px 'IBM Plex Sans Arabic'"), document.fonts.load("120px 'Noto Sans Egyptian Hieroglyphs'", glyphs||"𓂀")]) }catch{}
+  const hasHiero = !!glyphs && [...document.fonts].some(f=>/Egyptian Hieroglyphs/.test(f.family) && f.status==="loaded");
+  const W=1080, H=1920, cv=document.createElement("canvas"); cv.width=W; cv.height=H; const x=cv.getContext("2d");
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,"#0E1D46"); g.addColorStop(1,"#1D3A8A"); x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.strokeStyle="#E7BC4F"; x.lineWidth=4; x.strokeRect(48,48,W-96,H-96); x.lineWidth=1.5; x.strokeRect(64,64,W-128,H-128);
+  x.direction = rtl? "rtl":"ltr"; x.textAlign="center"; x.fillStyle="#E7BC4F";
+  x.font="700 46px 'Reem Kufi', sans-serif"; x.fillText(rtl? "حكاية · المتحف المصري الكبير" : "Hekaya · Grand Egyptian Museum", W/2, 170);
+  x.fillStyle="#EEF1FA"; x.font="700 66px 'Reem Kufi', sans-serif"; wrapLines(x, t("souvTitle"), W-220, 2).forEach((l,i)=>x.fillText(l, W/2, 280+i*84));
+  // cartouche
+  const cy=560, cw=760, ch=230; x.strokeStyle="#E7BC4F"; x.lineWidth=8; x.beginPath(); { const L=(W-cw)/2, T=cy-ch/2, r=ch/2; x.moveTo(L+r,T); x.lineTo(L+cw-r,T); x.arc(L+cw-r,cy,r,-Math.PI/2,Math.PI/2); x.lineTo(L+r,T+ch); x.arc(L+r,cy,r,Math.PI/2,Math.PI*1.5); x.closePath() } x.stroke();
+  x.beginPath(); x.moveTo((W+cw)/2+24, cy-ch/2+20); x.lineTo((W+cw)/2+24, cy+ch/2-20); x.stroke();
+  x.fillStyle="#F2E3B8";
+  if(hasHiero){ x.direction="ltr"; let fs=120; x.font=`${fs}px 'Noto Sans Egyptian Hieroglyphs'`; while(x.measureText(glyphs).width>cw-120 && fs>50){ fs-=8; x.font=`${fs}px 'Noto Sans Egyptian Hieroglyphs'` } x.fillText(glyphs, W/2, cy+fs*.36); x.direction= rtl?"rtl":"ltr" }
+  else { x.font="700 84px 'Reem Kufi', sans-serif"; x.fillText(name, W/2, cy+30) }
+  x.fillStyle="#EEF1FA"; x.font="600 54px 'IBM Plex Sans Arabic', sans-serif"; if(hasHiero) x.fillText(name, W/2, cy+ch/2+90);
+  x.fillStyle="#E7BC4F"; x.font="500 38px 'IBM Plex Sans Arabic', sans-serif"; x.fillText(t("souvPieces")(talked.length)+" · "+new Date().toLocaleDateString(rtl?"ar-EG-u-nu-latn":"en-GB",{day:"numeric",month:"long",year:"numeric"}), W/2, cy+ch/2+160);
+  // pieces + quotes
+  let y=cy+ch/2+260; const left=120, right=W-120, ax = rtl? right : left;
+  for(const a of talked.slice(0,4)){
+    if(y>H-260) break;
+    x.textAlign = rtl? "right":"left"; x.fillStyle="#E7BC4F"; x.font="700 44px 'Reem Kufi', sans-serif"; x.fillText(nm(a), ax, y);
+    const q = Q[a.id] || (isAr()? a.kid_hook_ar : a.kid_hook_en) || ""; x.fillStyle="#EEF1FA"; x.font="400 34px 'IBM Plex Sans Arabic', sans-serif";
+    const lines = wrapLines(x, "«"+q+"»", right-left, 3); lines.forEach((l,i)=>x.fillText(l, ax, y+56+i*48)); y += 56 + lines.length*48 + 50;
+  }
+  x.textAlign="center"; x.fillStyle="#A3AECB"; x.font="400 30px 'IBM Plex Sans Arabic', sans-serif"; x.fillText(rtl? "اعمل حكايتك: كلّم القطع في المتحف المصري الكبير" : "Make your own story: talk to the pieces at GEM", W/2, H-120);
+  souvBlob = await new Promise(r=>cv.toBlob(r,"image/png"));
+  $("#souvImg").src = URL.createObjectURL(souvBlob); $("#souvImg").alt = t("souvTitle"); $("#souvImg").hidden=false; $("#souvActs").hidden=false;
+  logEvent("souvenir");
+}
+async function saveSouvenir(){
+  if(!souvBlob) return; const filename="hekaya-souvenir.png";
+  try{ const dl = window.claude?.use? await window.claude.use("downloads") : null; if(dl){ await dl.save({filename, data:souvBlob}); toast(t("souvSaved")); return } }catch(e){ if(e?.code==="declined") return }
+  const a=document.createElement("a"); a.href=URL.createObjectURL(souvBlob); a.download=filename; document.body.append(a); a.click(); a.remove();
+}
+async function shareSouvenir(){
+  if(!souvBlob) return; const file=new File([souvBlob],"hekaya-souvenir.png",{type:"image/png"});
+  try{ if(navigator.canShare?.({files:[file]})){ await navigator.share({files:[file], title:t("souvTitle")}); return } }catch(e){ if(e?.name==="AbortError") return }
+  saveSouvenir();
+}
+$("#souvMake").onclick = makeSouvenir; $("#souvSave").onclick = saveSouvenir; $("#souvShare").onclick = shareSouvenir;
+
+/* ---------- museum dashboard ---------- */
+function localSummary(){
+  const L=store.get("log",[]), since=Date.now()-7*864e5, rows=L.filter(r=>r[0]>=since);
+  const count=(f)=>{ const m={}; rows.forEach(r=>{ const k=f(r); if(k!=null) m[k]=(m[k]||0)+1 }); return m };
+  const top=(m,n=10)=>Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,n);
+  const hours=Array(24).fill(0); rows.forEach(r=>{ const h=+new Date(r[0]).toLocaleString("en-GB",{timeZone:"Africa/Cairo",hour:"2-digit",hour12:false})%24; hours[h]++ });
+  return {total:rows.length, events:count(r=>r[1]),
+    top_artifacts: top(count(r=>["scan","chat","listen","dialogue"].includes(r[1])? r[2]:null)).map(([id,c])=>({id,count:c})),
+    places: top(count(r=>r[1]==="place"? r[2]:null)).map(([id,c])=>({id,count:c})),
+    topics: top(count(r=>r[5]),20).map(([topic,c])=>({topic,count:c})), languages:count(r=>r[3]), levels:count(r=>r[4]), hours};
+}
+function hbars(title, items){
+  const max=Math.max(1,...items.map(i=>i.value));
+  return `<div class="card"><h3>${esc(title)}</h3>${items.length? `<div class="hbars">${items.map(i=>`<div class="hbar-row" title="${esc(i.label)}: ${i.value}"><span class="lab">${esc(i.label)}</span><span class="track"><span class="fill" style="display:block;width:${Math.max(3,100*i.value/max)}%"></span></span><span class="val">${i.value}</span></div>`).join("")}</div>` : `<p class="empty">${esc(t("noData"))}</p>`}</div>`;
+}
+function hoursChart(h){
+  const max=Math.max(1,...h), W=480, H=150, bw=16, gap=4, base=H-22;
+  const bars=h.map((v,i)=>{ const bh=v? Math.max(4,(base-10)*v/max) : 0, x=i*(bw+gap)+2; return `<g><title>${String(i).padStart(2,"0")}:00 · ${v}</title><rect x="${x}" y="0" width="${bw}" height="${base}" fill="transparent"/>${bh?`<rect class="c" x="${x}" y="${base-bh}" width="${bw}" height="${bh}" rx="3"/>`:""}</g>` }).join("");
+  const labels=[0,3,6,9,12,15,18,21].map(i=>`<text x="${i*(bw+gap)+2+bw/2}" y="${H-6}" text-anchor="middle">${i}</text>`).join("");
+  return `<div class="card hours"><h3>${esc(t("byHour"))}</h3><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t("byHour"))}"><line x1="0" x2="${W}" y1="${base+.5}" y2="${base+.5}" stroke="currentColor" opacity=".2"/>${bars}${labels}</svg></div>`;
+}
+async function renderDash(){
+  let d=null, api=false;
+  if(S.mode==="api"){ try{ const r=await fetch("/api/analytics"); if(r.ok){ d=await r.json(); api=true } }catch{} }
+  if(!d) d=localSummary();
+  $("#dashSrc").textContent = t(api?"dashApi":"dashLocal");
+  const ev=d.events||{}, nameOf=id=>byId[id]? nm(byId[id]) : id, placeOf=id=>{ const p=M.places.find(x=>x.id===id); return p? placeName(p) : id };
+  const LV={kids:t("kids"),adult:t("adult"),expert:t("expert")}, LN={ar:"العربية",en:"English",fr:"Français",de:"Deutsch",es:"Español",it:"Italiano",ru:"Русский",zh:"中文",ja:"日本語"};
+  const tiles=[["tEvents",d.total||0],["tChats",ev.chat||0],["tGuide",ev.guide||0],["tDlg",ev.dialogue||0]];
+  $("#dashBody").innerHTML = `<div class="tiles">${tiles.map(([k,v])=>`<div class="tile"><b>${v}</b><small>${esc(t(k))}</small></div>`).join("")}</div>`
+   + hbars(t("topPieces"), (d.top_artifacts||[]).map(x=>({label:nameOf(x.id),value:x.count})))
+   + hbars(t("topTopics"), (d.topics||[]).map(x=>({label:t("topicNames")[x.topic]||x.topic,value:x.count})))
+   + hbars(t("topPlaces"), (d.places||[]).map(x=>({label:placeOf(x.id),value:x.count})))
+   + hoursChart(d.hours||Array(24).fill(0))
+   + hbars(t("langs"), Object.entries(d.languages||{}).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({label:LN[k]||k,value:v})))
+   + hbars(t("levels"), Object.entries(d.levels||{}).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({label:LV[k]||k,value:v})));
+}
+function showView(id){ $$("section.view").forEach(s=>s.hidden = s.id!=="v-"+id); window.scrollTo(0,0) }
+$("#openDash").onclick = ()=>{ $$("nav.tabs button").forEach(x=>x.removeAttribute("aria-current")); showView("dash"); renderDash() };
+$("#dashBack").onclick = ()=>{ const b=$('nav.tabs button[data-v="pass"]'); b.click() };
+
+/* ---------- render everything v2 on language/level change ---------- */
+function renderV2(){
+  applyA11y(); $("#mic").hidden = !SR;
+  const opts = KB.artifacts.map(a=>`<option value="${a.id}">${esc(`${a.code} · ${nm(a)}`)}</option>`).join("");
+  const va=$("#dA").value||"tut-mask", vb=$("#dB").value||"khufu-boat"; $("#dA").innerHTML=opts; $("#dB").innerHTML=opts; $("#dA").value=va; $("#dB").value=vb;
+  const tb=$("#dTopics"); tb.innerHTML=""; t("dTopics").forEach(x=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=x; b.setAttribute("aria-pressed", S.dTopic===x); b.onclick=()=>{ S.dTopic = S.dTopic===x? null : x; renderV2() }; tb.append(b) });
+  if(!$("#souvName").value) $("#souvName").value = store.get("souvName","");
+  renderSchool();
+  if(!$("#v-dash").hidden) renderDash();
+}
+
 /* ---------- renderers ---------- */
 function renderTags(){
   const box=$("#tags"); box.innerHTML="";
@@ -572,10 +1374,10 @@ function applyLang(){
   $$("[data-i]").forEach(el=>{ const v=t(el.dataset.i); if(typeof v==="string") el.textContent=v });
   $("#lang").value = S.lang; $("#minsOut").textContent = $("#mins").value+" "+t("min");
   $$("#aud button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.a===S.aud));
-  renderMode(); renderTags(); renderTry(); renderAll(); renderPassport();
+  renderMode(); renderTags(); renderTry(); renderAll(); renderPassport(); renderMuseum(); renderV2();
 }
 function toast(text){ const el=$("#toast"); el.textContent=text; el.hidden=false; clearTimeout(toast.h); toast.h=setTimeout(()=>el.hidden=true,2600) }
-function logEvent(kind, artifact_id){ if(S.mode==="api") fetch("/api/events",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind,artifact_id:artifact_id||null,language:S.lang,audience:S.aud})}).catch(()=>{}) }
+function logEvent(kind, artifact_id, topic){ localLog(kind, artifact_id, topic); if(S.mode==="api" && !["chat","guide","dialogue","class_join"].includes(kind)) fetch("/api/events",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind,artifact_id:artifact_id||null,language:S.lang,audience:S.aud})}).catch(()=>{}) }
 
 /* ---------- wiring ---------- */
 $$("nav.tabs button").forEach(b=>b.onclick=()=>{ $$("nav.tabs button").forEach(x=>x.removeAttribute("aria-current")); b.setAttribute("aria-current","page");
