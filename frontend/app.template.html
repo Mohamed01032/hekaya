@@ -283,6 +283,8 @@ body.a11y .bubble{font-size:20px}
         <button data-a="expert" data-i="expert">خبير</button>
       </div>
       <button type="button" class="a11ybtn" id="a11yBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span data-i="a11y">سهولة الوصول</span></button>
+      <label class="langpick" for="voiceSel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><b data-i="voiceLbl">الصوت</b>
+        <select class="mini" id="voiceSel"><option value="auto" data-i="vAuto">حسب المستوى</option><option value="child" data-i="vChild">صوت طفل</option><option value="man" data-i="vMan">صوت راجل</option><option value="woman" data-i="vWoman">صوت ست</option></select></label>
       <div class="status"><i class="dot" id="dot"></i><span id="mode">…</span></div>
     </div>
   </div>
@@ -544,12 +546,287 @@ const UI = {
   gSugg:["How much is a ticket?","How long is a ticket valid?","How do I book?","Where are the shops?","When does it close?","Where can I eat?"]}
 };
 const LANG_NAME={ar:"Egyptian Arabic (عامية مصرية), friendly and clear",en:"English",fr:"French",de:"German",es:"Spanish",it:"Italian",ru:"Russian",zh:"Simplified Chinese",ja:"Japanese"};
+/* voice picker: child / man / woman / by level. Browsers only ship adult voices, so a child voice is an adult voice raised in pitch,
+   and a man's voice uses a male system voice when the device has one for that language, otherwise a lowered pitch. */
+const MALE_RE=/\b(male|david|mark|guy|george|ryan|thomas|daniel|paul|stefan|pablo|jorge|diego|luca|cosimo|dmitry|pavel|yuri|kangkang|yunxi|yunyang|ichiro|keita|hamed|shakir|naayf|tarik|hamdan|andrew|brian|christopher|eric|roger|steffan)\b/i;
+const FEMALE_RE=/\b(female|zira|hoda|salma|zariyah|susan|hazel|libby|sonia|amelie|julie|hortense|hedda|katja|helena|laura|elsa|isabella|irina|svetlana|huihui|xiaoxiao|yaoyao|haruka|ayumi|nanami|aria|jenny|michelle|google)\b/i;
+S.voice = store.get("voice","auto");
+function voiceFor(langCode, kind){
+  const all=speechSynthesis.getVoices(), two=langCode.slice(0,2);
+  const pool=[...all.filter(v=>v.lang===langCode), ...all.filter(v=>v.lang!==langCode && v.lang?.startsWith(two))];
+  const isMan=v=>MALE_RE.test(v.name) && !/female/i.test(v.name), isWoman=v=>FEMALE_RE.test(v.name) && !/\bmale\b/i.test(v.name);
+  if(kind==="man"){ const m=pool.find(isMan); return {voice:m||pool[0], pitch:m?0.95:0.62, rate:0.95} }
+  if(kind==="woman") return {voice:pool.find(isWoman)||pool[0], pitch:1.05, rate:1};
+  if(kind==="child") return {voice:pool.find(isWoman)||pool[0], pitch:1.7, rate:1.07};
+  const st=VOICE_STYLE[S.aud]||VOICE_STYLE.adult; return {voice:pool[0], pitch:st.pitch, rate:st.rate};
+}
 /* each level sounds different: kids slower and brighter, experts steady and lower */
 const VOICE_STYLE={kids:{rate:0.9,pitch:1.25},adult:{rate:1,pitch:1},expert:{rate:1.03,pitch:0.9}};
 const VOICE_LANG={ar:"ar-EG",en:"en-GB",fr:"fr-FR",de:"de-DE",es:"es-ES",it:"it-IT",ru:"ru-RU",zh:"zh-CN",ja:"ja-JP"};
 const AUD={kids:"a child aged 7-12: short sentences, playful, one fun fact at a time, end by asking them a question",
            adult:"a curious adult visitor: vivid storytelling, 4-6 sentences",expert:"an enthusiast or student: precise, mention dynasty, materials and context, 6-9 sentences"};
 const t = k => (UI[S.lang]||UI.en)[k] ?? UI.en[k];
+/* UI translations for the remaining 7 languages (Arabic and English live above). Missing keys fall back to English. */
+Object.assign(UI, {
+fr:{brand:"Hekaya",kids:"Enfants",adult:"Visiteur",expert:"Expert",eyebrow:"Grand Musée égyptien",heroT:"Visez une pièce. Laissez-la raconter son histoire.",
+ heroP:"Dirigez l’appareil photo vers un objet : il vous parle et répond à vos questions dans votre langue.",shoot:"Photographier une pièce",orCode:"Ou tapez le code inscrit sur le cartel :",
+ open:"Ouvrir",try:"Essayez sans vous déplacer",tourE:"Votre parcours",tourT:"Une visite pensée pour vous",time:"Temps disponible",interests:"Qu’aimez-vous ?",avoid:"Éviter les zones bondées maintenant",plan:"Planifier ma visite",
+ passE:"Passeport du musée",passT:"Collectez des cartouches",passP:"Chaque pièce avec qui vous parlez vous donne un tampon. Complétez le passeport pour obtenir le badge Explorateur du musée.",
+ allE:"Collection",allT:"Toutes les pièces qui parlent",tScan:"Découvrir",tTour:"Mon parcours",tPass:"Passeport",tAll:"Pièces",era:"Époque",mat:"Matériau",stop:"Étape",min:"min",
+ ask:"Posez n’importe quelle question à la pièce…",listen:"Écouter",pause:"Arrêter l’audio",sugg:["Qui t’a trouvé ?","Comment as-tu été fabriqué ?","Dis-moi un secret","Pourquoi es-tu important ?"],
+ mClaude:"Guide IA activé",mApi:"Connecté au serveur",mOff:"Mode hors ligne",recog:"Reconnaissance de la pièce…",notFound:"Je ne l’ai pas reconnue. Rapprochez-vous ou tapez le code du cartel.",
+ noPhoto:"La reconnaissance photo n’est pas disponible ici : tapez le code du cartel.",badCode:"Aucune pièce avec ce code. Les codes ressemblent à GEM-10.",thinking:"Réflexion…",stamp:"Nouveau tampon dans votre passeport : ",
+ planned:"min prévues sur",stops:"étapes",noVoice:"Pas de voix pour cette langue sur votre appareil : lisez le texte.",fail:"Problème de connexion. Réessayez.",limit:"Trop de demandes d’affilée : patientez un instant.",
+ prog:(n,t)=>`${n} tampons sur ${t}`,done:"Terminé ! Vous êtes Explorateur du musée.",busy:"Fréquenté",welcome:"Votre parcours est prêt. Commencez par la première étape et touchez une pièce pour lui parler.",
+ offlineNote:"(Je réponds uniquement à partir de faits vérifiés, car l’IA est indisponible pour le moment.)",
+ a11y:"Accessibilité",a11yOn:"Mode accessibilité activé : texte plus grand, réponses lues à voix haute, et vous pouvez parler au micro.",a11yOff:"Mode accessibilité désactivé.",describe:"Décris-toi",
+ micNo:"La saisie vocale n’est pas prise en charge par ce navigateur.",listening:"J’écoute…",hallSound:"Son de la salle",placeSound:"Écouter ce lieu",trumpetCall:"Écouter la trompette",harpPlay:"Écouter la harpe",stopSound:"Arrêter",imagined:"Son imaginé, pas un enregistrement",
+ dlgT:"Deux pièces dialoguent",dlgP:"Choisissez deux pièces et laissez-les se parler devant vous. Vous pouvez aussi leur poser des questions.",dlgGo:"Lancer la conversation",dlgMore:"Continuer",listenAll:"L’écouter",
+ dlgHook:"Chaque pièce parle uniquement à partir de ses propres faits vérifiés.",dlgAsk:"Posez une question aux deux…",dlgSame:"Choisissez deux pièces différentes.",you:"Vous",
+ dTopics:["Comment avez-vous été faits ?","Qui vous a trouvés ?","Lequel est le plus ancien ?","Vos secrets"],
+ souvT:"Souvenir de votre visite",souvP:"Une carte avec les pièces à qui vous avez parlé, une phrase de chacune et votre nom en hiéroglyphes. Partagez-la en story.",yourName:"Votre nom",souvMake:"Créer ma carte",share:"Partager",save:"Enregistrer l’image",
+ souvNone:"Parlez d’abord à au moins une pièce pour avoir un souvenir.",souvTitle:"Mon histoire au Grand Musée égyptien",souvPieces:n=>`${n} pièces rencontrées`,souvSaved:"Image enregistrée.",
+ schT:"Sortie scolaire",schP:"L’enseignant ouvre une classe, les élèves la rejoignent avec le code, et chaque pièce et chaque bonne réponse rapportent des points.",
+ teacher:"Je suis l’enseignant : ouvrir une classe",student:"Je suis élève : rejoindre avec un code",className:"Nom de la classe",create:"Ouvrir la classe",classCode:"Code de la classe",nick:"Votre pseudo",join:"Rejoindre",
+ codeFor:"Donnez ce code à vos élèves :",leave:"Quitter la classe",inClass:(n,c)=>`Vous êtes dans la classe « ${n} » (${c})`,yourScore:(s,q,p)=>`Pièces : ${s} · Bonnes réponses : ${q} · Points : ${p}`,
+ noStudents:"Personne n’a encore rejoint.",classErr:"Ce code n’existe pas ou a expiré.",schLocal:"Cette copie n’est pas reliée à un serveur : la classe ne fonctionne que sur cet appareil. Utilisez la version Render pour que les élèves rejoignent depuis leur téléphone.",
+ pts:"pts",quizQ:n=>`Question rapide : laquelle de ces phrases est vraie sur ${n} ?`,quizOk:"Bravo ! +20 points",quizNo:"Pas tout à fait, la bonne réponse est en vert.",
+ openDash:"Tableau de bord du musée (statistiques anonymes)",dashE:"Tableau de bord du musée",dashT:"Que font les visiteurs ?",dashApi:"Tous les visiteurs du serveur, 7 derniers jours. Ni noms ni texte des questions, seulement leur type.",
+ dashLocal:"Cet appareil uniquement (démo). Sur le serveur, le tableau réunit tous les visiteurs.",tEvents:"Interactions",tChats:"Questions aux pièces",tGuide:"Questions au guide",tDlg:"Dialogues",
+ topPieces:"Pièces les plus sollicitées",topTopics:"Ce que demandent les visiteurs",topPlaces:"Lieux les plus ouverts sur le plan",byHour:"Activité par heure (heure du Caire)",langs:"Langues",levels:"Niveaux",noData:"Pas encore de données.",
+ topicNames:{tickets:"Billets et prix",hours:"Horaires",validity:"Validité du billet",booking:"Réservation",rules:"Règles photo et visite",getting:"Accès",shops:"Boutiques et bazar",food:"Restauration",parking:"Parking",gate:"Sécurité et entrée",children:"Enfants",services:"Services",describe:"Description de la pièce",history:"Histoire et pièces"},
+ langLbl:"Langue",mapHint:"Glissez pour déplacer · pincez ou faites défiler pour zoomer",gmaps:"Ouvrir dans Google Maps",askGuide:"Posez au guide n’importe quelle question sur le musée…",tMus:"Musée",musE:"Guide du musée",musT:"Plan du musée et billets",
+ gTitle:"Demander au guide",gSub:"Salles, boutiques, restauration, billets et horaires.",gBtn:"Demander",guideChip:"Demander au guide : musée et billets",segMap:"Plan",segVisit:"Billets et visite",
+ mapNote:"Croquis indicatif, pas à l’échelle. Suivez la signalétique dans le musée.",all:"Tout",k_hall:"Salles",k_shop:"Boutiques et bazar",k_food:"Restauration",k_service:"Services",k_outdoor:"Extérieur",
+ askPlace:"Demander au guide à propos de ce lieu",pickPlace:"Touchez un numéro sur le plan pour découvrir ce lieu.",qPlace:n=>`Parle-moi de ${n} : où est-ce et que puis-je y faire ?`,
+ prices:"Prix des billets",egp:"EGP",free:"Gratuit",hoursT:"Horaires",complex:"Complexe",galleriesW:"Salles",validT:"Durée de validité du billet",bookT:"Comment réserver",rulesT:"Règles de visite",getT:"Accès",bookBtn:"Réserver sur le site officiel",
+ checked:d=>`Vérifié le ${d}. Les prix et horaires peuvent changer : confirmez sur le site officiel avant de venir.`,guideName:"Hekaya, votre guide",guideHook:"Demandez-moi tout sur le musée : salles, boutiques, restauration, billets et horaires.",
+ gSugg:["Combien coûte un billet ?","Combien de temps le billet est-il valable ?","Comment réserver ?","Où sont les boutiques ?","À quelle heure ça ferme ?","Où manger ?"]},
+
+de:{brand:"Hekaya",kids:"Kinder",adult:"Besucher",expert:"Experte",eyebrow:"Grand Egyptian Museum",heroT:"Richte die Kamera auf ein Stück. Lass es seine Geschichte erzählen.",
+ heroP:"Richte die Kamera auf ein Artefakt: Es spricht mit dir und beantwortet deine Fragen in deiner Sprache.",shoot:"Stück fotografieren",orCode:"Oder gib den Code vom Schild ein:",
+ open:"Öffnen",try:"Ohne Museumsbesuch ausprobieren",tourE:"Deine Route",tourT:"Ein Besuch, der zu dir passt",time:"Verfügbare Zeit",interests:"Was magst du?",avoid:"Volle Bereiche gerade meiden",plan:"Besuch planen",
+ passE:"Museumspass",passT:"Kartuschen-Stempel sammeln",passP:"Jedes Stück, mit dem du sprichst, gibt dir einen Stempel. Fülle den Pass und erhalte das Abzeichen „Museumsentdecker“.",
+ allE:"Sammlung",allT:"Alle sprechenden Stücke",tScan:"Entdecken",tTour:"Meine Route",tPass:"Pass",tAll:"Stücke",era:"Epoche",mat:"Material",stop:"Station",min:"Min.",
+ ask:"Frag das Stück, was du willst…",listen:"Anhören",pause:"Audio stoppen",sugg:["Wer hat dich gefunden?","Wie wurdest du hergestellt?","Verrat mir ein Geheimnis","Warum bist du wichtig?"],
+ mClaude:"KI-Guide aktiv",mApi:"Mit Server verbunden",mOff:"Offline-Modus",recog:"Stück wird erkannt…",notFound:"Ich konnte es nicht erkennen. Geh näher heran oder gib den Code vom Schild ein.",
+ noPhoto:"Fotoerkennung ist hier nicht verfügbar – gib den Code vom Schild ein.",badCode:"Kein Stück mit diesem Code. Codes sehen aus wie GEM-10.",thinking:"Denke nach…",stamp:"Neuer Stempel im Pass: ",
+ planned:"Min. geplant von",stops:"Stationen",noVoice:"Keine Stimme für diese Sprache auf deinem Gerät – lies einfach mit.",fail:"Verbindungsproblem. Bitte erneut versuchen.",limit:"Zu viele Anfragen hintereinander – kurz warten.",
+ prog:(n,t)=>`${n} von ${t} Stempeln gesammelt`,done:"Geschafft! Du bist Museumsentdecker.",busy:"Gerade voll",welcome:"Deine Route ist fertig. Beginne an der ersten Station und tippe auf ein Stück, um mit ihm zu sprechen.",
+ offlineNote:"(Ich antworte nur mit geprüften Fakten, weil die KI gerade nicht verfügbar ist.)",
+ a11y:"Barrierefreiheit",a11yOn:"Barrierefreiheit an: größere Schrift, Antworten werden automatisch vorgelesen, und du kannst ins Mikrofon sprechen.",a11yOff:"Barrierefreiheit aus.",describe:"Beschreib dich",
+ micNo:"Spracheingabe wird in diesem Browser nicht unterstützt.",listening:"Ich höre zu…",hallSound:"Klang der Halle",placeSound:"Diesen Ort anhören",trumpetCall:"Trompete anhören",harpPlay:"Harfe anhören",stopSound:"Stopp",imagined:"Nachempfundener Klang, keine Aufnahme",
+ dlgT:"Zwei Stücke im Gespräch",dlgP:"Wähle zwei Stücke und lass sie vor dir miteinander reden. Du kannst ihnen auch Fragen stellen.",dlgGo:"Gespräch starten",dlgMore:"Weiter",listenAll:"Anhören",
+ dlgHook:"Jedes Stück spricht nur aus seinen eigenen geprüften Fakten.",dlgAsk:"Frag beide etwas…",dlgSame:"Wähle zwei verschiedene Stücke.",you:"Du",
+ dTopics:["Wie wurdet ihr gemacht?","Wer hat euch gefunden?","Wer von euch ist älter?","Eure Geheimnisse"],
+ souvT:"Andenken an deinen Besuch",souvP:"Eine Karte mit den Stücken, mit denen du gesprochen hast, einem Satz von jedem und deinem Namen in Hieroglyphen. Teile sie als Story.",yourName:"Dein Name",souvMake:"Karte erstellen",share:"Teilen",save:"Bild speichern",
+ souvNone:"Sprich zuerst mit mindestens einem Stück, damit du ein Andenken hast.",souvTitle:"Meine Geschichte im Grand Egyptian Museum",souvPieces:n=>`Mit ${n} Stücken gesprochen`,souvSaved:"Bild gespeichert.",
+ schT:"Klassenausflug",schP:"Die Lehrkraft eröffnet eine Klasse, Schüler treten mit dem Code bei, und jedes Stück und jede richtige Antwort bringt Punkte.",
+ teacher:"Ich bin Lehrkraft: Klasse eröffnen",student:"Ich bin Schüler: mit Code beitreten",className:"Klassenname",create:"Klasse eröffnen",classCode:"Klassencode",nick:"Dein Spielname",join:"Beitreten",
+ codeFor:"Gib deinen Schülern diesen Code:",leave:"Klasse verlassen",inClass:(n,c)=>`Du bist in der Klasse „${n}“ (${c})`,yourScore:(s,q,p)=>`Stücke: ${s} · Richtige Antworten: ${q} · Punkte: ${p}`,
+ noStudents:"Noch niemand beigetreten.",classErr:"Diesen Code gibt es nicht oder er ist abgelaufen.",schLocal:"Diese Kopie ist mit keinem Server verbunden, daher funktioniert die Klasse nur auf diesem Gerät. Nutze die Render-Version, damit Schüler von ihren Handys beitreten.",
+ pts:"Pkt.",quizQ:n=>`Kurze Frage: Was davon stimmt über ${n}?`,quizOk:"Richtig! +20 Punkte",quizNo:"Nicht ganz, die richtige Antwort ist grün markiert.",
+ openDash:"Museums-Dashboard (anonyme Statistik)",dashE:"Museums-Dashboard",dashT:"Was machen die Besucher?",dashApi:"Alle Besucher auf dem Server, letzte 7 Tage. Keine Namen und kein Fragetext, nur Fragetypen.",
+ dashLocal:"Nur dieses Gerät (Demo). Auf dem Server fasst das Dashboard alle Besucher zusammen.",tEvents:"Interaktionen",tChats:"Fragen an Stücke",tGuide:"Fragen an den Guide",tDlg:"Dialoge",
+ topPieces:"Meistgefragte Stücke",topTopics:"Wonach Besucher fragen",topPlaces:"Am häufigsten geöffnete Orte auf der Karte",byHour:"Aktivität pro Stunde (Kairoer Zeit)",langs:"Sprachen",levels:"Stufen",noData:"Noch keine Daten.",
+ topicNames:{tickets:"Tickets und Preise",hours:"Öffnungszeiten",validity:"Gültigkeit des Tickets",booking:"Buchung",rules:"Foto- und Besuchsregeln",getting:"Anfahrt",shops:"Läden und Basar",food:"Essen",parking:"Parken",gate:"Sicherheit und Eingang",children:"Kinder",services:"Service",describe:"Beschreibung des Stücks",history:"Geschichte und Stücke"},
+ langLbl:"Sprache",mapHint:"Ziehen zum Verschieben · Zwei Finger oder Mausrad zum Zoomen",gmaps:"In Google Maps öffnen",askGuide:"Frag den Guide alles über das Museum…",tMus:"Museum",musE:"Museumsführer",musT:"Museumsplan und Tickets",
+ gTitle:"Den Guide fragen",gSub:"Zu Hallen, Läden, Essen, Tickets und Öffnungszeiten.",gBtn:"Fragen",guideChip:"Den Guide zu Museum und Tickets fragen",segMap:"Karte",segVisit:"Tickets und Besuch",
+ mapNote:"Schematische Skizze, nicht maßstabsgetreu. Folge der Beschilderung im Museum.",all:"Alle",k_hall:"Hallen",k_shop:"Läden und Basar",k_food:"Essen",k_service:"Service",k_outdoor:"Draußen",
+ askPlace:"Den Guide zu diesem Ort fragen",pickPlace:"Tippe auf eine Nummer auf der Karte, um den Ort kennenzulernen.",qPlace:n=>`Erzähl mir von ${n}: Wo ist das und was kann ich dort machen?`,
+ prices:"Ticketpreise",egp:"EGP",free:"Kostenlos",hoursT:"Öffnungszeiten",complex:"Gelände",galleriesW:"Ausstellung",validT:"Wie lange ein Ticket gilt",bookT:"So buchst du",rulesT:"Besuchsregeln",getT:"Anfahrt",bookBtn:"Auf der offiziellen Seite buchen",
+ checked:d=>`Geprüft am ${d}. Preise und Zeiten können sich ändern – bitte vor dem Besuch auf der offiziellen Seite prüfen.`,guideName:"Hekaya, dein Guide",guideHook:"Frag mich alles über das Museum: Hallen, Läden, Essen, Tickets und Öffnungszeiten.",
+ gSugg:["Was kostet ein Ticket?","Wie lange gilt ein Ticket?","Wie buche ich?","Wo sind die Läden?","Wann schließt es?","Wo kann ich essen?"]},
+
+es:{brand:"Hekaya",kids:"Niños",adult:"Visitante",expert:"Experto",eyebrow:"Gran Museo Egipcio",heroT:"Apunta a cualquier pieza. Deja que te cuente su historia.",
+ heroP:"Apunta la cámara a un objeto y te hablará y responderá tus preguntas en tu idioma.",shoot:"Fotografiar una pieza",orCode:"O escribe el código de la cartela:",
+ open:"Abrir",try:"Pruébalo sin ir al museo",tourE:"Tu ruta",tourT:"Una visita pensada para ti",time:"Tiempo disponible",interests:"¿Qué te gusta?",avoid:"Evitar zonas llenas ahora",plan:"Planificar mi visita",
+ passE:"Pasaporte del museo",passT:"Colecciona sellos de cartucho",passP:"Cada pieza con la que hablas te da un sello. Completa el pasaporte y gana la insignia de Explorador del museo.",
+ allE:"Colección",allT:"Todas las piezas que hablan",tScan:"Descubrir",tTour:"Mi ruta",tPass:"Pasaporte",tAll:"Piezas",era:"Época",mat:"Material",stop:"Parada",min:"min",
+ ask:"Pregúntale lo que quieras a la pieza…",listen:"Escuchar",pause:"Detener audio",sugg:["¿Quién te encontró?","¿Cómo te hicieron?","Cuéntame un secreto","¿Por qué eres importante?"],
+ mClaude:"Guía con IA activa",mApi:"Conectado al servidor",mOff:"Modo sin conexión",recog:"Reconociendo la pieza…",notFound:"No la reconocí. Acércate o escribe el código de la cartela.",
+ noPhoto:"El reconocimiento por foto no está disponible aquí: escribe el código de la cartela.",badCode:"No hay ninguna pieza con ese código. Los códigos son como GEM-10.",thinking:"Pensando…",stamp:"Nuevo sello en tu pasaporte: ",
+ planned:"min planificados de",stops:"paradas",noVoice:"No hay voz para este idioma en tu dispositivo: lee el texto.",fail:"Problema de conexión. Inténtalo de nuevo.",limit:"Demasiadas solicitudes seguidas: espera un momento.",
+ prog:(n,t)=>`${n} de ${t} sellos conseguidos`,done:"¡Completo! Eres Explorador del museo.",busy:"Lleno ahora",welcome:"Tu ruta está lista. Empieza por la primera parada y toca una pieza para hablar con ella.",
+ offlineNote:"(Te respondo solo con datos verificados, porque la IA no está disponible ahora.)",
+ a11y:"Accesibilidad",a11yOn:"Modo accesible activado: texto más grande, respuestas leídas en voz alta y puedes hablar con el micrófono.",a11yOff:"Modo accesible desactivado.",describe:"Descríbete",
+ micNo:"Este navegador no admite la entrada por voz.",listening:"Escuchando…",hallSound:"Sonido de la sala",placeSound:"Escuchar este lugar",trumpetCall:"Escuchar la trompeta",harpPlay:"Escuchar el arpa",stopSound:"Detener",imagined:"Sonido imaginado, no es una grabación",
+ dlgT:"Dos piezas conversan",dlgP:"Elige dos piezas y deja que hablen entre ellas delante de ti. También puedes preguntarles.",dlgGo:"Empezar la conversación",dlgMore:"Seguir",listenAll:"Escucharla",
+ dlgHook:"Cada pieza habla solo a partir de sus propios datos verificados.",dlgAsk:"Pregúntales algo a las dos…",dlgSame:"Elige dos piezas distintas.",you:"Tú",
+ dTopics:["¿Cómo os hicieron?","¿Quién os encontró?","¿Cuál es más antigua?","Vuestros secretos"],
+ souvT:"Recuerdo de tu visita",souvP:"Una tarjeta con las piezas con las que hablaste, una frase de cada una y tu nombre en jeroglíficos. Compártela como historia.",yourName:"Tu nombre",souvMake:"Crear mi tarjeta",share:"Compartir",save:"Guardar imagen",
+ souvNone:"Habla primero con al menos una pieza para tener un recuerdo.",souvTitle:"Mi historia en el Gran Museo Egipcio",souvPieces:n=>`Hablé con ${n} piezas`,souvSaved:"Imagen guardada.",
+ schT:"Excursión escolar",schP:"El profesor abre una clase, los alumnos entran con el código, y cada pieza y cada respuesta correcta suman puntos.",
+ teacher:"Soy profesor: abrir una clase",student:"Soy alumno: entrar con un código",className:"Nombre de la clase",create:"Abrir clase",classCode:"Código de la clase",nick:"Tu nombre de juego",join:"Entrar",
+ codeFor:"Da este código a tus alumnos:",leave:"Salir de la clase",inClass:(n,c)=>`Estás en la clase «${n}» (${c})`,yourScore:(s,q,p)=>`Piezas: ${s} · Aciertos: ${q} · Puntos: ${p}`,
+ noStudents:"Todavía no ha entrado nadie.",classErr:"Ese código no existe o ha caducado.",schLocal:"Esta copia no está conectada a un servidor, así que la clase solo funciona en este dispositivo. Usa la versión de Render para que los alumnos entren desde sus móviles.",
+ pts:"pts",quizQ:n=>`Pregunta rápida: ¿cuál de estas frases es cierta sobre ${n}?`,quizOk:"¡Correcto! +20 puntos",quizNo:"No exactamente, la respuesta correcta está en verde.",
+ openDash:"Panel del museo (estadísticas anónimas)",dashE:"Panel del museo",dashT:"¿Qué hacen los visitantes?",dashApi:"Todos los visitantes del servidor, últimos 7 días. Sin nombres ni texto de preguntas, solo el tipo de pregunta.",
+ dashLocal:"Solo este dispositivo (demo). En el servidor el panel reúne a todos los visitantes.",tEvents:"Interacciones",tChats:"Preguntas a las piezas",tGuide:"Preguntas al guía",tDlg:"Diálogos",
+ topPieces:"Piezas más consultadas",topTopics:"Qué preguntan los visitantes",topPlaces:"Lugares más abiertos en el mapa",byHour:"Actividad por hora (hora de El Cairo)",langs:"Idiomas",levels:"Niveles",noData:"Aún no hay datos.",
+ topicNames:{tickets:"Entradas y precios",hours:"Horario",validity:"Validez de la entrada",booking:"Reserva",rules:"Normas de fotos y visita",getting:"Cómo llegar",shops:"Tiendas y bazar",food:"Comida",parking:"Aparcamiento",gate:"Seguridad y entrada",children:"Niños",services:"Servicios",describe:"Descripción de la pieza",history:"Historia y piezas"},
+ langLbl:"Idioma",mapHint:"Arrastra para mover · pellizca o usa la rueda para ampliar",gmaps:"Abrir en Google Maps",askGuide:"Pregunta al guía lo que quieras sobre el museo…",tMus:"Museo",musE:"Guía del museo",musT:"Mapa del museo y entradas",
+ gTitle:"Preguntar al guía",gSub:"Sobre salas, tiendas, comida, entradas y horarios.",gBtn:"Preguntar",guideChip:"Preguntar al guía por el museo y las entradas",segMap:"Mapa",segVisit:"Entradas y visita",
+ mapNote:"Esquema orientativo, no a escala. Sigue la señalización dentro del museo.",all:"Todo",k_hall:"Salas",k_shop:"Tiendas y bazar",k_food:"Comida",k_service:"Servicios",k_outdoor:"Exterior",
+ askPlace:"Preguntar al guía por este lugar",pickPlace:"Toca un número del mapa para conocer ese lugar.",qPlace:n=>`Háblame de ${n}: ¿dónde está y qué puedo hacer allí?`,
+ prices:"Precios de las entradas",egp:"EGP",free:"Gratis",hoursT:"Horario",complex:"Recinto",galleriesW:"Salas",validT:"Cuánto dura una entrada",bookT:"Cómo reservar",rulesT:"Normas de la visita",getT:"Cómo llegar",bookBtn:"Reservar en la web oficial",
+ checked:d=>`Comprobado el ${d}. Los precios y horarios pueden cambiar: confírmalos en la web oficial antes de ir.`,guideName:"Hekaya, tu guía",guideHook:"Pregúntame lo que quieras sobre el museo: salas, tiendas, comida, entradas y horarios.",
+ gSugg:["¿Cuánto cuesta la entrada?","¿Cuánto tiempo vale la entrada?","¿Cómo reservo?","¿Dónde están las tiendas?","¿A qué hora cierra?","¿Dónde puedo comer?"]},
+
+it:{brand:"Hekaya",kids:"Bambini",adult:"Visitatore",expert:"Esperto",eyebrow:"Grande Museo Egizio",heroT:"Inquadra un reperto. Lascia che ti racconti la sua storia.",
+ heroP:"Punta la fotocamera su un reperto: ti parlerà e risponderà alle tue domande nella tua lingua.",shoot:"Fotografa un reperto",orCode:"Oppure scrivi il codice sulla didascalia:",
+ open:"Apri",try:"Provalo senza andare al museo",tourE:"Il tuo percorso",tourT:"Una visita pensata per te",time:"Tempo a disposizione",interests:"Cosa ti piace?",avoid:"Evita ora le zone affollate",plan:"Pianifica la visita",
+ passE:"Passaporto del museo",passT:"Raccogli i timbri a cartiglio",passP:"Ogni reperto con cui parli ti dà un timbro. Completa il passaporto per ottenere il badge Esploratore del museo.",
+ allE:"Collezione",allT:"Tutti i reperti che parlano",tScan:"Scopri",tTour:"Il mio percorso",tPass:"Passaporto",tAll:"Reperti",era:"Epoca",mat:"Materiale",stop:"Tappa",min:"min",
+ ask:"Chiedi qualsiasi cosa al reperto…",listen:"Ascolta",pause:"Ferma l’audio",sugg:["Chi ti ha trovato?","Come sei stato fatto?","Dimmi un segreto","Perché sei importante?"],
+ mClaude:"Guida IA attiva",mApi:"Connesso al server",mOff:"Modalità offline",recog:"Riconoscimento del reperto…",notFound:"Non l’ho riconosciuto. Avvicinati o scrivi il codice della didascalia.",
+ noPhoto:"Il riconoscimento da foto non è disponibile qui: scrivi il codice della didascalia.",badCode:"Nessun reperto con questo codice. I codici sono come GEM-10.",thinking:"Sto pensando…",stamp:"Nuovo timbro nel passaporto: ",
+ planned:"min previsti su",stops:"tappe",noVoice:"Nessuna voce per questa lingua sul dispositivo: leggi il testo.",fail:"Problema di connessione. Riprova.",limit:"Troppe richieste di seguito: attendi un momento.",
+ prog:(n,t)=>`${n} timbri su ${t}`,done:"Completato! Sei un Esploratore del museo.",busy:"Affollato ora",welcome:"Il tuo percorso è pronto. Parti dalla prima tappa e tocca un reperto per parlarci.",
+ offlineNote:"(Ti rispondo solo con fatti verificati, perché l’IA ora non è disponibile.)",
+ a11y:"Accessibilità",a11yOn:"Accessibilità attiva: testo più grande, risposte lette ad alta voce e puoi parlare al microfono.",a11yOff:"Accessibilità disattivata.",describe:"Descriviti",
+ micNo:"L’input vocale non è supportato da questo browser.",listening:"Ti ascolto…",hallSound:"Suono della sala",placeSound:"Ascolta questo luogo",trumpetCall:"Ascolta la tromba",harpPlay:"Ascolta l’arpa",stopSound:"Ferma",imagined:"Suono immaginato, non una registrazione",
+ dlgT:"Due reperti dialogano",dlgP:"Scegli due reperti e lasciali parlare tra loro davanti a te. Puoi anche fare domande.",dlgGo:"Avvia la conversazione",dlgMore:"Continua",listenAll:"Ascoltala",
+ dlgHook:"Ogni reperto parla solo dei propri fatti verificati.",dlgAsk:"Chiedi qualcosa a entrambi…",dlgSame:"Scegli due reperti diversi.",you:"Tu",
+ dTopics:["Come siete stati fatti?","Chi vi ha trovati?","Chi di voi è più antico?","I vostri segreti"],
+ souvT:"Ricordo della visita",souvP:"Una cartolina con i reperti con cui hai parlato, una frase di ognuno e il tuo nome in geroglifici. Condividila come storia.",yourName:"Il tuo nome",souvMake:"Crea la mia cartolina",share:"Condividi",save:"Salva immagine",
+ souvNone:"Parla prima con almeno un reperto per avere un ricordo.",souvTitle:"La mia storia al Grande Museo Egizio",souvPieces:n=>`Ho parlato con ${n} reperti`,souvSaved:"Immagine salvata.",
+ schT:"Gita scolastica",schP:"L’insegnante apre una classe, gli studenti entrano con il codice e ogni reperto e ogni risposta giusta danno punti.",
+ teacher:"Sono l’insegnante: apri una classe",student:"Sono uno studente: entra con un codice",className:"Nome della classe",create:"Apri classe",classCode:"Codice della classe",nick:"Il tuo nome di gioco",join:"Entra",
+ codeFor:"Dai questo codice ai tuoi studenti:",leave:"Esci dalla classe",inClass:(n,c)=>`Sei nella classe «${n}» (${c})`,yourScore:(s,q,p)=>`Reperti: ${s} · Risposte giuste: ${q} · Punti: ${p}`,
+ noStudents:"Ancora nessuno è entrato.",classErr:"Questo codice non esiste o è scaduto.",schLocal:"Questa copia non è collegata a un server, quindi la classe funziona solo su questo dispositivo. Usa la versione su Render perché gli studenti entrino dai loro telefoni.",
+ pts:"pt",quizQ:n=>`Domanda veloce: quale di queste frasi è vera su ${n}?`,quizOk:"Giusto! +20 punti",quizNo:"Non proprio, la risposta giusta è in verde.",
+ openDash:"Cruscotto del museo (statistiche anonime)",dashE:"Cruscotto del museo",dashT:"Cosa fanno i visitatori?",dashApi:"Tutti i visitatori sul server, ultimi 7 giorni. Niente nomi né testo delle domande, solo il tipo.",
+ dashLocal:"Solo questo dispositivo (demo). Sul server il cruscotto riunisce tutti i visitatori.",tEvents:"Interazioni",tChats:"Domande ai reperti",tGuide:"Domande alla guida",tDlg:"Dialoghi",
+ topPieces:"Reperti più interrogati",topTopics:"Cosa chiedono i visitatori",topPlaces:"Luoghi più aperti sulla mappa",byHour:"Attività per ora (ora del Cairo)",langs:"Lingue",levels:"Livelli",noData:"Ancora nessun dato.",
+ topicNames:{tickets:"Biglietti e prezzi",hours:"Orari",validity:"Validità del biglietto",booking:"Prenotazione",rules:"Regole su foto e visita",getting:"Come arrivare",shops:"Negozi e bazar",food:"Cibo",parking:"Parcheggio",gate:"Sicurezza e ingresso",children:"Bambini",services:"Servizi",describe:"Descrizione del reperto",history:"Storia e reperti"},
+ langLbl:"Lingua",mapHint:"Trascina per spostare · pizzica o usa la rotella per lo zoom",gmaps:"Apri in Google Maps",askGuide:"Chiedi alla guida qualsiasi cosa sul museo…",tMus:"Museo",musE:"Guida del museo",musT:"Mappa del museo e biglietti",
+ gTitle:"Chiedi alla guida",gSub:"Su sale, negozi, cibo, biglietti e orari.",gBtn:"Chiedi",guideChip:"Chiedi alla guida del museo e dei biglietti",segMap:"Mappa",segVisit:"Biglietti e visita",
+ mapNote:"Schizzo indicativo, non in scala. Segui le indicazioni nel museo.",all:"Tutti",k_hall:"Sale",k_shop:"Negozi e bazar",k_food:"Cibo",k_service:"Servizi",k_outdoor:"All’aperto",
+ askPlace:"Chiedi alla guida di questo luogo",pickPlace:"Tocca un numero sulla mappa per scoprire il luogo.",qPlace:n=>`Parlami di ${n}: dov’è e cosa posso fare lì?`,
+ prices:"Prezzi dei biglietti",egp:"EGP",free:"Gratis",hoursT:"Orari",complex:"Complesso",galleriesW:"Sale",validT:"Quanto vale un biglietto",bookT:"Come prenotare",rulesT:"Regole della visita",getT:"Come arrivare",bookBtn:"Prenota sul sito ufficiale",
+ checked:d=>`Verificato il ${d}. Prezzi e orari possono cambiare: controlla sul sito ufficiale prima di andare.`,guideName:"Hekaya, la tua guida",guideHook:"Chiedimi tutto sul museo: sale, negozi, cibo, biglietti e orari.",
+ gSugg:["Quanto costa il biglietto?","Quanto vale il biglietto?","Come prenoto?","Dove sono i negozi?","A che ora chiude?","Dove posso mangiare?"]},
+
+ru:{brand:"Hekaya",kids:"Дети",adult:"Посетитель",expert:"Эксперт",eyebrow:"Большой Египетский музей",heroT:"Наведите камеру на экспонат. Пусть он расскажет свою историю.",
+ heroP:"Наведите камеру на экспонат — он заговорит с вами и ответит на вопросы на вашем языке.",shoot:"Сфотографировать экспонат",orCode:"Или введите код с таблички:",
+ open:"Открыть",try:"Попробуйте, не выходя из дома",tourE:"Ваш маршрут",tourT:"Экскурсия под вас",time:"Сколько у вас времени",interests:"Что вам интересно?",avoid:"Обходить людные места",plan:"Спланировать визит",
+ passE:"Паспорт музея",passT:"Собирайте печати-картуши",passP:"За каждый разговор с экспонатом вы получаете печать. Заполните паспорт и получите значок «Исследователь музея».",
+ allE:"Коллекция",allT:"Все говорящие экспонаты",tScan:"Открыть",tTour:"Маршрут",tPass:"Паспорт",tAll:"Экспонаты",era:"Эпоха",mat:"Материал",stop:"Остановка",min:"мин",
+ ask:"Спросите экспонат о чём угодно…",listen:"Слушать",pause:"Остановить",sugg:["Кто тебя нашёл?","Как тебя сделали?","Расскажи секрет","Почему ты важен?"],
+ mClaude:"ИИ-гид включён",mApi:"Подключено к серверу",mOff:"Офлайн-режим",recog:"Распознаю экспонат…",notFound:"Не удалось распознать. Подойдите ближе или введите код с таблички.",
+ noPhoto:"Распознавание по фото здесь недоступно — введите код с таблички.",badCode:"Экспоната с таким кодом нет. Коды выглядят как GEM-10.",thinking:"Думаю…",stamp:"Новая печать в паспорте: ",
+ planned:"мин запланировано из",stops:"остановок",noVoice:"На устройстве нет голоса для этого языка — читайте текст.",fail:"Проблема со связью. Попробуйте ещё раз.",limit:"Слишком много запросов подряд — подождите немного.",
+ prog:(n,t)=>`Собрано ${n} из ${t} печатей`,done:"Готово! Вы — Исследователь музея.",busy:"Сейчас людно",welcome:"Маршрут готов. Начните с первой остановки и коснитесь экспоната, чтобы поговорить с ним.",
+ offlineNote:"(Отвечаю только проверенными фактами: ИИ сейчас недоступен.)",
+ a11y:"Доступность",a11yOn:"Режим доступности включён: крупный текст, ответы читаются вслух, можно говорить в микрофон.",a11yOff:"Режим доступности выключен.",describe:"Опиши себя",
+ micNo:"Голосовой ввод в этом браузере не поддерживается.",listening:"Слушаю…",hallSound:"Звук зала",placeSound:"Послушать это место",trumpetCall:"Послушать трубу",harpPlay:"Послушать арфу",stopSound:"Стоп",imagined:"Воображаемый звук, не запись",
+ dlgT:"Два экспоната беседуют",dlgP:"Выберите два экспоната, и они заговорят друг с другом. Вы тоже можете задать им вопрос.",dlgGo:"Начать беседу",dlgMore:"Дальше",listenAll:"Прослушать",
+ dlgHook:"Каждый экспонат говорит только на основе своих проверенных фактов.",dlgAsk:"Спросите обоих…",dlgSame:"Выберите два разных экспоната.",you:"Вы",
+ dTopics:["Как вас сделали?","Кто вас нашёл?","Кто из вас старше?","Ваши секреты"],
+ souvT:"Сувенир о визите",souvP:"Открытка с экспонатами, с которыми вы говорили, фразой от каждого и вашим именем иероглифами. Поделитесь ею в сторис.",yourName:"Ваше имя",souvMake:"Создать открытку",share:"Поделиться",save:"Сохранить",
+ souvNone:"Сначала поговорите хотя бы с одним экспонатом.",souvTitle:"Моя история в Большом Египетском музее",souvPieces:n=>`Экспонатов: ${n}`,souvSaved:"Изображение сохранено.",
+ schT:"Школьная экскурсия",schP:"Учитель открывает класс, ученики входят по коду, и каждый экспонат и верный ответ приносят очки.",
+ teacher:"Я учитель: открыть класс",student:"Я ученик: войти по коду",className:"Название класса",create:"Открыть класс",classCode:"Код класса",nick:"Игровое имя",join:"Войти",
+ codeFor:"Дайте ученикам этот код:",leave:"Выйти из класса",inClass:(n,c)=>`Вы в классе «${n}» (${c})`,yourScore:(s,q,p)=>`Экспонаты: ${s} · Верные ответы: ${q} · Очки: ${p}`,
+ noStudents:"Пока никто не вошёл.",classErr:"Такого кода нет или срок его действия истёк.",schLocal:"Эта копия не подключена к серверу, поэтому класс работает только на этом устройстве. Используйте версию на Render, чтобы ученики входили со своих телефонов.",
+ pts:"очк.",quizQ:n=>`Быстрый вопрос: что из этого верно про «${n}»?`,quizOk:"Верно! +20 очков",quizNo:"Не совсем, правильный ответ отмечен зелёным.",
+ openDash:"Панель музея (анонимная статистика)",dashE:"Панель музея",dashT:"Что делают посетители?",dashApi:"Все посетители на сервере за 7 дней. Без имён и текста вопросов, только их тип.",
+ dashLocal:"Только это устройство (демо). На сервере панель объединяет всех посетителей.",tEvents:"Действия",tChats:"Вопросы экспонатам",tGuide:"Вопросы гиду",tDlg:"Беседы",
+ topPieces:"Самые популярные экспонаты",topTopics:"О чём спрашивают",topPlaces:"Чаще всего открываемые места на карте",byHour:"Активность по часам (время Каира)",langs:"Языки",levels:"Уровни",noData:"Данных пока нет.",
+ topicNames:{tickets:"Билеты и цены",hours:"Часы работы",validity:"Срок действия билета",booking:"Бронирование",rules:"Правила съёмки и посещения",getting:"Как добраться",shops:"Магазины и базар",food:"Еда",parking:"Парковка",gate:"Досмотр и вход",children:"Дети",services:"Услуги",describe:"Описание экспоната",history:"История и экспонаты"},
+ langLbl:"Язык",mapHint:"Перетаскивайте · масштаб двумя пальцами или колесом",gmaps:"Открыть в Google Картах",askGuide:"Спросите гида о музее…",tMus:"Музей",musE:"Гид по музею",musT:"Карта музея и билеты",
+ gTitle:"Спросить гида",gSub:"О залах, магазинах, еде, билетах и часах работы.",gBtn:"Спросить",guideChip:"Спросить гида о музее и билетах",segMap:"Карта",segVisit:"Билеты и визит",
+ mapNote:"Схема, не в масштабе. В музее следуйте указателям.",all:"Все",k_hall:"Залы",k_shop:"Магазины и базар",k_food:"Еда",k_service:"Услуги",k_outdoor:"На улице",
+ askPlace:"Спросить гида об этом месте",pickPlace:"Коснитесь номера на карте, чтобы узнать о месте.",qPlace:n=>`Расскажи о месте «${n}»: где это и что там можно делать?`,
+ prices:"Цены на билеты",egp:"EGP",free:"Бесплатно",hoursT:"Часы работы",complex:"Комплекс",galleriesW:"Залы",validT:"Сколько действует билет",bookT:"Как забронировать",rulesT:"Правила посещения",getT:"Как добраться",bookBtn:"Забронировать на официальном сайте",
+ checked:d=>`Проверено ${d}. Цены и часы могут меняться — уточните на официальном сайте перед визитом.`,guideName:"Hekaya, ваш гид",guideHook:"Спросите меня о музее: залы, магазины, еда, билеты и часы работы.",
+ gSugg:["Сколько стоит билет?","Сколько действует билет?","Как забронировать?","Где магазины?","Когда закрывается?","Где поесть?"]},
+
+zh:{brand:"Hekaya",kids:"儿童",adult:"游客",expert:"专家",eyebrow:"大埃及博物馆",heroT:"对准任意一件文物，让它讲出自己的故事。",
+ heroP:"把相机对准文物，它会用你的语言和你说话，回答你的问题。",shoot:"拍摄文物",orCode:"或输入展牌上的编号：",
+ open:"打开",try:"不去博物馆也能体验",tourE:"你的路线",tourT:"为你量身定制的参观",time:"可用时间",interests:"你喜欢什么？",avoid:"避开当前拥挤区域",plan:"规划我的参观",
+ passE:"博物馆护照",passT:"收集王名圈印章",passP:"每和一件文物交谈就获得一枚印章。集满护照即可获得“博物馆探险家”徽章。",
+ allE:"馆藏",allT:"所有会说话的文物",tScan:"发现",tTour:"我的路线",tPass:"护照",tAll:"文物",era:"年代",mat:"材质",stop:"站点",min:"分钟",
+ ask:"向文物提任何问题……",listen:"收听",pause:"停止播放",sugg:["是谁发现了你？","你是怎么制作的？","告诉我一个秘密","你为什么重要？"],
+ mClaude:"AI 导览已开启",mApi:"已连接服务器",mOff:"离线模式",recog:"正在识别文物……",notFound:"没能识别。请靠近一些，或输入展牌上的编号。",
+ noPhoto:"此处无法拍照识别，请输入展牌上的编号。",badCode:"没有这个编号的文物。编号格式如 GEM-10。",thinking:"思考中……",stamp:"护照新增印章：",
+ planned:"分钟已规划，共",stops:"个站点",noVoice:"你的设备没有这种语言的语音，请阅读文字。",fail:"连接出现问题，请重试。",limit:"请求过于频繁，请稍候再试。",
+ prog:(n,t)=>`已收集 ${n} / ${t} 枚印章`,done:"完成！你是博物馆探险家。",busy:"当前拥挤",welcome:"路线已准备好。从第一站开始，点击任意文物与它交谈。",
+ offlineNote:"（AI 暂时不可用，我只用核实过的事实回答。）",
+ a11y:"无障碍",a11yOn:"无障碍模式已开启：字体更大，回答自动朗读，还可以用麦克风说话。",a11yOff:"无障碍模式已关闭。",describe:"描述一下你自己",
+ micNo:"此浏览器不支持语音输入。",listening:"正在聆听……",hallSound:"展厅声音",placeSound:"聆听此处",trumpetCall:"聆听号角",harpPlay:"聆听竖琴",stopSound:"停止",imagined:"想象的声音，并非录音",
+ dlgT:"两件文物对话",dlgP:"选两件文物，让它们在你面前对话。你也可以向它们提问。",dlgGo:"开始对话",dlgMore:"继续",listenAll:"收听对话",
+ dlgHook:"每件文物只依据自己核实过的事实发言。",dlgAsk:"同时问它们一个问题……",dlgSame:"请选择两件不同的文物。",you:"你",
+ dTopics:["你们是怎么制作的？","是谁发现了你们？","你们谁更古老？","你们的秘密"],
+ souvT:"参观纪念卡",souvP:"一张卡片，包含你交谈过的文物、每件文物的一句话，以及用象形文字写的你的名字。可分享为快拍。",yourName:"你的名字",souvMake:"生成我的卡片",share:"分享",save:"保存图片",
+ souvNone:"请先和至少一件文物交谈，才能生成纪念卡。",souvTitle:"我在大埃及博物馆的故事",souvPieces:n=>`与 ${n} 件文物交谈`,souvSaved:"图片已保存。",
+ schT:"学校参观",schP:"老师开设班级，学生用编号加入，每与一件文物交谈、每答对一题都能得分。",
+ teacher:"我是老师：开设班级",student:"我是学生：用编号加入",className:"班级名称",create:"开设班级",classCode:"班级编号",nick:"你的游戏名",join:"加入",
+ codeFor:"把这个编号告诉学生：",leave:"退出班级",inClass:(n,c)=>`你在班级“${n}”（${c}）`,yourScore:(s,q,p)=>`文物：${s} · 答对：${q} · 积分：${p}`,
+ noStudents:"还没有人加入。",classErr:"编号不存在或已过期。",schLocal:"此副本未连接服务器，班级只在本设备上有效。请使用 Render 版本，让学生用自己的手机加入。",
+ pts:"分",quizQ:n=>`快问快答：关于“${n}”，下面哪一句是正确的？`,quizOk:"答对了！+20 分",quizNo:"不太对，正确答案已标为绿色。",
+ openDash:"博物馆数据面板（匿名统计）",dashE:"博物馆数据面板",dashT:"游客在做什么？",dashApi:"服务器上过去 7 天的全部游客。不含姓名和问题原文，只有问题类型。",
+ dashLocal:"仅本设备（演示）。在服务器上，面板汇总所有游客。",tEvents:"互动次数",tChats:"向文物提问",tGuide:"向导览提问",tDlg:"对话",
+ topPieces:"最受关注的文物",topTopics:"游客在问什么",topPlaces:"地图上最常打开的地点",byHour:"每小时活动（开罗时间）",langs:"语言",levels:"级别",noData:"暂无数据。",
+ topicNames:{tickets:"门票与价格",hours:"开放时间",validity:"门票有效期",booking:"预订",rules:"拍照与参观规定",getting:"交通",shops:"商店与集市",food:"餐饮",parking:"停车",gate:"安检与入口",children:"儿童",services:"服务",describe:"文物外观",history:"历史与文物"},
+ langLbl:"语言",mapHint:"拖动移动 · 双指或滚轮缩放",gmaps:"在 Google 地图中打开",askGuide:"向导览询问任何关于博物馆的问题……",tMus:"博物馆",musE:"博物馆导览",musT:"博物馆地图与门票",
+ gTitle:"询问导览",gSub:"展厅、商店、餐饮、门票和开放时间。",gBtn:"提问",guideChip:"向导览询问博物馆与门票",segMap:"地图",segVisit:"门票与参观",
+ mapNote:"示意图，非按比例绘制。请在馆内按指示牌行走。",all:"全部",k_hall:"展厅",k_shop:"商店与集市",k_food:"餐饮",k_service:"服务",k_outdoor:"户外",
+ askPlace:"向导览询问此地",pickPlace:"点击地图上的数字了解该地点。",qPlace:n=>`介绍一下${n}：它在哪里，我能在那里做什么？`,
+ prices:"门票价格",egp:"埃镑",free:"免费",hoursT:"开放时间",complex:"园区",galleriesW:"展厅",validT:"门票有效多久",bookT:"如何预订",rulesT:"参观规定",getT:"交通",bookBtn:"在官网预订",
+ checked:d=>`核实日期：${d}。价格和时间可能变动，出发前请在官网确认。`,guideName:"Hekaya，你的导览",guideHook:"问我任何关于博物馆的事：展厅、商店、餐饮、门票和开放时间。",
+ gSugg:["门票多少钱？","门票有效多久？","怎么预订？","商店在哪里？","几点闭馆？","在哪里吃饭？"]},
+
+ja:{brand:"Hekaya",kids:"こども",adult:"一般",expert:"専門家",eyebrow:"大エジプト博物館",heroT:"展示品にカメラを向けて。物語を語ってもらおう。",
+ heroP:"展示品にカメラを向けると、あなたの言語で話しかけ、質問に答えてくれます。",shoot:"展示品を撮影",orCode:"または展示ラベルのコードを入力：",
+ open:"開く",try:"来館しなくても試せます",tourE:"あなたのルート",tourT:"あなたに合わせた見学プラン",time:"使える時間",interests:"興味のあることは？",avoid:"今混んでいる場所を避ける",plan:"見学を計画",
+ passE:"博物館パスポート",passT:"カルトゥーシュのスタンプを集めよう",passP:"展示品と話すたびにスタンプがもらえます。パスポートを完成させて「博物館エクスプローラー」バッジを獲得しよう。",
+ allE:"コレクション",allT:"話す展示品のすべて",tScan:"発見",tTour:"ルート",tPass:"パスポート",tAll:"展示品",era:"時代",mat:"素材",stop:"スポット",min:"分",
+ ask:"展示品に何でも聞いてみよう…",listen:"聞く",pause:"音声を停止",sugg:["誰があなたを見つけたの？","どうやって作られたの？","秘密を教えて","なぜ大切なの？"],
+ mClaude:"AIガイド オン",mApi:"サーバーに接続中",mOff:"オフラインモード",recog:"展示品を認識中…",notFound:"認識できませんでした。近づくか、ラベルのコードを入力してください。",
+ noPhoto:"ここでは写真認識が使えません。ラベルのコードを入力してください。",badCode:"そのコードの展示品はありません。コードは GEM-10 のような形式です。",thinking:"考え中…",stamp:"パスポートに新しいスタンプ：",
+ planned:"分を計画 / 持ち時間",stops:"スポット",noVoice:"この言語の音声が端末にありません。テキストをお読みください。",fail:"接続に問題があります。もう一度お試しください。",limit:"リクエストが多すぎます。少し待ってからお試しください。",
+ prog:(n,t)=>`スタンプ ${n} / ${t}`,done:"コンプリート！あなたは博物館エクスプローラーです。",busy:"混雑中",welcome:"ルートの準備ができました。最初のスポットから始めて、展示品をタップして話しかけましょう。",
+ offlineNote:"（現在AIが使えないため、確認済みの事実だけでお答えしています。）",
+ a11y:"アクセシビリティ",a11yOn:"アクセシビリティモード オン：文字を大きくし、回答を自動で読み上げ、マイクで話しかけられます。",a11yOff:"アクセシビリティモード オフ。",describe:"自分の姿を説明して",
+ micNo:"このブラウザは音声入力に対応していません。",listening:"聞いています…",hallSound:"展示室の音",placeSound:"この場所の音を聞く",trumpetCall:"ラッパを聞く",harpPlay:"ハープを聞く",stopSound:"停止",imagined:"想像による音で、録音ではありません",
+ dlgT:"2つの展示品が会話",dlgP:"2つの展示品を選ぶと、目の前で会話を始めます。あなたも質問できます。",dlgGo:"会話を始める",dlgMore:"続ける",listenAll:"会話を聞く",
+ dlgHook:"それぞれの展示品は、自分の確認済みの事実だけをもとに話します。",dlgAsk:"2人に質問してみよう…",dlgSame:"違う展示品を2つ選んでください。",you:"あなた",
+ dTopics:["どうやって作られたの？","誰に見つけられたの？","どっちが古いの？","あなたたちの秘密"],
+ souvT:"見学の記念カード",souvP:"話した展示品と、それぞれのひとこと、ヒエログリフで書いたあなたの名前が入ったカード。ストーリーでシェアしよう。",yourName:"あなたの名前",souvMake:"カードを作る",share:"シェア",save:"画像を保存",
+ souvNone:"記念カードを作るには、まず1つ以上の展示品と話してください。",souvTitle:"大エジプト博物館での私の物語",souvPieces:n=>`${n} 点の展示品と話した`,souvSaved:"画像を保存しました。",
+ schT:"校外学習",schP:"先生がクラスを開き、生徒はコードで参加。話した展示品と正解した問題でポイントがたまります。",
+ teacher:"先生：クラスを開く",student:"生徒：コードで参加",className:"クラス名",create:"クラスを開く",classCode:"クラスコード",nick:"ニックネーム",join:"参加",
+ codeFor:"このコードを生徒に伝えてください：",leave:"クラスを退出",inClass:(n,c)=>`クラス「${n}」（${c}）に参加中`,yourScore:(s,q,p)=>`展示品：${s} · 正解：${q} · ポイント：${p}`,
+ noStudents:"まだ誰も参加していません。",classErr:"そのコードは存在しないか、期限切れです。",schLocal:"このコピーはサーバーに接続されていないため、クラスはこの端末でのみ動作します。生徒が自分のスマホから参加するには Render 版を使ってください。",
+ pts:"pt",quizQ:n=>`クイズ：「${n}」について正しいのはどれ？`,quizOk:"正解！ +20ポイント",quizNo:"おしい！正解は緑で表示されています。",
+ openDash:"博物館ダッシュボード（匿名統計）",dashE:"博物館ダッシュボード",dashT:"来館者は何をしている？",dashApi:"サーバー上の全来館者、過去7日間。名前や質問文は含まず、質問の種類のみ。",
+ dashLocal:"この端末のみ（デモ）。サーバーではすべての来館者を集計します。",tEvents:"操作数",tChats:"展示品への質問",tGuide:"ガイドへの質問",tDlg:"会話",
+ topPieces:"よく話しかけられた展示品",topTopics:"来館者がたずねること",topPlaces:"地図でよく開かれた場所",byHour:"時間帯別の利用（カイロ時間）",langs:"言語",levels:"レベル",noData:"まだデータがありません。",
+ topicNames:{tickets:"チケットと料金",hours:"開館時間",validity:"チケットの有効期間",booking:"予約",rules:"撮影・見学のルール",getting:"アクセス",shops:"ショップとバザール",food:"飲食",parking:"駐車場",gate:"保安検査と入口",children:"子ども",services:"サービス",describe:"展示品の見た目",history:"歴史と展示品"},
+ langLbl:"言語",mapHint:"ドラッグで移動 · ピンチまたはホイールで拡大",gmaps:"Google マップで開く",askGuide:"博物館について何でもガイドに聞こう…",tMus:"博物館",musE:"館内ガイド",musT:"館内マップとチケット",
+ gTitle:"ガイドに聞く",gSub:"展示室、ショップ、飲食、チケット、開館時間について。",gBtn:"聞く",guideChip:"博物館とチケットについてガイドに聞く",segMap:"マップ",segVisit:"チケットと見学",
+ mapNote:"説明用の略図で、縮尺は正確ではありません。館内では案内表示に従ってください。",all:"すべて",k_hall:"展示室",k_shop:"ショップとバザール",k_food:"飲食",k_service:"サービス",k_outdoor:"屋外",
+ askPlace:"この場所についてガイドに聞く",pickPlace:"地図の番号をタップすると、その場所を紹介します。",qPlace:n=>`${n}について教えて。どこにあって、何ができる？`,
+ prices:"チケット料金",egp:"エジプト・ポンド",free:"無料",hoursT:"開館時間",complex:"施設",galleriesW:"展示室",validT:"チケットの有効期間",bookT:"予約方法",rulesT:"見学のルール",getT:"アクセス",bookBtn:"公式サイトで予約",
+ checked:d=>`${d} に確認。料金や時間は変わることがあるので、来館前に公式サイトで確認してください。`,guideName:"Hekaya（あなたのガイド）",guideHook:"博物館のことなら何でも聞いてください：展示室、ショップ、飲食、チケット、開館時間。",
+ gSugg:["チケットはいくら？","チケットの有効期間は？","予約方法は？","ショップはどこ？","何時に閉まる？","どこで食べられる？"]}
+});
+/* the voice picker, in every language */
+const VOICE_UI = {
+ ar:{voiceLbl:"الصوت",vAuto:"حسب المستوى",vChild:"صوت طفل",vMan:"صوت راجل",vWoman:"صوت ست",vNote:"صوت الطفل والراجل بيتعملوا من أصوات الجهاز."},
+ en:{voiceLbl:"Voice",vAuto:"Match the level",vChild:"Child",vMan:"Man",vWoman:"Woman",vNote:"Child and man voices are made from your device's voices."},
+ fr:{voiceLbl:"Voix",vAuto:"Selon le niveau",vChild:"Enfant",vMan:"Homme",vWoman:"Femme"},
+ de:{voiceLbl:"Stimme",vAuto:"Passend zur Stufe",vChild:"Kind",vMan:"Mann",vWoman:"Frau"},
+ es:{voiceLbl:"Voz",vAuto:"Según el nivel",vChild:"Niño",vMan:"Hombre",vWoman:"Mujer"},
+ it:{voiceLbl:"Voce",vAuto:"In base al livello",vChild:"Bambino",vMan:"Uomo",vWoman:"Donna"},
+ ru:{voiceLbl:"Голос",vAuto:"По уровню",vChild:"Детский",vMan:"Мужской",vWoman:"Женский"},
+ zh:{voiceLbl:"声音",vAuto:"按级别",vChild:"儿童",vMan:"男声",vWoman:"女声"},
+ ja:{voiceLbl:"声",vAuto:"レベルに合わせる",vChild:"子ども",vMan:"男性",vWoman:"女性"}
+};
+Object.entries(VOICE_UI).forEach(([l,v])=>Object.assign(UI[l],v));
+
 const isAr = () => S.lang==="ar";
 const nm = a => isAr()? a.name_ar : a.name_en;
 const f = (a,k) => isAr()? a[k+"_ar"] : a[k+"_en"];
@@ -665,10 +942,9 @@ function speak(text, btn){
   if(speaking===btn){ speechSynthesis.cancel(); speaking=null; btn.textContent=t("listen"); return }
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text), want = VOICE_LANG[S.lang];
-  const voices = speechSynthesis.getVoices();
-  const v = voices.find(v=>v.lang===want) || voices.find(v=>v.lang?.startsWith(want.slice(0,2)));
-  if(voices.length && !v) toast(t("noVoice"));
-  if(v) u.voice = v; u.lang = want; Object.assign(u, VOICE_STYLE[S.aud] || VOICE_STYLE.adult);
+  const pv = voiceFor(want, S.voice);
+  if(speechSynthesis.getVoices().length && !pv.voice) toast(t("noVoice"));
+  if(pv.voice) u.voice = pv.voice; u.lang = want; u.pitch = pv.pitch; u.rate = pv.rate;
   u.onend = u.onerror = ()=>{ if(speaking===btn){ speaking=null; btn.textContent=t("listen") } };
   speaking = btn; btn.textContent = t("pause"); speechSynthesis.speak(u);
   logEvent("listen", S.cur?.id);
@@ -1142,8 +1418,9 @@ async function dlgStep(question){
 }
 function speakDialogue(lines){
   if(!("speechSynthesis" in window)){ toast(t("noVoice")); return }
-  speechSynthesis.cancel(); const want=VOICE_LANG[S.lang], voices=speechSynthesis.getVoices().filter(v=>v.lang?.startsWith(want.slice(0,2)));
-  lines.filter(l=>l.who!=="visitor").forEach(l=>{ const u=new SpeechSynthesisUtterance(l.text); u.lang=want; if(voices.length) u.voice = l.who==="a"? voices[0] : (voices[1]||voices[0]); const st=VOICE_STYLE[S.aud]||VOICE_STYLE.adult; u.pitch = st.pitch * (l.who==="a"? 1 : .78); u.rate=st.rate; speechSynthesis.speak(u) });
+  speechSynthesis.cancel(); const want=VOICE_LANG[S.lang];
+  const va=voiceFor(want, S.voice==="auto"? "woman" : S.voice), vb=voiceFor(want, S.voice==="man"? "woman" : "man");
+  lines.filter(l=>l.who!=="visitor").forEach(l=>{ const u=new SpeechSynthesisUtterance(l.text), pv=l.who==="a"? va : vb; u.lang=want; if(pv.voice) u.voice=pv.voice; u.pitch=pv.pitch; u.rate=pv.rate; speechSynthesis.speak(u) });
 }
 function openDialogue(){
   const a=byId[$("#dA").value], b=byId[$("#dB").value];
@@ -1374,7 +1651,7 @@ function renderPassport(){
 function applyLang(){
   document.documentElement.lang = S.lang; document.documentElement.dir = isAr()? "rtl":"ltr";
   $$("[data-i]").forEach(el=>{ const v=t(el.dataset.i); if(typeof v==="string") el.textContent=v });
-  $("#lang").value = S.lang; $("#minsOut").textContent = $("#mins").value+" "+t("min");
+  $("#lang").value = S.lang; $("#voiceSel").value = S.voice; $("#minsOut").textContent = $("#mins").value+" "+t("min");
   $$("#aud button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.a===S.aud));
   renderMode(); renderTags(); renderTry(); renderAll(); renderPassport(); renderMuseum(); renderV2();
 }
@@ -1384,6 +1661,8 @@ function logEvent(kind, artifact_id, topic){ localLog(kind, artifact_id, topic);
 /* ---------- wiring ---------- */
 $$("nav.tabs button").forEach(b=>b.onclick=()=>{ $$("nav.tabs button").forEach(x=>x.removeAttribute("aria-current")); b.setAttribute("aria-current","page");
   $$("section.view").forEach(s=>s.hidden = s.id!=="v-"+b.dataset.v); window.scrollTo(0,0) });
+$("#voiceSel").onchange = e=>{ S.voice=e.target.value; store.set("voice",S.voice);
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t("heroT")), want=VOICE_LANG[S.lang], pv=voiceFor(want,S.voice); u.lang=want; if(pv.voice) u.voice=pv.voice; u.pitch=pv.pitch; u.rate=pv.rate; speechSynthesis.speak(u) }catch{} };
 $("#lang").onchange = e=>{ S.lang=e.target.value; store.set("lang",S.lang); applyLang() };
 $$("#aud button").forEach(b=>b.onclick=()=>{ S.aud=b.dataset.a; store.set("aud",S.aud); applyLang() });
 $("#close").onclick = closeSheet;
