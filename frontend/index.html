@@ -271,7 +271,7 @@ body.a11y .bubble{font-size:20px}
       <div class="brand"><b data-i="brand">حكاية</b><span>GEM</span></div>
       <label class="langpick" for="lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg><b data-i="langLbl">اللغة</b>
       <select class="mini" id="lang">
-        <option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option>
+        <option value="ar">العربية (مصري)</option><option value="ar-msa">العربية الفصحى</option><option value="en">English</option><option value="fr">Français</option>
         <option value="de">Deutsch</option><option value="es">Español</option><option value="it">Italiano</option>
         <option value="ru">Русский</option><option value="zh">中文</option><option value="ja">日本語</option>
       </select></label>
@@ -545,7 +545,7 @@ const UI = {
   guideName:"Hekaya, your guide",guideHook:"Ask me anything about the museum: where the halls, shops and food are, tickets and opening hours.",
   gSugg:["How much is a ticket?","How long is a ticket valid?","How do I book?","Where are the shops?","When does it close?","Where can I eat?"]}
 };
-const LANG_NAME={ar:"Egyptian Arabic (عامية مصرية), friendly and clear",en:"English",fr:"French",de:"German",es:"Spanish",it:"Italian",ru:"Russian",zh:"Simplified Chinese",ja:"Japanese"};
+const LANG_NAME={ar:"Egyptian Arabic (عامية مصرية), friendly and clear","ar-msa":"Modern Standard Arabic (العربية الفصحى) only: no Egyptian or other dialect words, even where the persona or facts are written in dialect",en:"English",fr:"French",de:"German",es:"Spanish",it:"Italian",ru:"Russian",zh:"Simplified Chinese",ja:"Japanese"};
 /* voice picker: child / man / woman / by level. Browsers only ship adult voices, so a child voice is an adult voice raised in pitch,
    and a man's voice uses a male system voice when the device has one for that language, otherwise a lowered pitch. */
 const MALE_RE=/\b(male|david|mark|guy|george|ryan|thomas|daniel|paul|stefan|pablo|jorge|diego|luca|cosimo|dmitry|pavel|yuri|kangkang|yunxi|yunyang|ichiro|keita|hamed|shakir|naayf|tarik|hamdan|andrew|brian|christopher|eric|roger|steffan)\b/i;
@@ -562,7 +562,7 @@ function voiceFor(langCode, kind){
 }
 /* each level sounds different: kids slower and brighter, experts steady and lower */
 const VOICE_STYLE={kids:{rate:0.9,pitch:1.25},adult:{rate:1,pitch:1},expert:{rate:1.03,pitch:0.9}};
-const VOICE_LANG={ar:"ar-EG",en:"en-GB",fr:"fr-FR",de:"de-DE",es:"es-ES",it:"it-IT",ru:"ru-RU",zh:"zh-CN",ja:"ja-JP"};
+const VOICE_LANG={ar:"ar-EG","ar-msa":"ar-SA",en:"en-GB",fr:"fr-FR",de:"de-DE",es:"es-ES",it:"it-IT",ru:"ru-RU",zh:"zh-CN",ja:"ja-JP"};
 const AUD={kids:"a child aged 7-12: short sentences, playful, one fun fact at a time, end by asking them a question",
            adult:"a curious adult visitor: vivid storytelling, 4-6 sentences",expert:"an enthusiast or student: precise, mention dynasty, materials and context, 6-9 sentences"};
 const t = k => (UI[S.lang]||UI.en)[k] ?? UI.en[k];
@@ -827,7 +827,8 @@ const VOICE_UI = {
 };
 Object.entries(VOICE_UI).forEach(([l,v])=>Object.assign(UI[l],v));
 
-const isAr = () => S.lang==="ar";
+UI["ar-msa"] = UI.ar;  /* Fusha mode keeps the Arabic interface; only the spoken answers switch to Modern Standard Arabic */
+const isAr = () => S.lang==="ar" || S.lang==="ar-msa";
 const nm = a => isAr()? a.name_ar : a.name_en;
 const f = (a,k) => isAr()? a[k+"_ar"] : a[k+"_en"];
 
@@ -859,7 +860,7 @@ function renderMode(){
 }
 function personaRules(a){
   if(a.id==="guide") return guideRules();
-  const persona = isAr()? a.persona_ar : a.persona_en;
+  const persona = S.lang==="ar"? a.persona_ar : a.persona_en;  /* Arabic personas are written in dialect, so Fusha uses the English one */
   const zone = KB.zones.find(z=>z.id===a.zone);
   return `You are Hekaya (حكاية), an AI museum guide at the Grand Egyptian Museum. Right now you give voice to one artifact so a visitor can talk to it.
 Artifact persona: ${persona}
@@ -922,7 +923,7 @@ async function aiChat(a, message, onText, signal){
   }
   if(S.mode==="api"){
     const r = await fetch("/api/chat/stream",{method:"POST",headers:{"Content-Type":"application/json"},signal,
-      body:JSON.stringify({artifact_id:a.id,message:message||null,history:S.turns.slice(-12),language:S.lang==="ar"?"ar":S.lang,audience:S.aud})});
+      body:JSON.stringify({artifact_id:a.id,message:message||null,history:S.turns.slice(-12),language:S.lang,audience:S.aud})});
     if(r.status===429) throw {code:"rate_limited"};
     if(!r.ok) throw {code:"upstream_error"};
     const rd = r.body.getReader(), dec = new TextDecoder(); let buf="", text="";
@@ -1363,7 +1364,7 @@ function rememberQuote(a, text){
 S.dlg = null; S.dTopic = null;
 function sheetOf(a){ return `Name: ${a.name_en} / ${a.name_ar}\nEra: ${a.era_en}\nMaterial: ${a.material_en}\nVerified facts:\n${a.facts_en.map(x=>"- "+x).join("\n")}` }
 function dlgPrompt(a, b, history, question){
-  const persona = x => isAr()? x.persona_ar : x.persona_en;
+  const persona = x => S.lang==="ar"? x.persona_ar : x.persona_en;
   const transcript = history.slice(-12).map(l=>`${l.who==="a"?a.name_en:l.who==="b"?b.name_en:"Visitor"}: ${l.text}`).join("\n");
   return `You are Hekaya (حكاية), an AI guide at the Grand Egyptian Museum. Two artifacts are talking to each other in front of a visitor, like a short radio play.
 
@@ -1407,7 +1408,7 @@ async function dlgStep(question){
   let lines=[];
   try{
     if(S.mode==="claude") lines = cleanLines(await S.sample.json(dlgPrompt(x.a,x.b,x.lines,question),{modelTier:"default",cache:false}));
-    else if(S.mode==="api"){ const r=await fetch("/api/dialogue",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({a:x.a.id,b:x.b.id,topic:S.dTopic,question:question||null,history:x.lines.slice(-20),language:S.lang==="ar"?"ar":S.lang,audience:S.aud})}); if(!r.ok) throw new Error(r.status); lines=cleanLines(await r.json()) }
+    else if(S.mode==="api"){ const r=await fetch("/api/dialogue",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({a:x.a.id,b:x.b.id,topic:S.dTopic,question:question||null,history:x.lines.slice(-20),language:S.lang,audience:S.aud})}); if(!r.ok) throw new Error(r.status); lines=cleanLines(await r.json()) }
   }catch(e){ if(e?.code==="not_granted"){ S.mode="offline"; renderMode() } }
   if(!lines.length) lines = offlineDialogue(x.a,x.b,x.lines,question);
   wait.remove();
@@ -1594,7 +1595,7 @@ async function renderDash(){
   if(!d) d=localSummary();
   $("#dashSrc").textContent = t(api?"dashApi":"dashLocal");
   const ev=d.events||{}, nameOf=id=>byId[id]? nm(byId[id]) : id, placeOf=id=>{ const p=M.places.find(x=>x.id===id); return p? placeName(p) : id };
-  const LV={kids:t("kids"),adult:t("adult"),expert:t("expert")}, LN={ar:"العربية",en:"English",fr:"Français",de:"Deutsch",es:"Español",it:"Italiano",ru:"Русский",zh:"中文",ja:"日本語"};
+  const LV={kids:t("kids"),adult:t("adult"),expert:t("expert")}, LN={ar:"العربية (مصري)","ar-msa":"العربية الفصحى",en:"English",fr:"Français",de:"Deutsch",es:"Español",it:"Italiano",ru:"Русский",zh:"中文",ja:"日本語"};
   const tiles=[["tEvents",d.total||0],["tChats",ev.chat||0],["tGuide",ev.guide||0],["tDlg",ev.dialogue||0]];
   $("#dashBody").innerHTML = `<div class="tiles">${tiles.map(([k,v])=>`<div class="tile"><b>${v}</b><small>${esc(t(k))}</small></div>`).join("")}</div>`
    + hbars(t("topPieces"), (d.top_artifacts||[]).map(x=>({label:nameOf(x.id),value:x.count})))
@@ -1649,7 +1650,7 @@ function renderPassport(){
   $("#prog").style.width = (100*n/tot)+"%"; $("#progTxt").textContent = n===tot? t("done") : t("prog")(n,tot);
 }
 function applyLang(){
-  document.documentElement.lang = S.lang; document.documentElement.dir = isAr()? "rtl":"ltr";
+  document.documentElement.lang = S.lang==="ar-msa"? "ar" : S.lang; document.documentElement.dir = isAr()? "rtl":"ltr";
   $$("[data-i]").forEach(el=>{ const v=t(el.dataset.i); if(typeof v==="string") el.textContent=v });
   $("#lang").value = S.lang; $("#voiceSel").value = S.voice; $("#minsOut").textContent = $("#mins").value+" "+t("min");
   $$("#aud button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.a===S.aud));

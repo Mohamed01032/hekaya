@@ -190,7 +190,8 @@ def _build_chat(body: ChatIn) -> tuple[str, list[dict], list[str]]:
         if turns[0]["role"] != "user":
             turns = turns[1:]
         return system, turns, ["museum"]
-    persona = a["persona_ar"] if body.language.startswith("ar") else a["persona_en"]
+    # Arabic personas are written in Egyptian dialect, so Fusha (ar-msa) uses the English persona
+    persona = a["persona_ar"] if body.language == "ar" else a["persona_en"]
     related, sources = "", [a["id"]]
     if body.message:
         hits = [h for h in kb.search(body.message, k=4, artifact_id=a["id"]) if h["artifact_id"] != a["id"]]
@@ -368,7 +369,7 @@ def dialogue(body: DialogueIn):
     if llm.name != "offline":
         arabic = body.language.startswith("ar")
         system = prompts.dialogue_prompt(kb.fact_sheet(a), kb.fact_sheet(b),
-                                         a["persona_ar" if arabic else "persona_en"], b["persona_ar" if arabic else "persona_en"],
+                                         a["persona_ar" if body.language == "ar" else "persona_en"], b["persona_ar" if body.language == "ar" else "persona_en"],
                                          body.language, body.audience, body.topic)
         names = {"a": a["name_en"], "b": b["name_en"], "visitor": "Visitor"}
         transcript = "\n".join(f"{names[x.who]}: {x.text}" for x in body.history[-12:])

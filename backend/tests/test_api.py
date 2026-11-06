@@ -285,3 +285,12 @@ def test_gemini_falls_back_when_model_is_retired():
     g.model = g.fast_model = "gemini-flash-latest"
     assert g.complete("", [{"role": "user", "content": "hi"}]) == "ok from gemini-2.5-flash"
     assert g.model == "gemini-2.5-flash" and calls == ["gemini-flash-latest", "gemini-2.5-flash"]
+
+
+def test_fusha_mode_uses_msa_and_english_persona():
+    body = m.ChatIn(artifact_id="tut-mask", message="من وجدك؟", language="ar-msa")
+    system, _, _ = m._build_chat(body)
+    assert "Modern Standard Arabic" in system and "no Egyptian" in system
+    assert kb.by_id["tut-mask"]["persona_ar"] not in system and kb.by_id["tut-mask"]["persona_en"] in system
+    r = client.post("/api/dialogue", json={"a": "tut-mask", "b": "khufu-boat", "language": "ar-msa"})
+    assert r.status_code == 200 and len(r.json()["lines"]) == 4

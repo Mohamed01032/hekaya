@@ -3,7 +3,7 @@ from __future__ import annotations
 
 LANGUAGES = {
     "ar": "Egyptian Arabic (عامية مصرية), friendly and clear",
-    "ar-msa": "Modern Standard Arabic (الفصحى)",
+    "ar-msa": "Modern Standard Arabic (العربية الفصحى) only: no Egyptian or other dialect words, even where the persona or facts are written in dialect",
     "en": "English",
     "fr": "French",
     "de": "German",
