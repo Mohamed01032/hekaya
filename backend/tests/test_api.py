@@ -259,3 +259,29 @@ def test_analytics_counts_topics_not_text():
     import sqlite3
     rows = sqlite3.connect(m.settings.db_path).execute("SELECT * FROM events").fetchall()
     assert not any("بكام" in str(r) for r in rows)  # question text is never stored
+
+
+def test_gemini_falls_back_when_model_is_retired():
+    from types import SimpleNamespace as NS
+    from app.llm import GeminiProvider
+
+    calls = []
+
+    class Models:
+        def generate_content(self, model, contents, config):
+            calls.append(model)
+            if model == "gemini-flash-latest":
+                raise RuntimeError("404 NOT_FOUND models/gemini-flash-latest is not found")
+            return NS(text="ok from " + model)
+
+        def list(self):
+            return [NS(name="models/gemini-2.5-flash", supported_actions=["generateContent"]),
+                    NS(name="models/gemini-2.5-flash-lite", supported_actions=["generateContent"]),
+                    NS(name="models/text-embedding-004", supported_actions=["embedContent"])]
+
+    g = GeminiProvider.__new__(GeminiProvider)
+    g.client = NS(models=Models())
+    g.types = NS(GenerateContentConfig=lambda **k: k, Content=lambda **k: k, Part=NS(from_text=lambda text: text))
+    g.model = g.fast_model = "gemini-flash-latest"
+    assert g.complete("", [{"role": "user", "content": "hi"}]) == "ok from gemini-2.5-flash"
+    assert g.model == "gemini-2.5-flash" and calls == ["gemini-flash-latest", "gemini-2.5-flash"]

@@ -95,20 +95,61 @@ class GeminiProvider:
         return self.types.GenerateContentConfig(
             system_instruction=system or None, max_output_tokens=max(max_tokens * 6, 4096))
 
+    # Google retires model names over time (e.g. "gemini-flash-latest" can start returning 404).
+    # When the configured name is not found, pick the newest available Flash model and keep using it.
+    @staticmethod
+    def _model_rank(name: str) -> tuple:
+        n = name.rsplit("/", 1)[-1]
+        if "flash" not in n or any(x in n for x in ("image", "tts", "live", "audio", "embedding", "thinking", "exp")):
+            return ()
+        nums = [float(x) for x in re.findall(r"(\d+(?:\.\d+)?)", n.split("flash")[0])] or [0.0]
+        return (0 if "lite" in n else 1, 0 if "preview" in n else 1, nums[0], -len(n))
+
+    def _fallback_model(self) -> str | None:
+        try:
+            names = []
+            for m in self.client.models.list():
+                actions = getattr(m, "supported_actions", None) or getattr(m, "supported_generation_methods", None) or []
+                if actions and "generateContent" not in actions:
+                    continue
+                if self._model_rank(m.name):
+                    names.append(m.name.rsplit("/", 1)[-1])
+            return max(names, key=self._model_rank) if names else None
+        except Exception:
+            return None
+
+    def _with_fallback(self, fast: bool, call):
+        model = self.fast_model if fast else self.model
+        try:
+            return call(model)
+        except Exception as exc:
+            if "404" not in str(exc) and "NOT_FOUND" not in str(exc):
+                raise
+            better = self._fallback_model()
+            if not better or better == model:
+                raise
+            self.model = self.fast_model = better
+            return call(better)
+
     def complete(self, system, messages, *, images=None, fast=False, max_tokens=700) -> str:
-        resp = self.client.models.generate_content(
-            model=self.fast_model if fast else self.model,
-            contents=self._contents(messages, images),
-            config=self._config(system, max_tokens),
-        )
+        resp = self._with_fallback(fast, lambda model: self.client.models.generate_content(
+            model=model, contents=self._contents(messages, images), config=self._config(system, max_tokens)))
         return (resp.text or "").strip()
 
     def stream(self, system, messages, *, fast=False, max_tokens=700) -> Iterator[str]:
-        for chunk in self.client.models.generate_content_stream(
-            model=self.fast_model if fast else self.model,
-            contents=self._contents(messages),
-            config=self._config(system, max_tokens),
-        ):
+        def first(model):
+            it = iter(self.client.models.generate_content_stream(
+                model=model, contents=self._contents(messages), config=self._config(system, max_tokens)))
+            try:
+                head = next(it)
+            except StopIteration:
+                head = None
+            return head, it
+        head, rest = self._with_fallback(fast, first)
+        for chunk in ([head] if head is not None else []) + [None]:
+            if chunk is not None and chunk.text:
+                yield chunk.text
+        for chunk in rest:
             if chunk.text:
                 yield chunk.text
 
